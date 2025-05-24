@@ -342,3 +342,26 @@ class Parser:
         es=[self.parse_expression()]
         while self.current().type=='T_Comma': self.eat('T_Comma'); es.append(self.parse_expression())
         return es
+
+if __name__=='__main__':
+    # Determine tokens file: use argument or fallback to tokens.txt next to script
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    tokens_file = sys.argv[1] if len(sys.argv) > 1 else os.path.join(script_dir, 'tokens.txt')
+    try:
+        tokens = load_tokens(tokens_file)
+    except FileNotFoundError as e:
+        print(e)
+        print("Usage: python Parser.py [tokens_file]")
+        sys.exit(1)
+    p = Parser(tokens)
+    tree = p.parse()
+    output_file = sys.argv[2] if len(sys.argv) > 2 else os.path.join(script_dir, 'parser_output.txt')
+    with open(output_file, 'w', encoding='utf-8') as out:
+        if p.errors:
+            out.write('Errors:')
+            for e in p.errors:
+                out.write(e + '')
+            print(f"Found {len(p.errors)} errors. See '{output_file}'")
+        else:
+            out.write(tree.__repr__())
+            print(f"Parse successful. AST written to '{output_file}'")
