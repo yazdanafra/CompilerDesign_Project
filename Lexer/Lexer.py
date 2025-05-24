@@ -260,8 +260,8 @@ class Lexer:
 if __name__ == "__main__":
     # static file names in the same directory as this script
     base_dir = os.path.dirname(os.path.realpath(__file__))
-    input_path = os.path.join(base_dir, "input3.txt")
-    output_path = os.path.join(base_dir, "tokens3.txt")
+    input_path = os.path.join(base_dir, "input1.txt")
+    output_path = os.path.join(base_dir, "tokens1.txt")
 
     # Read Trust source code
     with open(input_path, 'r', encoding='utf-8') as f:

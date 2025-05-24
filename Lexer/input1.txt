@@ -1,0 +1,15 @@
+// Single-line comment
+bool flag = false;
+let _var1: i32 = 0xAB + 123;
+let arr: [i32] = [1, 2, 3];
+fn compute(x: i32, y: i32) -> i32 {
+    // Compute arithmetic
+    let result = x + y * (x - y) / 2 % 10;
+    if result >= 100 && result != 255 || !false {
+        println!("Result is {}", result);
+    }
+    return result;
+}
+loop {
+    break;
+}
