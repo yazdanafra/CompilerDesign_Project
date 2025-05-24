@@ -74,3 +74,18 @@ class Token:
 
     def __repr__(self):
         return f"Token({self.type.name}, '{self.lexeme}', {self.literal}, line={self.line}, col={self.column})"
+    
+    class LexerError(Exception):
+    pass
+
+class SymbolTable:
+    """
+    A simple symbol table to record identifiers with their positions.
+    """
+    def __init__(self):
+        self.symbols = {}
+
+    def add(self, name: str, position: tuple):
+        if name not in self.symbols:
+            self.symbols[name] = {'name': name, 'positions': []}
+        self.symbols[name]['positions'].append(position)
