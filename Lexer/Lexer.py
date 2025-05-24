@@ -1,5 +1,6 @@
 from enum import Enum, auto
 import os
+import sys
 
 class TokenType(Enum):
     # Keywords
@@ -258,21 +259,40 @@ class Lexer:
         return Token(tok_type, lexeme, None, start_line, start_col)
 
 if __name__ == "__main__":
-    # static file names in the same directory as this script
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-    input_path = os.path.join(base_dir, "input1.txt")
-    output_path = os.path.join(base_dir, "tokens1.txt")
+    # 1. Grab filenames from command line (or defaults)
+    if len(sys.argv) >= 2:
+        input_name = sys.argv[1]
+    else:
+        input_name = "input1.txt"
 
-    # Read Trust source code
+    if len(sys.argv) >= 3:
+        output_name = sys.argv[2]
+    else:
+        output_name = "tokens1.txt"
+
+    # 2. Compute the base directory where this script lives
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+
+    # 3. Build the input path: must be inside the same folder as the script
+    input_path = os.path.join(script_dir, input_name)
+    if not os.path.isfile(input_path):
+        raise FileNotFoundError(f"Could not find '{input_name}' in {script_dir}")
+
+    # 4. Build the output path: point it to ../Syntax Analyzer/
+    syntax_dir = os.path.abspath(os.path.join(script_dir, os.pardir, "Syntax Analyzer"))
+    # ensure that directory exists
+    os.makedirs(syntax_dir, exist_ok=True)
+    output_path = os.path.join(syntax_dir, output_name)
+
+    # 5. Read the source
     with open(input_path, 'r', encoding='utf-8') as f:
         source = f.read()
 
-    # Lexical analysis
+    # 6. Lex, write tokens...
     symtab = SymbolTable()
     lexer = Lexer(source, symbol_table=symtab)
     tokens = lexer.tokenize()
 
-    # Write tokens to output file
     with open(output_path, 'w', encoding='utf-8') as out:
         for tok in tokens:
             out.write(repr(tok) + '\n')
@@ -280,6 +300,5 @@ if __name__ == "__main__":
         for name, info in symtab.symbols.items():
             out.write(f"{name}: {info['positions']}\n")
 
-    # Print summary to terminal
     print(f"Lexing complete. {len(tokens)} tokens written to '{output_path}'.")
     print("Symbol Table entries:", len(symtab.symbols))
