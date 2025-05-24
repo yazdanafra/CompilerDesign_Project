@@ -74,8 +74,8 @@ class Token:
 
     def __repr__(self):
         return f"Token({self.type.name}, '{self.lexeme}', {self.literal}, line={self.line}, col={self.column})"
-    
-    class LexerError(Exception):
+
+class LexerError(Exception):
     pass
 
 class SymbolTable:
@@ -90,7 +90,7 @@ class SymbolTable:
             self.symbols[name] = {'name': name, 'positions': []}
         self.symbols[name]['positions'].append(position)
 
-        class Lexer:
+class Lexer:
     KEYWORDS = {
         'bool': TokenType.T_Bool,
         'break': TokenType.T_Break,
@@ -256,3 +256,30 @@ class SymbolTable:
             if self.symbol_table is not None:
                 self.symbol_table.add(lexeme, (start_line, start_col))
         return Token(tok_type, lexeme, None, start_line, start_col)
+
+if __name__ == "__main__":
+    # static file names in the same directory as this script
+    base_dir = os.path.dirname(os.path.realpath(__file__))
+    input_path = os.path.join(base_dir, "input3.txt")
+    output_path = os.path.join(base_dir, "tokens3.txt")
+
+    # Read Trust source code
+    with open(input_path, 'r', encoding='utf-8') as f:
+        source = f.read()
+
+    # Lexical analysis
+    symtab = SymbolTable()
+    lexer = Lexer(source, symbol_table=symtab)
+    tokens = lexer.tokenize()
+
+    # Write tokens to output file
+    with open(output_path, 'w', encoding='utf-8') as out:
+        for tok in tokens:
+            out.write(repr(tok) + '\n')
+        out.write("\nSymbol Table:\n")
+        for name, info in symtab.symbols.items():
+            out.write(f"{name}: {info['positions']}\n")
+
+    # Print summary to terminal
+    print(f"Lexing complete. {len(tokens)} tokens written to '{output_path}'.")
+    print("Symbol Table entries:", len(symtab.symbols))
