@@ -89,3 +89,170 @@ class SymbolTable:
         if name not in self.symbols:
             self.symbols[name] = {'name': name, 'positions': []}
         self.symbols[name]['positions'].append(position)
+
+        class Lexer:
+    KEYWORDS = {
+        'bool': TokenType.T_Bool,
+        'break': TokenType.T_Break,
+        'continue': TokenType.T_Continue,
+        'else': TokenType.T_Else,
+        'false': TokenType.T_False,
+        'fn': TokenType.T_Fn,
+        'i32': TokenType.T_Int,
+        'if': TokenType.T_If,
+        'let': TokenType.T_Let,
+        'loop': TokenType.T_Loop,
+        'mut': TokenType.T_Mut,
+        'println': TokenType.T_Print,
+        'return': TokenType.T_Return,
+        'true': TokenType.T_True,
+    }
+
+    TWO_CHAR_TOKENS = {
+        '->': TokenType.T_Arrow,
+        '==': TokenType.T_ROp_E,
+        '!=': TokenType.T_ROp_NE,
+        '<=': TokenType.T_ROp_LE,
+        '>=': TokenType.T_ROp_GE,
+        '&&': TokenType.T_LOp_AND,
+        '||': TokenType.T_LOp_OR,
+    }
+
+    SINGLE_CHAR_TOKENS = {
+        '+': TokenType.T_AOp_Trust,
+        '-': TokenType.T_AOp_MN,
+        '*': TokenType.T_AOp_ML,
+        '/': TokenType.T_AOp_DV,
+        '%': TokenType.T_AOp_RM,
+        '<': TokenType.T_ROp_L,
+        '>': TokenType.T_ROp_G,
+        '=': TokenType.T_Assign,
+        '!': TokenType.T_LOp_NOT,
+        ':': TokenType.T_Colon,
+        ';': TokenType.T_Semicolon,
+        ',': TokenType.T_Comma,
+        '(': TokenType.T_LP,
+        ')': TokenType.T_RP,
+        '{': TokenType.T_LC,
+        '}': TokenType.T_RC,
+        '[': TokenType.T_LB,
+        ']': TokenType.T_RB,
+    }
+
+    def __init__(self, text: str, symbol_table: SymbolTable = None):
+        self.text = text
+        self.pos = 0
+        self.current_char = self.text[self.pos] if self.text else None
+        self.line = 1
+        self.column = 1
+        self.symbol_table = symbol_table
+
+    def advance(self):
+        if self.current_char == '\n':
+            self.line += 1
+            self.column = 0
+        self.pos += 1
+        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
+        self.column += 1
+
+    def peek(self):
+        peek_pos = self.pos + 1
+        return self.text[peek_pos] if peek_pos < len(self.text) else None
+
+    def tokenize(self):
+        tokens = []
+        while self.current_char is not None:
+            if self.current_char.isspace():
+                tokens.append(self.collect_whitespace())
+            elif self.current_char == '/' and self.peek() == '/':
+                tokens.append(self.collect_comment())
+            elif self.current_char.isalpha() or self.current_char == '_':
+                tokens.append(self.collect_identifier())
+            elif self.current_char.isdigit():
+                tokens.append(self.collect_number())
+            elif self.current_char == '"':
+                tokens.append(self.collect_string())
+            else:
+                two = self.current_char + (self.peek() or '')
+                if two in self.TWO_CHAR_TOKENS:
+                    tt = self.TWO_CHAR_TOKENS[two]
+                    start_line, start_col = self.line, self.column
+                    self.advance(); self.advance()
+                    tokens.append(Token(tt, two, None, start_line, start_col))
+                elif self.current_char in self.SINGLE_CHAR_TOKENS:
+                    tt = self.SINGLE_CHAR_TOKENS[self.current_char]
+                    lex = self.current_char
+                    start_line, start_col = self.line, self.column
+                    self.advance()
+                    tokens.append(Token(tt, lex, None, start_line, start_col))
+                else:
+                    raise LexerError(f"Unknown character '{self.current_char}' at line {self.line}, column {self.column}")
+        tokens.append(Token(TokenType.T_EOF, '', None, self.line, self.column))
+        return tokens
+
+    def collect_whitespace(self):
+        start_line, start_col = self.line, self.column
+        lexeme = ''
+        while self.current_char is not None and self.current_char.isspace():
+            lexeme += self.current_char
+            self.advance()
+        return Token(TokenType.T_Whitespace, lexeme, None, start_line, start_col)
+
+    def collect_comment(self):
+        start_line, start_col = self.line, self.column
+        lexeme = ''
+        lexeme += self.current_char; self.advance()
+        lexeme += self.current_char; self.advance()
+        while self.current_char is not None and self.current_char != '\n':
+            lexeme += self.current_char; self.advance()
+        if self.current_char == '\n':
+            lexeme += self.current_char; self.advance()
+        return Token(TokenType.T_Comment, lexeme, None, start_line, start_col)
+
+    def collect_number(self):
+        start_line, start_col = self.line, self.column
+        lexeme = ''
+        if self.current_char == '0' and self.peek() in ('x', 'X'):
+            lexeme += self.current_char; self.advance()
+            lexeme += self.current_char; self.advance()
+            while self.current_char is not None and (self.current_char.isdigit() or self.current_char.lower() in 'abcdef'):
+                lexeme += self.current_char; self.advance()
+            value = int(lexeme, 16)
+            return Token(TokenType.T_Hexadecimal, lexeme, value, start_line, start_col)
+        while self.current_char is not None and self.current_char.isdigit():
+            lexeme += self.current_char; self.advance()
+        value = int(lexeme)
+        return Token(TokenType.T_Decimal, lexeme, value, start_line, start_col)
+
+    def collect_string(self):
+        start_line, start_col = self.line, self.column
+        lexeme = ''
+        lexeme += self.current_char; self.advance()
+        while self.current_char is not None and self.current_char != '"':
+            if self.current_char == '\\':
+                lexeme += self.current_char; self.advance()
+                if self.current_char is not None:
+                    lexeme += self.current_char; self.advance()
+            else:
+                lexeme += self.current_char; self.advance()
+        if self.current_char == '"':
+            lexeme += self.current_char; self.advance()
+        else:
+            raise LexerError(f"Unterminated string literal at line {start_line}, column {start_col}")
+        return Token(TokenType.T_String, lexeme, None, start_line, start_col)
+
+    def collect_identifier(self):
+        start_line, start_col = self.line, self.column
+        lexeme = ''
+        while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
+            lexeme += self.current_char; self.advance()
+        if lexeme == 'println' and self.current_char == '!':
+            lexeme += self.current_char; self.advance()
+            tok_type = TokenType.T_Print
+        elif lexeme in self.KEYWORDS:
+            tok_type = self.KEYWORDS[lexeme]
+        else:
+            tok_type = TokenType.T_Id
+            if self.symbol_table is not None:
+                self.symbol_table.add(lexeme, (start_line, start_col))
+        return Token(tok_type, lexeme, None, start_line, start_col)
