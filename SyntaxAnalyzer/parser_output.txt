@@ -1,0 +1,59 @@
+Program
+  FunctionDecl
+    FnKw: fn
+    Id: square
+    Params
+      Param: x
+        Type
+          TypeI32: i32
+    Arrow: ->
+    ReturnType
+    Body
+      Block
+        ReturnStmt: return
+          BinaryOp: *
+            Id: x
+            Id: x
+  FunctionDecl
+    FnKw: fn
+    Id: main
+    Params
+    Body
+      Block
+        LetDecl
+          LetKw: let
+          MutKw: mut
+          Pattern
+            VarPattern: counter
+          Colon: :
+          Type
+          Assign: =
+          Expr
+            Number: 0
+        LoopStmt
+          LoopKw: loop
+          Block
+            Block
+              IfStmt
+                IfKw: if
+                Cond
+                  BinaryOp: >=
+                    Id: counter
+                    Number: 5
+                Then
+                  Block
+                    BreakStmt: break
+              PrintStmt
+                PrintKw: println!
+                FormatStr: "Square: {}"
+                Expr
+                  Call: square
+                    Id: counter
+              AssignStmt
+                LValue
+                  Id: counter
+                Assign: =
+                Expr
+                  BinaryOp: +
+                    Id: counter
+                    Number: 1
