@@ -1,0 +1,59 @@
+// Call functions
+let r = multiply(3, 4);
+let sum = add(5, 6);
+let arr = create_array();
+let comp = compute(10, 20);
+let fib_val = fib(10);
+
+// Array access
+let element = arr[1];
+println!("Second element is {}", element);
+
+// Loops
+let mut x = 0;
+loop {
+    x = x + 1;
+    if x == 10 {
+        break;
+    }
+}
+
+let mut s = 0;
+let mut x_loop = 0;
+loop {
+    if x_loop % 7 == 0 {
+        continue;
+    }
+    s = s + x_loop;
+    x_loop = x_loop + 1;
+    if x_loop > 10 {
+        break;
+    }
+}
+
+// Conditional statements
+if x1 == 1 {
+    let y = 6;
+    let z = 7;
+}
+
+if y_num <= 2 && z_num > 7 || w != 9 {
+    x1 = 4 + y_num;
+} else {
+    x1 = 3 * z_num;
+}
+
+if x1 >= 5 || z_num < 7 && !b1 {
+    b1 = true;
+} else if x1 == 3 {
+    array1[4] = 43;
+} else {
+    c = true;
+}
+
+// Include standalone operators in expressions
+let a = 1 + 2 - 3 * 4 / 5 % 6;
+let b = a < 7 && a > 8 || a <= 9 && a >= 10 || a == 11 || a != 12;
+let c = a && flag || !b1;
+let d = (a, flag);
+let e = [a; 5];

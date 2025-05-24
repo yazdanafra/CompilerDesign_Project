@@ -1,0 +1,15 @@
+let x1;
+x1 = 10;
+let x2: i32;
+let x3 = 12;
+let x4: i32 = 5;
+let b: bool = true;
+
+let (x, b) : (i32, bool);
+let (x, y) = (1, 2);
+let (x, y, z) : (i32, bool , bool) = (1, true , false);
+
+let array1 = [1, 2, 3, 4, 5];
+let mut array2 : [i32; 2] = [10, 20];
+array2[0] = 100;
+let mut booleans : [bool; 4] = [true , true , true , false];

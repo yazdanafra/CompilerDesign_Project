@@ -263,12 +263,12 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         input_name = sys.argv[1]
     else:
-        input_name = "input1.txt"
+        input_name = "input9.txt"
 
     if len(sys.argv) >= 3:
         output_name = sys.argv[2]
     else:
-        output_name = "tokens1.txt"
+        output_name = "tokens.txt"
 
     # 2. Compute the base directory where this script lives
     script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -279,7 +279,7 @@ if __name__ == "__main__":
         raise FileNotFoundError(f"Could not find '{input_name}' in {script_dir}")
 
     # 4. Build the output path: point it to ../Syntax Analyzer/
-    syntax_dir = os.path.abspath(os.path.join(script_dir, os.pardir, "Syntax Analyzer"))
+    syntax_dir = os.path.abspath(os.path.join(script_dir, os.pardir, "SyntaxAnalyzer"))
     # ensure that directory exists
     os.makedirs(syntax_dir, exist_ok=True)
     output_path = os.path.join(syntax_dir, output_name)

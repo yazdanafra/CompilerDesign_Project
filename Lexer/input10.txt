@@ -1,0 +1,15 @@
+// A simple Trust program
+fn square(x: i32) -> i32 {
+    return x * x;
+}
+
+fn main() {
+    let mut counter: i32 = 0;
+    loop {
+        if counter >= 5 {
+            break;
+        }
+        println!("Square: {}", square(counter));
+        counter = counter + 1;
+    }
+}

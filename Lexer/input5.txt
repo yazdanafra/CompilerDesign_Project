@@ -1,0 +1,4 @@
+println!("Trust is good")
+println!("x is {} and twelve is {}", x, 12);
+println!("x is {1} and twelve is {0}", 3*4, x);
+println!("x is {x} and twelve is {twelve} and i am {w}.", w="happy", x=x, twelve=12);

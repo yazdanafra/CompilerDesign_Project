@@ -1,0 +1,15 @@
+fn multiply(x: i32, y: i32) -> i32 {
+let z = x*y;
+return z;
+}
+   fn add(x, y) {
+return x + y;
+}
+fn create_array() -> [i32; 5] {
+let array = [1, 2, 3, 4, 5];
+return array;
+}
+fn main() {
+
+let r = multiply(3, 4);
+}

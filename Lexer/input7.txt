@@ -1,0 +1,13 @@
+loop {
+x = x + 1;
+if x == 10 {
+break;
+}
+}
+loop {
+if x % 7 == 0 {
+continue;
+}
+s = s + x;
+x = x + 1;
+}
