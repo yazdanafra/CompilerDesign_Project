@@ -1,0 +1,9 @@
+fn calc(x: i32, y: i32) -> i32 {
+    return x * y;
+}
+
+fn main() {
+    // Only one syntax error: mismatched parentheses in the function call below
+    let result: i32 = calc(4, 2;
+    println!("Result = {}", result);
+}

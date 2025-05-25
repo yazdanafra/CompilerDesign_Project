@@ -9,15 +9,28 @@ class ASTNode:
         self.nodetype = nodetype
         self.token    = token
         self.children = children or []
-    def __repr__(self, level=0):
-        indent = '  ' * level
-        s = f"{indent}{self.nodetype}"
-        if self.token and hasattr(self.token, 'lexeme'):
-            s += f": {self.token.lexeme}"
-        for c in self.children:
-            if isinstance(c, ASTNode):
-                s += "\n" + c.__repr__(level+1)
-        return s
+
+    def __repr__(self):
+        return self._to_tree('', True)
+
+    def _to_tree(self, prefix, is_last):
+        # Leaf nodes show their lexeme
+        if self.token and hasattr(self.token, 'lexeme') and not self.children:
+            label = f"{self.nodetype}: '{self.token.lexeme}'"
+        else:
+            label = self.nodetype
+
+        branch = '└── ' if is_last else '├── '
+        line = prefix + branch + label
+
+        new_prefix = prefix + ('    ' if is_last else '│   ')
+        lines = [line]
+        for idx, child in enumerate(self.children):
+            if isinstance(child, ASTNode):
+                last = (idx == len(self.children) - 1)
+                lines.append(child._to_tree(new_prefix, last))
+        return '\n'.join(lines)
+
 
 # --- Token ---------------------------------------------------------------
 Token = namedtuple('Token', ['type','lexeme','line','col'])
