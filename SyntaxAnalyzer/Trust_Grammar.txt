@@ -1,6 +1,3 @@
-Below is a proposed BNF-style grammar for the Trust language, aligned with our parser’s structure and AST nodes:
-
-```bnf
 <Program>        ::= <TopLevel>* EOF
 
 <TopLevel>      ::= <FunctionDecl>
@@ -75,13 +72,3 @@ Below is a proposed BNF-style grammar for the Trust language, aligned with our p
 <BoolLiteral>   ::= "true" | "false"
 <Id>            ::= /[A-Za-z_]\w*/
 <SEMI>          ::= ";"
-```
-
-**Notes:**
-
-* `TypeDecl` covers standalone declarations without a leading `let` (e.g. `bool flag = false;`).
-* Array repetition syntax `[expr; count]` is represented by the `ArrayLiteral` rule.
-* Conditional chaining (`else if`) is captured by the optional `else` production.
-* Expression precedence (logical, relational, arithmetic) is handled by the parser’s precedence table rather than directly in the grammar here.
-
-This grammar mirrors the parser code’s productions and should serve as a clear language specification. Feel free to adjust nonterminal names or arrangements to suit your tooling or documentation style.
