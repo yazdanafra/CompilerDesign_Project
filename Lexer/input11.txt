@@ -1,0 +1,117 @@
+// Single-line comment: Testing all tokens and syntax elements of Trust language
+
+// Top-level variable declarations and assignments
+let x1;
+x1 = 10;
+let x2: i32;
+let x3 = 12;
+let x4: i32 = 5;
+let b: bool = true;
+mut flag: bool = false;
+let _hex: i32 = 0xFF;
+let decimal: i32 = 255;
+let negative: i32 = -42;
+let positive: i32 = +42;
+
+// Tuple declarations and destructuring
+let (u, v) : (i32, bool);
+let (p, q) = (1, true);
+let (r, s, t) : (i32, bool, bool) = (2, false, true);
+
+// Array declarations, indexing, and mutation
+let arr1 = [1, 2, 3, 4, 5];
+let arr2: [i32] = [7, 8, 9];
+let mut arr3: [i32; 2] = [10, 20];
+arr3[0] = 100;
+let mut bools: [bool; 4] = [true, true, false, true];
+
+// Standalone operators and delimiters (for lexer tests)
+//   + - * / % < > <= >= == != && || ! : -> , ; ( ) { } [ ]
+
+// Function definitions
+fn compute(x: i32, y: i32) -> i32 {
+    let result = x + y * (x - y) / 2 % 10;
+    if result >= 100 && result != 255 && !false {
+        println!("Compute result: {}", result);
+    }
+    return result;
+}
+
+fn fib(n: i32) -> i32 {
+    let mut a: i32 = 0;
+    let mut b: i32 = 1;
+    let mut i: i32 = 0;
+    loop {
+        if i >= n {
+            break;
+        }
+        let tmp: i32 = a + b;
+        a = b;
+        b = tmp;
+        i = i + 1;
+    }
+    return a;
+}
+
+fn multiply(x: i32, y: i32) -> i32 {
+    let z = x * y;
+    return z;
+}
+
+fn add(x, y) {
+    return x + y;
+}
+
+fn create_array() -> [i32; 5] {
+    let array = [1, 2, 3, 4, 5];
+    return array;
+}
+
+// Testing print formatting: positional, named, escape sequences, no semicolon
+println!("Trust is good")
+println!("Decimal: {}  Hex: 0x{:X}\n", decimal, _hex);
+
+// Main entry
+fn main() {
+    // Function calls and println! tests
+    let c1 = compute(3, 4);
+    println!("c1 = {0}, fib(5) = {1}", c1, fib(5));
+    println!("Named: x={x}, y={y}", x = x3, y = x4);
+    println!("Escaped: \"Quote\" and newline\n");
+
+    // Conditional statements with logical and relational operators
+    if x1 == 10 {
+        println!("x1 is ten");
+    }
+    if decimal > 200 && flag || !b {
+        println!("Complex condition passed");
+    } else if decimal <= 255 && !flag {
+        println!("Else-if triggered");
+    } else {
+        println!("Else branch");
+    }
+
+    // Loops with break and continue
+    let mut cnt: i32 = 0;
+    loop {
+        cnt = cnt + 1;
+        if cnt == 3 {
+            continue;
+        }
+        if cnt >= 5 {
+            break;
+        }
+    }
+
+    // Array indexing in a loop (no '..' operator)
+    let arr = create_array();
+    let mut idx: i32 = 0;
+    loop {
+        if idx >= 5 {
+            break;
+        }
+        let elem: i32 = arr[idx];
+        println!("arr[{}] = {}", idx, elem);
+        idx = idx + 1;
+    }
+}

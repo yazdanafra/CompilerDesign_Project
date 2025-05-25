@@ -325,12 +325,26 @@ class Parser:
             expr = self.parse_expression()
             self.eat('T_RP')
             return expr
-        # array literal
+                # array literal or repetition [elem; count]
         if tok.type == 'T_LB':
             self.eat('T_LB')
-            elems = []
-            if self.current().type != 'T_RB':
-                elems = self.parse_expression_list()
+            if self.current().type == 'T_RB':
+                # empty array
+                self.eat('T_RB')
+                return ASTNode('ArrayLiteral', children=[])
+            # parse first element
+            first = self.parse_expression()
+            # repetition syntax [expr; count]
+            if self.current().type == 'T_Semicolon':
+                self.eat('T_Semicolon')
+                count = self.parse_expression()
+                self.eat('T_RB')
+                return ASTNode('ArrayRepeat', children=[first, count])
+            # normal comma-separated literal
+            elems = [first]
+            while self.current().type == 'T_Comma':
+                self.eat('T_Comma')
+                elems.append(self.parse_expression())
             self.eat('T_RB')
             return ASTNode('ArrayLiteral', children=elems)
         # error recovery

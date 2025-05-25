@@ -1,30 +1,273 @@
 Program
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: x1
+  AssignStmt
+    LValue
+      Id: x1
+    Assign: =
+    Expr
+      Number: 10
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: x2
+    Colon: :
+    Type
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: x3
+    Assign: =
+    Expr
+      Number: 12
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: x4
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      Number: 5
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: b
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      BoolLiteral: true
+  LetDecl
+    MutKw: mut
+    Pattern
+      VarPattern: flag
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      BoolLiteral: false
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: _hex
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      Number: 0xFF
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: decimal
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      Number: 255
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: negative
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      UnaryOp: -
+        Number: 42
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: positive
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      UnaryOp: +
+        Number: 42
+  LetDecl
+    LetKw: let
+    Pattern
+      TuplePattern
+        VarPattern: u
+        VarPattern: v
+    Colon: :
+    Type
+  LetDecl
+    LetKw: let
+    Pattern
+      TuplePattern
+        VarPattern: p
+        VarPattern: q
+    Assign: =
+    Expr
+      TupleLiteral
+        Number: 1
+        BoolLiteral: true
+  LetDecl
+    LetKw: let
+    Pattern
+      TuplePattern
+        VarPattern: r
+        VarPattern: s
+        VarPattern: t
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      TupleLiteral
+        Number: 2
+        BoolLiteral: false
+        BoolLiteral: true
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: arr1
+    Assign: =
+    Expr
+      ArrayLiteral
+        Number: 1
+        Number: 2
+        Number: 3
+        Number: 4
+        Number: 5
+  LetDecl
+    LetKw: let
+    Pattern
+      VarPattern: arr2
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      ArrayLiteral
+        Number: 7
+        Number: 8
+        Number: 9
+  LetDecl
+    LetKw: let
+    MutKw: mut
+    Pattern
+      VarPattern: arr3
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      ArrayLiteral
+        Number: 10
+        Number: 20
+  AssignStmt
+    LValue
+      ArrayIndex: arr3
+        Id: arr3
+        Number: 0
+    Assign: =
+    Expr
+      Number: 100
+  LetDecl
+    LetKw: let
+    MutKw: mut
+    Pattern
+      VarPattern: bools
+    Colon: :
+    Type
+    Assign: =
+    Expr
+      ArrayLiteral
+        BoolLiteral: true
+        BoolLiteral: true
+        BoolLiteral: false
+        BoolLiteral: true
   FunctionDecl
     FnKw: fn
-    Id: square
+    Id: compute
     Params
       Param: x
+        Type
+          TypeI32: i32
+      Param: y
         Type
           TypeI32: i32
     Arrow: ->
     ReturnType
     Body
       Block
+        LetDecl
+          LetKw: let
+          Pattern
+            VarPattern: result
+          Assign: =
+          Expr
+            BinaryOp: +
+              Id: x
+              BinaryOp: %
+                BinaryOp: /
+                  BinaryOp: *
+                    Id: y
+                    BinaryOp: -
+                      Id: x
+                      Id: y
+                  Number: 2
+                Number: 10
+        IfStmt
+          IfKw: if
+          Cond
+            BinaryOp: &&
+              BinaryOp: &&
+                BinaryOp: >=
+                  Id: result
+                  Number: 100
+                BinaryOp: !=
+                  Id: result
+                  Number: 255
+              UnaryOp: !
+                BoolLiteral: false
+          Then
+            Block
+              PrintStmt
+                PrintKw: println!
+                FormatStr: "Compute result: {}"
+                Expr
+                  Id: result
         ReturnStmt: return
-          BinaryOp: *
-            Id: x
-            Id: x
+          Id: result
   FunctionDecl
     FnKw: fn
-    Id: main
+    Id: fib
     Params
+      Param: n
+        Type
+          TypeI32: i32
+    Arrow: ->
+    ReturnType
     Body
       Block
         LetDecl
           LetKw: let
           MutKw: mut
           Pattern
-            VarPattern: counter
+            VarPattern: a
+          Colon: :
+          Type
+          Assign: =
+          Expr
+            Number: 0
+        LetDecl
+          LetKw: let
+          MutKw: mut
+          Pattern
+            VarPattern: b
+          Colon: :
+          Type
+          Assign: =
+          Expr
+            Number: 1
+        LetDecl
+          LetKw: let
+          MutKw: mut
+          Pattern
+            VarPattern: i
           Colon: :
           Type
           Assign: =
@@ -38,22 +281,290 @@ Program
                 IfKw: if
                 Cond
                   BinaryOp: >=
-                    Id: counter
+                    Id: i
+                    Id: n
+                Then
+                  Block
+                    BreakStmt: break
+              LetDecl
+                LetKw: let
+                Pattern
+                  VarPattern: tmp
+                Colon: :
+                Type
+                Assign: =
+                Expr
+                  BinaryOp: +
+                    Id: a
+                    Id: b
+              AssignStmt
+                LValue
+                  Id: a
+                Assign: =
+                Expr
+                  Id: b
+              AssignStmt
+                LValue
+                  Id: b
+                Assign: =
+                Expr
+                  Id: tmp
+              AssignStmt
+                LValue
+                  Id: i
+                Assign: =
+                Expr
+                  BinaryOp: +
+                    Id: i
+                    Number: 1
+        ReturnStmt: return
+          Id: a
+  FunctionDecl
+    FnKw: fn
+    Id: multiply
+    Params
+      Param: x
+        Type
+          TypeI32: i32
+      Param: y
+        Type
+          TypeI32: i32
+    Arrow: ->
+    ReturnType
+    Body
+      Block
+        LetDecl
+          LetKw: let
+          Pattern
+            VarPattern: z
+          Assign: =
+          Expr
+            BinaryOp: *
+              Id: x
+              Id: y
+        ReturnStmt: return
+          Id: z
+  FunctionDecl
+    FnKw: fn
+    Id: add
+    Params
+      Param: x
+      Param: y
+    Body
+      Block
+        ReturnStmt: return
+          BinaryOp: +
+            Id: x
+            Id: y
+  FunctionDecl
+    FnKw: fn
+    Id: create_array
+    Params
+    Arrow: ->
+    ReturnType
+    Body
+      Block
+        LetDecl
+          LetKw: let
+          Pattern
+            VarPattern: array
+          Assign: =
+          Expr
+            ArrayLiteral
+              Number: 1
+              Number: 2
+              Number: 3
+              Number: 4
+              Number: 5
+        ReturnStmt: return
+          Id: array
+  PrintStmt
+    PrintKw: println!
+    FormatStr: "Trust is good"
+  PrintStmt
+    PrintKw: println!
+    FormatStr: "Decimal: {}  Hex: 0x{:X}\n"
+    Expr
+      Id: decimal
+    Expr
+      Id: _hex
+  FunctionDecl
+    FnKw: fn
+    Id: main
+    Params
+    Body
+      Block
+        LetDecl
+          LetKw: let
+          Pattern
+            VarPattern: c1
+          Assign: =
+          Expr
+            Call: compute
+              Number: 3
+              Number: 4
+        PrintStmt
+          PrintKw: println!
+          FormatStr: "c1 = {0}, fib(5) = {1}"
+          Expr
+            Id: c1
+          Expr
+            Call: fib
+              Number: 5
+        PrintStmt
+          PrintKw: println!
+          FormatStr: "Named: x={x}, y={y}"
+          NamedArg: x
+            Value
+              Expr
+                Id: x3
+          NamedArg: y
+            Value
+              Expr
+                Id: x4
+        PrintStmt
+          PrintKw: println!
+          FormatStr: "Escaped: \"Quote\" and newline\n"
+        IfStmt
+          IfKw: if
+          Cond
+            BinaryOp: ==
+              Id: x1
+              Number: 10
+          Then
+            Block
+              PrintStmt
+                PrintKw: println!
+                FormatStr: "x1 is ten"
+        IfStmt
+          IfKw: if
+          Cond
+            BinaryOp: ||
+              BinaryOp: &&
+                BinaryOp: >
+                  Id: decimal
+                  Number: 200
+                Id: flag
+              UnaryOp: !
+                Id: b
+          Then
+            Block
+              PrintStmt
+                PrintKw: println!
+                FormatStr: "Complex condition passed"
+          ElseKw: else
+          IfStmt
+            IfKw: if
+            Cond
+              BinaryOp: &&
+                BinaryOp: <=
+                  Id: decimal
+                  Number: 255
+                UnaryOp: !
+                  Id: flag
+            Then
+              Block
+                PrintStmt
+                  PrintKw: println!
+                  FormatStr: "Else-if triggered"
+            ElseKw: else
+            Else
+              Block
+                PrintStmt
+                  PrintKw: println!
+                  FormatStr: "Else branch"
+        LetDecl
+          LetKw: let
+          MutKw: mut
+          Pattern
+            VarPattern: cnt
+          Colon: :
+          Type
+          Assign: =
+          Expr
+            Number: 0
+        LoopStmt
+          LoopKw: loop
+          Block
+            Block
+              AssignStmt
+                LValue
+                  Id: cnt
+                Assign: =
+                Expr
+                  BinaryOp: +
+                    Id: cnt
+                    Number: 1
+              IfStmt
+                IfKw: if
+                Cond
+                  BinaryOp: ==
+                    Id: cnt
+                    Number: 3
+                Then
+                  Block
+                    ContinueStmt: continue
+              IfStmt
+                IfKw: if
+                Cond
+                  BinaryOp: >=
+                    Id: cnt
                     Number: 5
                 Then
                   Block
                     BreakStmt: break
+        LetDecl
+          LetKw: let
+          Pattern
+            VarPattern: arr
+          Assign: =
+          Expr
+            Call: create_array
+        LetDecl
+          LetKw: let
+          MutKw: mut
+          Pattern
+            VarPattern: idx
+          Colon: :
+          Type
+          Assign: =
+          Expr
+            Number: 0
+        LoopStmt
+          LoopKw: loop
+          Block
+            Block
+              IfStmt
+                IfKw: if
+                Cond
+                  BinaryOp: >=
+                    Id: idx
+                    Number: 5
+                Then
+                  Block
+                    BreakStmt: break
+              LetDecl
+                LetKw: let
+                Pattern
+                  VarPattern: elem
+                Colon: :
+                Type
+                Assign: =
+                Expr
+                  ArrayIndex: arr
+                    Id: idx
               PrintStmt
                 PrintKw: println!
-                FormatStr: "Square: {}"
+                FormatStr: "arr[{}] = {}"
                 Expr
-                  Call: square
-                    Id: counter
+                  Id: idx
+                Expr
+                  Id: elem
               AssignStmt
                 LValue
-                  Id: counter
+                  Id: idx
                 Assign: =
                 Expr
                   BinaryOp: +
-                    Id: counter
+                    Id: idx
                     Number: 1
