@@ -392,9 +392,9 @@ if __name__=='__main__':
     output_file = sys.argv[2] if len(sys.argv) > 2 else os.path.join(script_dir, 'parser_output.txt')
     with open(output_file, 'w', encoding='utf-8') as out:
         if p.errors:
-            out.write('Errors:')
+            out.write('Errors:\n')
             for e in p.errors:
-                out.write(e + '')
+                out.write(e + '\n')
             print(f"Found {len(p.errors)} errors. See '{output_file}'")
         else:
             out.write(tree.__repr__())
