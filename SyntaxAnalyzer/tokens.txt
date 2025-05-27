@@ -63,19 +63,21 @@ Token(T_True, 'true', None, line=9, col=15)
 Token(T_Semicolon, ';', None, line=9, col=19)
 Token(T_Whitespace, '
 ', None, line=9, col=20)
-Token(T_Mut, 'mut', None, line=10, col=1)
+Token(T_Let, 'let', None, line=10, col=1)
 Token(T_Whitespace, ' ', None, line=10, col=4)
-Token(T_Id, 'flag', None, line=10, col=5)
-Token(T_Colon, ':', None, line=10, col=9)
-Token(T_Whitespace, ' ', None, line=10, col=10)
-Token(T_Bool, 'bool', None, line=10, col=11)
-Token(T_Whitespace, ' ', None, line=10, col=15)
-Token(T_Assign, '=', None, line=10, col=16)
-Token(T_Whitespace, ' ', None, line=10, col=17)
-Token(T_False, 'false', None, line=10, col=18)
-Token(T_Semicolon, ';', None, line=10, col=23)
+Token(T_Mut, 'mut', None, line=10, col=5)
+Token(T_Whitespace, ' ', None, line=10, col=8)
+Token(T_Id, 'flag', None, line=10, col=9)
+Token(T_Colon, ':', None, line=10, col=13)
+Token(T_Whitespace, ' ', None, line=10, col=14)
+Token(T_Bool, 'bool', None, line=10, col=15)
+Token(T_Whitespace, ' ', None, line=10, col=19)
+Token(T_Assign, '=', None, line=10, col=20)
+Token(T_Whitespace, ' ', None, line=10, col=21)
+Token(T_False, 'false', None, line=10, col=22)
+Token(T_Semicolon, ';', None, line=10, col=27)
 Token(T_Whitespace, '
-', None, line=10, col=24)
+', None, line=10, col=28)
 Token(T_Let, 'let', None, line=11, col=1)
 Token(T_Whitespace, ' ', None, line=11, col=4)
 Token(T_Id, '_hex', None, line=11, col=5)
@@ -1084,7 +1086,7 @@ x2: [(6, 5)]
 x3: [(7, 5), (79, 41)]
 x4: [(8, 5), (79, 49)]
 b: [(9, 5), (42, 13), (48, 28), (49, 13), (50, 9), (86, 34)]
-flag: [(10, 5), (86, 25), (88, 34)]
+flag: [(10, 9), (86, 25), (88, 34)]
 _hex: [(11, 5), (72, 49)]
 decimal: [(12, 5), (72, 40), (86, 8), (88, 15)]
 negative: [(13, 5)]
