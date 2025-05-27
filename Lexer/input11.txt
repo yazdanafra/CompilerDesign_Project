@@ -7,7 +7,7 @@ let x2: i32;
 let x3 = 12;
 let x4: i32 = 5;
 let b: bool = true;
-mut flag: bool = false;
+let mut flag: bool = false;
 let _hex: i32 = 0xFF;
 let decimal: i32 = 255;
 let negative: i32 = -42;

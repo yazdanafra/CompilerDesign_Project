@@ -111,11 +111,11 @@ class Parser:
             return self.parse_break_stmt()
         if t == 'T_Continue':
             return self.parse_continue_stmt()
-        # implicit declaration starting with type (no 'let')
-        if t in ('T_Bool','T_Int','T_LB','T_LP'):
-            return self.parse_type_decl()
-        if t == 'T_Mut':
-            return self.parse_let_decl()  # allow "mut x: T = ..."
+        # # implicit declaration starting with type (no 'let')
+        # if t in ('T_Bool','T_Int','T_LB','T_LP'):
+        #     return self.parse_type_decl()
+        # if t == 'T_Mut':
+        #     return self.parse_let_decl()  # allow "mut x: T = ..."
         if self.is_assign_stmt():
             return self.parse_assign_stmt()
         if t == 'T_Let':
@@ -158,6 +158,13 @@ class Parser:
         return node
 
     def parse_let_decl(self):
+        # node = ASTNode('LetDecl')
+        # must start with ‘let’
+        if self.current().type != 'T_Let':
+           tok = self.current()
+           self.errors.append(f"Expected T_Let at {tok.line}:{tok.col}, got {tok.type}")
+           # abort—and try to resynchronize
+           return ASTNode('Error')
         node = ASTNode('LetDecl')
         # support both "let mut x" and "mut x"
         if self.current().type == 'T_Let':

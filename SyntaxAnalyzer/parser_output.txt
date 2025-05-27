@@ -41,6 +41,7 @@
     │   └── Expr
     │       └── BoolLiteral: 'true'
     ├── LetDecl
+    │   ├── LetKw: 'let'
     │   ├── MutKw: 'mut'
     │   ├── Pattern
     │   │   └── VarPattern: 'flag'
