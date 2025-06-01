@@ -143,20 +143,6 @@ class Parser:
             return self.parse_print_stmt()
         return ASTNode('ExprStmt', children=[self.parse_expression()])
 
-    def parse_type_decl(self):
-        """Parse variable declaration without leading 'let', e.g., 'bool flag = ...;'"""
-        node = ASTNode('LetDecl')
-        # type annotation first
-        type_node = ASTNode('Type', self.parse_type())
-        node.children.append(type_node)
-        # variable name
-        ident = self.eat('T_Id')
-        node.children.append(ASTNode('Pattern', children=[ASTNode('VarPattern', ident)]))
-        # optional initializer
-        if self.current().type == 'T_Assign':
-            node.children.append(ASTNode('Assign', self.eat('T_Assign')))
-            node.children.append(ASTNode('Expr', children=[self.parse_expression()]))
-        return node
 
     def parse_return_stmt(self):
         node = ASTNode('ReturnStmt', token=self.eat('T_Return'))
