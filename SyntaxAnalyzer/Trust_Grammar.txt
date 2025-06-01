@@ -4,7 +4,6 @@
                    | <Statement> SEMI?
 
 <Statement>     ::= <LetDecl>
-                   | <TypeDecl>
                    | <AssignStmt>
                    | <ReturnStmt>
                    | <BreakStmt>
@@ -18,8 +17,6 @@
 <Pattern>       ::= <Id>
                    | "(" <PatternList> ")"
 <PatternList>   ::= <Pattern> ("," <Pattern>)*
-
-<TypeDecl>      ::= <Type> <Id> ("=" <Expression>)?
 
 <AssignStmt>    ::= <LValue> "=" <Expression>
 <LValue>        ::= <Id> ("[" <Expression> "]")*
