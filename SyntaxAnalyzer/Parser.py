@@ -159,7 +159,6 @@ class Parser:
         return node
 
     def parse_let_decl(self):
-        # node = ASTNode('LetDecl')
         # must start with ‘let’
         if self.current().type != 'T_Let':
            tok = self.current()

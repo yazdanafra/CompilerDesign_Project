@@ -263,7 +263,7 @@ if __name__ == "__main__":
     if len(sys.argv) >= 2:
         input_name = sys.argv[1]
     else:
-        input_name = "input11.txt"
+        input_name = "input6.txt"
 
     if len(sys.argv) >= 3:
         output_name = sys.argv[2]

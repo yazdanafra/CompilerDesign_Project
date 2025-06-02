@@ -1,9 +1,9 @@
-from collections import defaultdict
+import os
 
 EPSILON = 'ε'
 ENDMARK = '$'
 
-# 1. Define the grammar
+# --- (your original grammar definition) ---
 grammar = {
     'Program':        [['TopLevel', 'Program'], ['EOF']],
     'TopLevel':       [['FunctionDecl'], ['Statement', 'SEMI?']],
@@ -38,10 +38,8 @@ grammar = {
     'ArgList':        [['Expression', ',ArgList'], ['Expression']],
     'TupleLiteral':   [['(', 'Expression', ',Expression*', ')']],
     'ArrayLiteral':   [['[', '(Expression', '(,Expression)*', '|', 'Expression;Expression', ')?', ']']],
-    # terminals: Decimal, Hexadecimal, StringLiteral, BoolLiteral, Id, SEMI
 }
 
-# 2. Extract nonterminals and terminals
 nonterminals = set(grammar.keys())
 tokens = set()
 for prods in grammar.values():
@@ -49,14 +47,12 @@ for prods in grammar.values():
         for sym in prod:
             if sym not in nonterminals:
                 tokens.add(sym)
-tokens = {t for t in tokens if t not in ('ε',)}  # remove epsilon if present
+tokens = {t for t in tokens if t not in (EPSILON,)}  
 
-# 3. Initialize FIRST and FOLLOW
 first = {A: set() for A in nonterminals}
 follow = {A: set() for A in nonterminals}
-follow['Program'].add(ENDMARK)  # start symbol
+follow['Program'].add(ENDMARK)
 
-# 4. FIRST computation
 def first_of_sequence(seq):
     result = set()
     for sym in seq:
@@ -69,6 +65,7 @@ def first_of_sequence(seq):
     result.add(EPSILON)
     return result
 
+# Compute FIRST sets
 changed = True
 while changed:
     changed = False
@@ -80,7 +77,7 @@ while changed:
             if first[A] != f_old:
                 changed = True
 
-# 5. FOLLOW computation
+# Compute FOLLOW sets
 changed = True
 while changed:
     changed = False
@@ -90,22 +87,40 @@ while changed:
                 if B in nonterminals:
                     beta = prod[i+1:]
                     f_beta = first_of_sequence(beta) if beta else {EPSILON}
-                    # add FIRST(beta) - ε
+                    
+                    # add FIRST(beta) \ {ε} to FOLLOW(B)
                     to_add = f_beta - {EPSILON}
                     if not to_add.issubset(follow[B]):
                         follow[B] |= to_add
                         changed = True
-                    # if beta ⇒* ε, add FOLLOW(A)
+                    
+                    # if ε in FIRST(beta), add FOLLOW(A) to FOLLOW(B)
                     if EPSILON in f_beta:
                         if not follow[A].issubset(follow[B]):
                             follow[B] |= follow[A]
                             changed = True
 
-# 6. Print results
-print("FIRST sets:")
-for A in sorted(nonterminals):
-    print(f"  FIRST({A}) = {{ {', '.join(sorted(first[A]))} }}")
+# ---------------------------------------------------------------------
+# NEW: determine output file path in same folder as this script:
+script_dir = os.path.dirname(os.path.abspath(__file__))
+output_path = os.path.join(script_dir, 'first_follow.txt')
 
-print("\nFOLLOW sets:")
-for A in sorted(nonterminals):
-    print(f"  FOLLOW({A}) = {{ {', '.join(sorted(follow[A]))} }}")
+# Open the file for writing
+with open(output_path, 'w', encoding='utf-8') as f:
+    # Print + write FIRST sets
+    f.write("FIRST sets:\n")
+    print("FIRST sets:")
+    for A in sorted(nonterminals):
+        line = f"  FIRST({A}) = {{ {', '.join(sorted(first[A]))} }}\n"
+        print(line, end='')
+        f.write(line)
+
+    # Print + write FOLLOW sets
+    f.write("\nFOLLOW sets:\n")
+    print("\nFOLLOW sets:")
+    for A in sorted(nonterminals):
+        line = f"  FOLLOW({A}) = {{ {', '.join(sorted(follow[A]))} }}\n"
+        print(line, end='')
+        f.write(line)
+
+print(f"\nResults also saved to: {output_path}")
