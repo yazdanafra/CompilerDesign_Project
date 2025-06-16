@@ -385,18 +385,32 @@ if __name__=='__main__':
         tokens = load_tokens(tokens_file)
     except FileNotFoundError as e:
         print(e)
-        print("Usage: python Parser.py [tokens_file]")
+        print("Usage: python Parser.py [tokens_file] [output_filename]")
         sys.exit(1)
     p = Parser(tokens)
     tree = p.parse()
-    output_file = sys.argv[2] if len(sys.argv) > 2 else os.path.join(script_dir, 'parser_output.txt')
-    with open(output_file, 'w', encoding='utf-8') as out:
-        if p.errors:
-            out.write('Errors:\n')
-            for e in p.errors:
-                out.write(e + '\n')
-            print(f"Found {len(p.errors)} errors. See '{output_file}'")
-        else:
-            out.write(tree.__repr__())
-            print(f"Parse successful. AST written to '{output_file}'")
+
+    # --- New saving logic: place output into "../Semantic Analyzer/" directory ---
+    # Compute the "Semantic Analyzer" folder one level above script_dir
+    semantic_dir = os.path.abspath(os.path.join(script_dir, os.pardir, "Semantic Analyzer"))
+    os.makedirs(semantic_dir, exist_ok=True)
+
+    # Determine output filename (second arg) or default "parser_output.txt"
+    output_name = sys.argv[2] if len(sys.argv) > 2 else 'parser_output.txt'
+    # Place it inside semantic_dir
+    output_file = os.path.join(semantic_dir, output_name)
+
+    try:
+        with open(output_file, 'w', encoding='utf-8') as out:
+            if p.errors:
+                out.write('Errors:\n')
+                for e in p.errors:
+                    out.write(e + '\n')
+                print(f"Found {len(p.errors)} errors. See '{output_file}'")
+            else:
+                out.write(tree.__repr__())
+                print(f"Parse successful. AST written to '{output_file}'")
+    except Exception as e:
+        print(f"Failed to write output file '{output_file}': {e}")
+        sys.exit(1)
 
