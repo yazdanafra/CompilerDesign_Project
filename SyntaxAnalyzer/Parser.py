@@ -266,9 +266,18 @@ class Parser:
         return params
 
     def parse_param(self):
-        name=self.eat('T_Id'); node=ASTNode('Param',token=name)
-        if self.current().type=='T_Colon': self.eat('T_Colon'); node.children.append(ASTNode('Type',children=[self.parse_type()]))
+        # consume the parameter name...
+        name = self.eat('T_Id')
+        # ...and wrap it in a VarPattern child so that the semantic phase
+        # can see and declare it
+        node = ASTNode('Param')
+        node.children.append(ASTNode('VarPattern', token=name))
+        # optional type annotation
+        if self.current().type == 'T_Colon':
+            self.eat('T_Colon')
+            node.children.append(ASTNode('Type', children=[self.parse_type()]))
         return node
+
 
     def parse_type(self):
         t=self.current().type
