@@ -1,17 +1,12 @@
 fn main() {
-    let i: i32 = 5;
-    let b: bool = false;
+    // A normal array
+    let nums: [i32; 4] = [10, 20, 30, 40];
 
-    // Logical‐operand errors
-    let l1 = i || b;   // ✘ '||' requires both operands to be bool
-    let l2 = !i;       // ✘ '!' requires a bool operand
+    // ▲ Index zero (must be > 0)
+    let x0 = nums[0];
 
-    // Arithmetic‐operand errors
-    let a1 = b + 10;   // ✘ '+' requires both operands to be i32
-    let a2 = b * i;    // ✘ '*' requires both operands to be i32
+    // ▲ Negative index (must be > 0)
+    let xneg = nums[-2];
 
-    println!(
-        "l1 = {l1}, l2 = {l2}, a1 = {a1}, a2 = {a2}",
-        l1 = l1, l2 = l2, a1 = a1, a2 = a2
-    );
+    println!("x0 = {x0}, xneg = {xneg}", x0=x0, xneg=xneg);
 }

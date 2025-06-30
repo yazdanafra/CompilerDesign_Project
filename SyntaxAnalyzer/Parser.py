@@ -13,8 +13,8 @@ class ASTNode:
         return self._to_tree('', True)
 
     def _to_tree(self, prefix, is_last):
-        # Leaf nodes show their lexeme
-        if self.token and hasattr(self.token, 'lexeme') and not self.children:
+        # Any token-bearing node shows its lexeme (operators included)
+        if self.token and hasattr(self.token, 'lexeme'):
             label = f"{self.nodetype}: '{self.token.lexeme}'"
         else:
             label = self.nodetype
@@ -177,7 +177,8 @@ class Parser:
         # optional type annotation
         if self.current().type == 'T_Colon':
             node.children.append(ASTNode('Colon', self.eat('T_Colon')))
-            node.children.append(ASTNode('Type', self.parse_type()))
+            # __here__: pass the parse_type() node *as a child*, not as token
+            node.children.append(ASTNode('Type', children=[self.parse_type()]))
         # optional initializer
         if self.current().type == 'T_Assign':
             node.children.append(ASTNode('Assign', self.eat('T_Assign')))

@@ -8,72 +8,44 @@
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'i'
+                │   │   └── VarPattern: 'nums'
                 │   ├── Colon: ':'
                 │   ├── Type
+                │   │   └── ArrayType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── Size: '4'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Number: '5'
+                │       └── ArrayLiteral
+                │           ├── Number: '10'
+                │           ├── Number: '20'
+                │           ├── Number: '30'
+                │           └── Number: '40'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'b'
-                │   ├── Colon: ':'
-                │   ├── Type
+                │   │   └── VarPattern: 'x0'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── BoolLiteral: 'false'
+                │       └── ArrayIndex: 'nums'
+                │           └── Number: '0'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'l1'
+                │   │   └── VarPattern: 'xneg'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── BinaryOp
-                │           ├── Id: 'i'
-                │           └── Id: 'b'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'l2'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── UnaryOp
-                │           └── Id: 'i'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'a1'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── BinaryOp
-                │           ├── Id: 'b'
-                │           └── Number: '10'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'a2'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── BinaryOp
-                │           ├── Id: 'b'
-                │           └── Id: 'i'
+                │       └── ArrayIndex: 'nums'
+                │           └── UnaryOp: '-'
+                │               └── Number: '2'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
-                    ├── FormatStr: '"l1 = {l1}, l2 = {l2}, a1 = {a1}, a2 = {a2}"'
-                    ├── NamedArg
+                    ├── FormatStr: '"x0 = {x0}, xneg = {xneg}"'
+                    ├── NamedArg: 'x0'
                     │   └── Value
                     │       └── Expr
-                    │           └── Id: 'l1'
-                    ├── NamedArg
-                    │   └── Value
-                    │       └── Expr
-                    │           └── Id: 'l2'
-                    ├── NamedArg
-                    │   └── Value
-                    │       └── Expr
-                    │           └── Id: 'a1'
-                    └── NamedArg
+                    │           └── Id: 'x0'
+                    └── NamedArg: 'xneg'
                         └── Value
                             └── Expr
-                                └── Id: 'a2'
+                                └── Id: 'xneg'
