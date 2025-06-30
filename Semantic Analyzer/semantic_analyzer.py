@@ -84,14 +84,17 @@ class SemanticAnalyzer:
         return method(node)
 
     def generic_check(self, node: Node):
-        # dispatch early to any node‐specific checks:
+        # existing operators / indexing checks
         if node.typ == 'BinaryOp':
             self.check_BinaryOp(node)
         elif node.typ == 'UnaryOp':
             self.check_UnaryOp(node)
         elif node.typ == 'ArrayIndex':
             self.check_ArrayIndex(node)
-        # then recurse:
+        elif node.typ == 'Call':
+            self.check_Call(node)
+
+        # then recurse into children
         for c in node.children:
             self.check(c)
 
@@ -128,10 +131,16 @@ class SemanticAnalyzer:
         # type-check standalone expression statements
         expr = node.children[0]
         self.infer_type(expr)
+        self.check(expr)
+
 
     def check_Expr(self, node: Node):
         # unwrap and type-check any Expr node
         self.infer_type(node)
+        if node.children:
+            self.check(node.children[0])
+
+
 
     def check_PrintStmt(self, node: Node):
         # check both positional and named args
@@ -146,11 +155,21 @@ class SemanticAnalyzer:
                         self.infer_type(expr)
 
     def check_Program(self, node: Node):
+        # 1) process all top-level items (this will declare all functions/vars)
         for c in node.children:
             self.check(c)
-        main = self.lookup('main')
-        if not main or main['kind'] != 'fn' or main['type'][0]:
+
+        # 2) now enforce the special "main" rule without using lookup()
+        global_scope = self.scopes[0]
+        main_sym = global_scope.get('main')
+
+        # main must exist, be a function, and take zero parameters
+        if (not main_sym
+            or main_sym['kind'] != 'fn'
+            or (main_sym['type'][0] and len(main_sym['type'][0]) != 0)
+        ):
             self.error("Function 'main' with no parameters not defined")
+
 
     def check_LetDecl(self, node: Node):
         # 1) find the pattern
@@ -207,6 +226,11 @@ class SemanticAnalyzer:
             if declared and inferred and declared != inferred:
                 self.error(f"Type mismatch: declared '{declared}' vs initialized '{inferred}'", var)
             self.declare(name, 'var', declared or inferred, mutable, var)
+        # **new**: descend into the Expr so ArrayIndex / other checks happen
+        expr = next((c for c in node.children if c.typ=='Expr'), None)
+        if expr:
+            # expr.children[0] is the real value node (ArrayIndex, Number, etc.)
+            self.check(expr.children[0])
 
 
     def check_AssignStmt(self, node: Node):
@@ -221,7 +245,28 @@ class SemanticAnalyzer:
         rtype = self.infer_type(node.children[2])
         if ltype and rtype and ltype != rtype:
             self.error(f"Type mismatch in assignment: '{ltype}' vs '{rtype}'", node)
-        
+        # **new**: descend into both sides so that any ArrayIndex checks run
+        # self.check(lval_node.children[0])
+        # self.check(node.children[2].children[0])    
+
+
+
+    def check_IfStmt(self, node: Node):
+        # node.children looks like [IfKw, Cond, Then, (ElseKw, Else)?]
+        # pull out the condition expression
+        cond_wrapper = next(c for c in node.children if c.typ == 'Cond')
+        # Cond → Expr, so its first child is the actual Expr node
+        cond_expr = cond_wrapper.children[0]
+
+        # infer its type
+        t = self.infer_type(cond_expr)
+        if t != 'bool':
+            self.error("If condition must be bool", cond_expr)
+
+        # now continue checking inside the then/else blocks
+        for c in node.children:
+            if c.typ in ('Then','Else'):
+                self.check(c)
 
 
     def check_FunctionDecl(self, node: Node):
@@ -291,16 +336,30 @@ class SemanticAnalyzer:
         if not node.value:
             self.error("Missing function name in call", node)
             return
-        entry = self.lookup(node.value,node)
-        if not entry or entry['kind']!='fn':
+        entry = self.lookup(node.value, node)
+        if not entry or entry['kind'] != 'fn':
             return
-        params,_ = entry['type']
+
+        params, ret = entry['type']
         args = [self.infer_type(c) for c in node.children]
-        if len(args)!=len(params):
+
+        # 1) arity check
+        if len(args) != len(params):
             self.error(f"Call to '{node.value}' expects {len(params)} args, got {len(args)}", node)
-        for i,(a,p) in enumerate(zip(args,params)):
-            if p and a and p!=a:
-                self.error(f"Argument {i} type '{a}' mismatches '{p}'", node)
+            return
+
+        # 2) first‐use inference on parameters
+        for i, (a, p) in enumerate(zip(args, params)):
+            if p is None and a is not None:
+                # first call: fix parameter i’s type
+                params[i] = a
+            elif p is not None and a is not None and p != a:
+                # now that p is fixed, mismatched argument triggers an error
+                self.error(
+                    f"Function '{node.value}' parameter {i} was inferred as '{p}', got '{a}'",
+                    node
+                )
+
 
     def check_BinaryOp(self, node: Node):
         op = node.value           # e.g. '+', '&&', '!=', '<='

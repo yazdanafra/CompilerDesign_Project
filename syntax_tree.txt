@@ -1,1 +1,1 @@
-Node(Program, None, children=1)
+Node(Program, None, children=2)

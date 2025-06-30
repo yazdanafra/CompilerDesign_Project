@@ -1,4 +1,20 @@
 └── Program
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'is_positive'
+    │   ├── Params
+    │   │   └── Param
+    │   │       ├── VarPattern: 'n'
+    │   │       └── Type
+    │   │           └── TypeI32: 'i32'
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   └── Body
+    │       └── Block
+    │           └── ReturnStmt: 'return'
+    │               └── BinaryOp: '>'
+    │                   ├── Id: 'n'
+    │                   └── Number: '0'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
@@ -7,45 +23,26 @@
             └── Block
                 ├── LetDecl
                 │   ├── LetKw: 'let'
+                │   ├── MutKw: 'mut'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'nums'
+                │   │   └── VarPattern: 'x'
                 │   ├── Colon: ':'
                 │   ├── Type
-                │   │   └── ArrayType
-                │   │       ├── TypeI32: 'i32'
-                │   │       └── Size: '4'
+                │   │   └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayLiteral
-                │           ├── Number: '10'
-                │           ├── Number: '20'
-                │           ├── Number: '30'
-                │           └── Number: '40'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'x0'
+                │       └── Number: '10'
+                ├── AssignStmt
+                │   ├── LValue
+                │   │   └── Id: 'x'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayIndex: 'nums'
-                │           └── Number: '0'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'xneg'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── ArrayIndex: 'nums'
-                │           └── UnaryOp: '-'
-                │               └── Number: '2'
+                │       └── Call: 'is_positive'
+                │           └── Number: '5'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
-                    ├── FormatStr: '"x0 = {x0}, xneg = {xneg}"'
-                    ├── NamedArg: 'x0'
-                    │   └── Value
-                    │       └── Expr
-                    │           └── Id: 'x0'
-                    └── NamedArg: 'xneg'
+                    ├── FormatStr: '"x = {x}"'
+                    └── NamedArg: 'x'
                         └── Value
                             └── Expr
-                                └── Id: 'xneg'
+                                └── Id: 'x'

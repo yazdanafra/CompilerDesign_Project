@@ -1,12 +1,16 @@
+// Function returns a bool
+fn is_positive(n: i32) -> bool {
+    return n > 0;
+}
+
 fn main() {
-    // A normal array
-    let nums: [i32; 4] = [10, 20, 30, 40];
+    // x is declared as an i32
+    let mut x: i32 = 10;
 
-    // ▲ Index zero (must be > 0)
-    let x0 = nums[0];
+    // ❌ Semantic Rule 10 violated:
+    // The right-hand side is a bool (from is_positive),
+    // but x is of type i32
+    x = is_positive(5);
 
-    // ▲ Negative index (must be > 0)
-    let xneg = nums[-2];
-
-    println!("x0 = {x0}, xneg = {xneg}", x0=x0, xneg=xneg);
+    println!("x = {x}", x=x);
 }
