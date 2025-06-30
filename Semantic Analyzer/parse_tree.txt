@@ -82,11 +82,13 @@
     │           └── Number: '5'
     ├── LetDecl
     │   ├── LetKw: 'let'
-    │   └── Pattern
-    │       └── VarPattern: '_unused'
+    │   ├── Pattern
+    │   │   └── VarPattern: 'unused'
+    │   ├── Colon: ':'
+    │   └── Type
     ├── AssignStmt
     │   ├── LValue
-    │   │   └── Id: '_unused'
+    │   │   └── Id: 'unused'
     │   ├── Assign: '='
     │   └── Expr
     │       └── Number: '3'
@@ -186,8 +188,12 @@
     │   ├── FnKw: 'fn'
     │   ├── Id: 'combine'
     │   ├── Params
-    │   │   ├── Param: 'a'
-    │   │   └── Param: 'b'
+    │   │   ├── Param
+    │   │   │   └── Type
+    │   │   │       └── TypeI32: 'i32'
+    │   │   └── Param
+    │   │       └── Type
+    │   │           └── TypeI32: 'i32'
     │   ├── Arrow: '->'
     │   ├── ReturnType
     │   └── Body

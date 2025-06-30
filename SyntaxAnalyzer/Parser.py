@@ -396,7 +396,7 @@ if __name__=='__main__':
     os.makedirs(semantic_dir, exist_ok=True)
 
     # Determine output filename (second arg) or default "parser_output.txt"
-    output_name = sys.argv[2] if len(sys.argv) > 2 else 'parser_output.txt'
+    output_name = sys.argv[2] if len(sys.argv) > 2 else 'parse_tree.txt'
     # Place it inside semantic_dir
     output_file = os.path.join(semantic_dir, output_name)
 

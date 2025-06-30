@@ -1,0 +1,85 @@
+// === Corrected Trust Program ===
+
+// Single-line comments and operators
+let alpha: bool = true;
+let mut beta = false;
+let gamma: i32;
+gamma = 0x10;
+let delta = -15;
+let epsilon: i32 = +15;
+
+// Tuple types, destructuring, and “unused” variables
+let t1 = (1, false);
+let mut t2: (i32, i32) = (2, 3);
+let (m1, m2) : (i32, i32) = (4, 5);
+// renamed from `_unused` to `unused` so we can assign below
+let unused: i32;
+unused = 3;
+
+// Array types, indexing, mutation
+let mixed: [i32; 3] = [5, 10, 15];
+let flags: [bool; 2] = [true, false];
+let mut nums: [i32; 3] = [0x1, 0x2, 0x3];
+nums[2] = nums[1] + nums[0] * 2 % 5;
+
+// String literals with escapes, positional and named formats
+println!("Start of test");
+println!("Hex: {:X}, Dec: {}", 0xAB, 171);
+println!("Escapes:\nLine1\tTabbed");
+println!("Named: a={a}, b={b}", a=alpha, b=beta);
+
+// Function with implicit unit return
+fn no_return(x: i32) {
+    println!("No return, x = {x}", x=x);
+}
+
+// Function with typed parameters and tuple return
+fn combine(a: i32, b: i32) -> (i32, bool) {
+    let sum = a + b;
+    let flag = sum != 0;
+    return (sum, flag);
+}
+
+// Function with nested conditionals, all logical/relational/unary ops
+fn nested(x: i32, y: i32) -> i32 {
+    if x < y && (y > x || !false) {
+        let res = x * y % 7;
+        if res <= 10 {
+            return res;
+        } else {
+            return res + 1;
+        }
+    } else {
+        return x - y;
+    }
+}
+
+// Main entry to exercise loops, branches, and all tokens
+fn main() {
+    // loop with break and continue
+    let mut count: i32 = 0;
+    loop {
+        if count >= 3 {
+            break;
+        }
+        count = count + 1;
+        continue;
+    }
+
+    // indexing loop without '..' syntax
+    let mut idx: i32 = 0;
+    loop {
+        if idx == mixed[1] {
+            break;
+        }
+        println!("idx: {0}, beta: {1}", idx, beta);
+        idx = idx + 1;
+    }
+
+    // calls and prints
+    no_return(5);
+    let (res, fl) = combine(2, 3);
+    println!("combine: {0}, {1}", res, fl);
+    let f = nested(4, 2);
+    println!("nested result {}", f);
+}
