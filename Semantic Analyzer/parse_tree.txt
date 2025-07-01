@@ -1,20 +1,16 @@
 └── Program
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'is_positive'
+    │   ├── Id: 'get_flag'
     │   ├── Params
-    │   │   └── Param
-    │   │       ├── VarPattern: 'n'
-    │   │       └── Type
-    │   │           └── TypeI32: 'i32'
     │   ├── Arrow: '->'
     │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
     │           └── ReturnStmt: 'return'
-    │               └── BinaryOp: '>'
-    │                   ├── Id: 'n'
-    │                   └── Number: '0'
+    │               └── BoolLiteral: 'false'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
@@ -31,14 +27,13 @@
                 │   │   └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Number: '10'
+                │       └── Number: '42'
                 ├── AssignStmt
                 │   ├── LValue
                 │   │   └── Id: 'x'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Call: 'is_positive'
-                │           └── Number: '5'
+                │       └── Call: 'get_flag'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
                     ├── FormatStr: '"x = {x}"'

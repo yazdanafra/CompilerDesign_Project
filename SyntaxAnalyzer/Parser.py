@@ -253,13 +253,27 @@ class Parser:
         self.eat('T_RC'); return ASTNode('Block',children=stmts)
 
     def parse_function_decl(self):
-        node=ASTNode('FunctionDecl'); node.children.append(ASTNode('FnKw',self.eat('T_Fn')))
-        node.children.append(ASTNode('Id',self.eat('T_Id')))
-        self.eat('T_LP'); params=[]
-        if self.current().type!='T_RP': params=self.parse_param_list()
-        self.eat('T_RP'); node.children.append(ASTNode('Params',children=params))
-        if self.current().type=='T_Arrow': node.children.append(ASTNode('Arrow',self.eat('T_Arrow'))); node.children.append(ASTNode('ReturnType',self.parse_type()))
-        node.children.append(ASTNode('Body',children=[self.parse_block()])); return node
+        node = ASTNode('FunctionDecl')
+        node.children.append(ASTNode('FnKw', self.eat('T_Fn')))
+        node.children.append(ASTNode('Id',   self.eat('T_Id')))
+
+        self.eat('T_LP')
+        params = []
+        if self.current().type != 'T_RP':
+            params = self.parse_param_list()
+        self.eat('T_RP')
+        node.children.append(ASTNode('Params', children=params))
+
+        if self.current().type == 'T_Arrow':
+            node.children.append(ASTNode('Arrow', self.eat('T_Arrow')))
+            # **changed**: always wrap parse_type() in a Type node
+            ret_ty = self.parse_type()
+            node.children.append(ASTNode('ReturnType',
+                                         children=[ ASTNode('Type', children=[ret_ty]) ]))
+
+        node.children.append(ASTNode('Body', children=[self.parse_block()]))
+        return node
+
 
     def parse_param_list(self):
         params=[self.parse_param()]

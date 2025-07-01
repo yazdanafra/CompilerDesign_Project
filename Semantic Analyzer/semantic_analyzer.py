@@ -234,20 +234,34 @@ class SemanticAnalyzer:
 
 
     def check_AssignStmt(self, node: Node):
+                # --- left side ---
         lval_node = node.children[0]       # the LValue node
-        ltype = self.infer_type(lval_node)
+        ltype     = self.infer_type(lval_node)
         # (only check mutability via lookup of the base identifier:)
         base = lval_node.children[0]
         entry = self.lookup(base.value, base) if base.value else None
         if entry and not entry['mutable']:
             self.error(f"Cannot assign to immutable variable '{base.value}'", base)
 
+        # --- right side ---
+        rhs_expr = node.children[2].children[0]  # unwrap the Expr→<value>
+
+        # If this is a function call, pull its declared return type
+        if rhs_expr.typ == 'Call' and rhs_expr.value:
+            fn_entry = self.lookup(rhs_expr.value, rhs_expr)
+            if fn_entry and fn_entry['kind']=='fn':
+                ret = fn_entry['type'][1]
+                if ltype and ret and ltype != ret:
+                    self.error(
+                        f"Assignment type mismatch: lhs is '{ltype}' but '{rhs_expr.value}' returns '{ret}'",
+                        node
+                    )
+                    return
+
+        # Otherwise, do the usual type‐check
         rtype = self.infer_type(node.children[2])
         if ltype and rtype and ltype != rtype:
             self.error(f"Type mismatch in assignment: '{ltype}' vs '{rtype}'", node)
-        # **new**: descend into both sides so that any ArrayIndex checks run
-        # self.check(lval_node.children[0])
-        # self.check(node.children[2].children[0])    
 
 
 
@@ -269,68 +283,170 @@ class SemanticAnalyzer:
                 self.check(c)
 
 
+    def body_always_returns(self, node_or_stmts):
+        """
+        Given either:
+         - a list of ASTNode statements (e.g. the children of a Block), or
+         - a single Block node whose children are statements,
+        return True iff *every* control‐flow path through them ends in a return.
+        """
+        # Normalize to list of statements
+        if isinstance(node_or_stmts, list):
+            stmts = node_or_stmts
+        elif hasattr(node_or_stmts, 'typ') and node_or_stmts.typ == 'Block':
+            # A Block node wraps its statements directly as children
+            stmts = node_or_stmts.children
+        else:
+            # Unexpected shape → no guaranteed return
+            return False
+
+        if not stmts:
+            return False
+
+        last = stmts[-1]
+
+        # 1) Direct return
+        if last.typ == 'ReturnStmt':
+            return True
+
+        # 2) IfStmt: both Then & Else must return
+        if last.typ == 'IfStmt':
+            then_node = next((c for c in last.children if c.typ == 'Then'), None)
+            else_node = next((c for c in last.children if c.typ == 'Else'), None)
+            if then_node and else_node:
+                # Each of those wraps a Block
+                return ( self.body_always_returns(then_node.children[0])
+                     and self.body_always_returns(else_node.children[0]) )
+            return False   # missing else means a fall‑through
+
+        # 3) Nested Block
+        if last.typ == 'Block':
+            return self.body_always_returns(last)
+
+        # 4) Anything else falls through
+        return False
+    
+
+    def _stringify_type_node(self, type_wrapper: Node) -> str:
+        """
+        Given an ASTNode('Type', children=[…]), produce exactly
+        the 'i32', 'bool', '[i32;3]', '(i32,bool)' strings
+        that infer_type() would produce.
+        """
+        base = type_wrapper.children[0]
+
+        # primitives
+        if base.typ == 'TypeI32':
+            return 'i32'
+        if base.typ == 'TypeBool':
+            return 'bool'
+
+        # array [T;N]
+        if base.typ == 'ArrayType':
+            # The first child of ArrayType is itself a Type node
+            subtype_type_node = Node('Type')
+            subtype_type_node.children.append(base.children[0])
+            subtype = self._stringify_type_node(subtype_type_node)
+
+            size = base.children[1].value
+            return f"[{subtype};{size}]"
+
+        # tuple (T1,T2,…)
+        if base.typ == 'TupleType':
+            elems = []
+            for elem_type in base.children:
+                # wrap each element in a fake 'Type' node
+                wrapper = Node('Type')
+                wrapper.children.append(elem_type)
+                elems.append(self._stringify_type_node(wrapper))
+            return "(" + ",".join(elems) + ")"
+
+        # fallback—shouldn’t happen
+        return None
+
+ 
+
+
     def check_FunctionDecl(self, node: Node):
+        # 1) Find the function’s name and signature
         name_node   = next(c for c in node.children if c.typ == 'Id')
         params_node = next(c for c in node.children if c.typ == 'Params')
 
         param_types = []
         param_names = []
         for p in params_node.children:
-            # name
-            vp = next((c for c in p.children if c.typ=='VarPattern'), None)
-            pname = vp.value if vp and vp.value else p.value
-
-            # declared type (if any)
+            vp = next((c for c in p.children if c.typ == 'VarPattern'), None)
+            pname = vp.value if (vp and vp.value) else p.value
             ptype = None
-            tnode = next((c for c in p.children if c.typ=='Type'), None)
+            tnode = next((c for c in p.children if c.typ == 'Type'), None)
             if tnode and tnode.children:
+                # primitives only—TypeI32 or TypeBool
                 base = tnode.children[0]
-                # now just read base.value
                 if base.value is not None:
                     ptype = base.value
-
             param_names.append(pname)
             param_types.append(ptype)
 
-        # return type, same idea
+        # 2) Compute return type (None means “void”)
         ret = None
-        rnode = next((c for c in node.children if c.typ=='ReturnType'), None)
+        rnode = next((c for c in node.children if c.typ == 'ReturnType'), None)
         if rnode and rnode.children:
-            tnode = rnode.children[0]
-            if tnode.children:
-                base = tnode.children[0]
-                if base.value is not None:
-                    ret = base.value
+            # rnode.children[0] is ASTNode('Type', …)
+            ret = self._stringify_type_node(rnode.children[0])
 
-        # declare fn with real i32/bool strings
+        # 3) Declare the function in the enclosing scope
         self.declare(
             name_node.value,
             'fn',
             (param_types, ret),
             False,
-            name_node,
+            name_node
         )
 
-        # now push scope, declare parameters
-        prev = self.current_fn
+        # 4) Enter the function’s own scope
+        prev_fn = self.current_fn
         self.current_fn = (name_node.value, ret)
         self.enter_scope()
-        for nm, tp in zip(param_names, param_types):
-            if nm:
-                self.declare(nm, 'var', tp, False)
-        body = next(c for c in node.children if c.typ=='Body')
-        self.check(body)
+
+        # 5) Declare parameters as immutable variables
+        for pname, ptype in zip(param_names, param_types):
+            if pname:
+                self.declare(pname, 'var', ptype, False)
+
+        # 6) Type‐check every statement in the body block
+        body_wrapper = next(c for c in node.children if c.typ == 'Body')
+        block        = next(c for c in body_wrapper.children if c.typ == 'Block')
+        for stmt in block.children:
+            self.check(stmt)
+
+        # 7) Pop back to the outer scope
         self.exit_scope()
-        self.current_fn = prev
+        self.current_fn = prev_fn
+
+        # 8) If non‐void, ensure every path returns
+        if ret is not None:
+            if not self.body_always_returns(block.children):
+                self.error(
+                    f"Function '{name_node.value}' may not return on all paths",
+                    node
+                )
 
 
-    def check_ReturnStmt(self, node: Node):
+
+    def check_ReturnStmt(self, node):
         if not self.current_fn:
             return self.error("Return outside function", node)
         _, ret = self.current_fn
+
+        # New: void functions (ret is None) may not return a value
+        if ret is None and node.children:
+            return self.error("Return with a value in a void function", node)
+
+        # Existing: typed functions must match
         rtype = self.infer_type(node.children[0]) if node.children else None
         if ret and rtype and ret != rtype:
             self.error(f"Return type '{rtype}' does not match '{ret}'", node)
+
 
     def check_Call(self, node: Node):
         if not node.value:
@@ -481,7 +597,10 @@ class SemanticAnalyzer:
             return None
 
         if expr.typ == 'TupleLiteral':
-            return tuple(self.infer_type(c) for c in expr.children)
+            # produce exactly "(T1,T2,…)" so it lines up with _stringify_type_node
+            parts = [self.infer_type(c) for c in expr.children]
+            return "(" + ",".join(parts) + ")"
+
 
         # anything else—pattern nodes, type nodes, print‐stmt wrappers, etc.—
         # is not a real expression to type‐check:

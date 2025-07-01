@@ -5,7 +5,7 @@ fn is_positive(n: i32) -> bool {
 
 fn main() {
     // x is declared as an i32
-    let mut x: i32 = 10;
+    let mut x: i32;
 
     // ❌ Semantic Rule 10 violated:
     // The right-hand side is a bool (from is_positive),
