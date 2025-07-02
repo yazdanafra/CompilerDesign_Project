@@ -1,67 +1,214 @@
 └── Program
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'foo'
-    │   ├── Params
-    │   └── Body
-    │       └── Block
-    │           └── ReturnStmt: 'return'
-    │               └── Number: '42'
-    ├── FunctionDecl
-    │   ├── FnKw: 'fn'
-    │   ├── Id: 'bar'
-    │   ├── Params
-    │   ├── Arrow: '->'
-    │   ├── ReturnType
-    │   │   └── Type
-    │   │       └── TypeI32: 'i32'
-    │   └── Body
-    │       └── Block
-    │           └── IfStmt
-    │               ├── IfKw: 'if'
-    │               ├── Cond
-    │               │   └── BoolLiteral: 'false'
-    │               └── Then
-    │                   └── Block
-    │                       └── ReturnStmt: 'return'
-    │                           └── Number: '1'
-    ├── FunctionDecl
-    │   ├── FnKw: 'fn'
-    │   ├── Id: 'baz'
+    │   ├── Id: 'sum_positive_indices'
     │   ├── Params
     │   │   └── Param
     │   │       ├── VarPattern: 'arr'
     │   │       └── Type
     │   │           └── ArrayType
     │   │               ├── TypeI32: 'i32'
-    │   │               └── Size: '3'
+    │   │               └── Size: '5'
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
     │           ├── LetDecl
     │           │   ├── LetKw: 'let'
+    │           │   ├── MutKw: 'mut'
     │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'x'
+    │           │   │   └── VarPattern: 'total'
     │           │   ├── Colon: ':'
     │           │   ├── Type
     │           │   │   └── TypeI32: 'i32'
     │           │   ├── Assign: '='
     │           │   └── Expr
-    │           │       └── BoolLiteral: 'true'
-    │           └── LetDecl
-    │               ├── LetKw: 'let'
-    │               ├── Pattern
-    │               │   └── VarPattern: 'v'
-    │               ├── Assign: '='
-    │               └── Expr
-    │                   └── ArrayIndex: 'arr'
-    │                       └── String: '"1"'
+    │           │       └── Number: '0'
+    │           ├── LetDecl
+    │           │   ├── LetKw: 'let'
+    │           │   ├── MutKw: 'mut'
+    │           │   ├── Pattern
+    │           │   │   └── VarPattern: 'idx'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── TypeI32: 'i32'
+    │           │   ├── Assign: '='
+    │           │   └── Expr
+    │           │       └── Number: '1'
+    │           ├── LoopStmt
+    │           │   ├── LoopKw: 'loop'
+    │           │   └── Block
+    │           │       └── Block
+    │           │           ├── IfStmt
+    │           │           │   ├── IfKw: 'if'
+    │           │           │   ├── Cond
+    │           │           │   │   └── BinaryOp: '>'
+    │           │           │   │       ├── Id: 'idx'
+    │           │           │   │       └── Number: '5'
+    │           │           │   └── Then
+    │           │           │       └── Block
+    │           │           │           └── BreakStmt: 'break'
+    │           │           ├── AssignStmt
+    │           │           │   ├── LValue
+    │           │           │   │   └── Id: 'total'
+    │           │           │   ├── Assign: '='
+    │           │           │   └── Expr
+    │           │           │       └── BinaryOp: '+'
+    │           │           │           ├── Id: 'total'
+    │           │           │           └── ArrayIndex: 'arr'
+    │           │           │               └── Id: 'idx'
+    │           │           └── AssignStmt
+    │           │               ├── LValue
+    │           │               │   └── Id: 'idx'
+    │           │               ├── Assign: '='
+    │           │               └── Expr
+    │           │                   └── BinaryOp: '+'
+    │           │                       ├── Id: 'idx'
+    │           │                       └── Number: '1'
+    │           └── ReturnStmt: 'return'
+    │               └── Id: 'total'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'make_fives'
+    │   ├── Params
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── ArrayType
+    │   │           ├── TypeI32: 'i32'
+    │   │           └── Size: '4'
+    │   └── Body
+    │       └── Block
+    │           ├── LetDecl
+    │           │   ├── LetKw: 'let'
+    │           │   ├── Pattern
+    │           │   │   └── VarPattern: 'fives'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── ArrayType
+    │           │   │       ├── TypeI32: 'i32'
+    │           │   │       └── Size: '4'
+    │           │   ├── Assign: '='
+    │           │   └── Expr
+    │           │       └── ArrayRepeat
+    │           │           ├── Number: '5'
+    │           │           └── Number: '4'
+    │           └── ReturnStmt: 'return'
+    │               └── Id: 'fives'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'demo_tuple'
+    │   ├── Params
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── TupleType
+    │   │           ├── TypeI32: 'i32'
+    │   │           └── TypeBool: 'bool'
+    │   └── Body
+    │       └── Block
+    │           ├── LetDecl
+    │           │   ├── LetKw: 'let'
+    │           │   ├── Pattern
+    │           │   │   └── VarPattern: 'pair'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── TupleType
+    │           │   │       ├── TypeI32: 'i32'
+    │           │   │       └── TypeBool: 'bool'
+    │           │   ├── Assign: '='
+    │           │   └── Expr
+    │           │       └── TupleLiteral
+    │           │           ├── Number: '42'
+    │           │           └── BoolLiteral: 'true'
+    │           └── ReturnStmt: 'return'
+    │               └── Id: 'pair'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
         ├── Params
-        │   └── Param
-        │       ├── VarPattern: 'param'
-        │       └── Type
-        │           └── TypeI32: 'i32'
         └── Body
             └── Block
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'data'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── ArrayType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── Size: '5'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── ArrayLiteral
+                │           ├── Number: '10'
+                │           ├── Number: '20'
+                │           ├── Number: '30'
+                │           ├── Number: '40'
+                │           └── Number: '50'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 's'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'sum_positive_indices'
+                │           └── Id: 'data'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"sum_positive_indices = {}"'
+                │   └── Expr
+                │       └── Id: 's'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'rep'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── ArrayType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── Size: '4'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'make_fives'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"make_fives = [{}, {}, {}, {}]"'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'rep'
+                │   │       └── Number: '1'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'rep'
+                │   │       └── Number: '2'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'rep'
+                │   │       └── Number: '3'
+                │   └── Expr
+                │       └── ArrayIndex: 'rep'
+                │           └── Number: '4'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── TuplePattern
+                │   │       ├── VarPattern: 'n'
+                │   │       └── VarPattern: 'flag'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TupleType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── TypeBool: 'bool'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'demo_tuple'
+                └── PrintStmt
+                    ├── PrintKw: 'println!'
+                    ├── FormatStr: '"demo_tuple = ({}, {})"'
+                    ├── Expr
+                    │   └── Id: 'n'
+                    └── Expr
+                        └── Id: 'flag'

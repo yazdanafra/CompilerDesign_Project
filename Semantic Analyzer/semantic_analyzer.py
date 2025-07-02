@@ -662,7 +662,10 @@ def report_errors(errors, tree):
             print(f"Semantic error: {e}")
         sys.exit(1)
     print("Program was compiled successfully")
-    with open('syntax_tree.txt', 'w', encoding='utf-8') as f:
+    # write out the full syntax tree for consumption by a later code generator
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    out_path = os.path.join(base_dir, 'syntax_tree.txt')
+    with open(out_path, 'w', encoding='utf-8') as f:
         f.write(repr(tree))
 
 if __name__ == '__main__':
