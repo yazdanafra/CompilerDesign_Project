@@ -1,12 +1,25 @@
-// Declared to return i32, but returns a bool → semantic error!
-fn get_flag() -> i32 {
-    return false;
+// 1) Void function returning a value
+fn foo() {
+    return 42;
 }
 
-fn main() {
-    // Even if you ignore get_flag’s body, assigning its result to an i32
-    // would also violate Rule 10—but the primary failure is the return in get_flag.
-    let mut x: i32 = 42;
-    x = get_flag();
-    println!("x = {x}", x=x);
+// 2) Typed function with missing return on some path
+fn bar() -> i32 {
+    if false {
+        return 1;
+    }
+    // no return here on the `false` branch
+}
+
+// 3) Type mismatch in LetDecl
+fn baz(arr: [i32;3]) {
+    let x: i32 = true;        // initializing i32 with a bool
+
+    // 4) Array index must be of type i32
+    let v = arr["1"];         // indexing with a string, not i32
+}
+
+// 5) main must be defined as `fn main()` with no parameters
+fn main(param: i32) {
+    // (even though it’s void, having a parameter violates the special‐main rule)
 }

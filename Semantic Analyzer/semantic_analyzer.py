@@ -7,6 +7,7 @@ class Node:
         self.value = value
         self.children = []
         self.parent = None
+        
 
     def add_child(self, node):
         node.parent = self
@@ -50,6 +51,16 @@ class SemanticAnalyzer:
         self.errors = []
         self.scopes = [{}]        # global scope
         self.current_fn = None    # (name, return_type)
+        self.in_format = False
+    
+    def _inside_print(self, node: Node) -> bool:
+        # climb up until root; if we see a PrintStmt, we’re in formatting context
+        while node:
+            if node.typ == 'PrintStmt':
+                return True
+            node = node.parent
+        return False
+
 
     def error(self, msg, node=None):
         ctx = f" [at {node.typ} '{node.value}']" if node and node.value is not None else ''
@@ -84,7 +95,11 @@ class SemanticAnalyzer:
         return method(node)
 
     def generic_check(self, node: Node):
-        # existing operators / indexing checks
+        # special‐case PrintStmt so that its own logic runs (and sets in_format)
+        if node.typ == 'PrintStmt':
+            return self.check_PrintStmt(node)
+
+        # special checks for these node types
         if node.typ == 'BinaryOp':
             self.check_BinaryOp(node)
         elif node.typ == 'UnaryOp':
@@ -94,9 +109,10 @@ class SemanticAnalyzer:
         elif node.typ == 'Call':
             self.check_Call(node)
 
-        # then recurse into children
+        # then recurse
         for c in node.children:
             self.check(c)
+
 
     def check_ArrayIndex(self, node: Node):
         """
@@ -128,31 +144,41 @@ class SemanticAnalyzer:
 
 
     def check_ExprStmt(self, node: Node):
-        # type-check standalone expression statements
-        expr = node.children[0]
-        self.infer_type(expr)
-        self.check(expr)
+        self.check(node.children[0])
 
 
     def check_Expr(self, node: Node):
-        # unwrap and type-check any Expr node
-        self.infer_type(node)
-        if node.children:
-            self.check(node.children[0])
+        # simply recurse into its child
+        for c in node.children:
+            self.check(c)
 
 
 
     def check_PrintStmt(self, node: Node):
-        # check both positional and named args
+        # mark that anything we infer/check under here is in 'format' mode
+        saved = self.in_format
+        self.in_format = True
+
+        # format string itself needs no checks
+        # but each Expr child *is* a formatting argument
         for c in node.children:
             if c.typ == 'Expr':
-                self.infer_type(c)
+                # unwrap the Expr → real AST, then fully infer/check it
+                expr = c.children[0]
+                self.infer_type(expr)
+                self.check(expr)
             elif c.typ == 'NamedArg':
+                # named args still get checked
                 val = next((ch for ch in c.children if ch.typ == 'Value'), None)
                 if val:
                     expr = next((ch for ch in val.children if ch.typ == 'Expr'), None)
                     if expr:
                         self.infer_type(expr)
+                        self.check(expr)
+
+        # restore
+        self.in_format = saved
+
 
     def check_Program(self, node: Node):
         # 1) process all top-level items (this will declare all functions/vars)
@@ -375,17 +401,21 @@ class SemanticAnalyzer:
         param_types = []
         param_names = []
         for p in params_node.children:
-            vp = next((c for c in p.children if c.typ == 'VarPattern'), None)
+            # 1) name
+            vp    = next((c for c in p.children if c.typ == 'VarPattern'), None)
             pname = vp.value if (vp and vp.value) else p.value
-            ptype = None
+
+            # 2) type: stringify whatever Type is there (primitive, array, tuple)
             tnode = next((c for c in p.children if c.typ == 'Type'), None)
-            if tnode and tnode.children:
-                # primitives only—TypeI32 or TypeBool
-                base = tnode.children[0]
-                if base.value is not None:
-                    ptype = base.value
+            if tnode:
+                # _stringify_type_node expects a Node('Type', children=[…])
+                ptype = self._stringify_type_node(tnode)
+            else:
+                ptype = None
+
             param_names.append(pname)
             param_types.append(ptype)
+
 
         # 2) Compute return type (None means “void”)
         ret = None
@@ -478,36 +508,44 @@ class SemanticAnalyzer:
 
 
     def check_BinaryOp(self, node: Node):
-        op = node.value           # e.g. '+', '&&', '!=', '<='
+        op = node.value
 
-        # 1) arithmetic: +, -, *, /, %
+        # 1) If we're anywhere inside a PrintStmt, suppress operand‑type errors
+        if self._inside_print(node):
+            if op in ('+','-','*','/','%'):       return 'i32'
+            if op in ('&&','||'):                 return 'bool'
+            if op in ('<','<=','>','>=','==','!='): return 'bool'
+            return None
+
+        # 2) Pull in each side’s type (this may recurse and first‑use infer)
+        lt = self.infer_type(node.children[0])
+        rt = self.infer_type(node.children[1])
+
+        # 3) If either side is still unknown, defer the check until later
+        if lt is None or rt is None:
+            # still return a plausible result type
+            if op in ('+','-','*','/','%'):       return 'i32'
+            if op in ('&&','||'):                 return 'bool'
+            if op in ('<','<=','>','>=','==','!='): return 'bool'
+            return None
+
+        # 4) Now both operand types are known—enforce the rules
         if op in ('+','-','*','/','%'):
-            lt = self.infer_type(node.children[0])
-            rt = self.infer_type(node.children[1])
-            if lt!='i32' or rt!='i32':
+            if lt != 'i32' or rt != 'i32':
                 self.error("Arithmetic operators require i32 operands", node)
             return 'i32'
 
-        # 2) logical: &&, ||
         if op in ('&&','||'):
-            lt = self.infer_type(node.children[0])
-            rt = self.infer_type(node.children[1])
-            if lt!='bool' or rt!='bool':
+            if lt != 'bool' or rt != 'bool':
                 self.error("Logical operators require bool operands", node)
             return 'bool'
 
-        # 3) relational: <, <=, >, >=, ==, !=
         if op in ('<','<=','>','>=','==','!='):
-            lt = self.infer_type(node.children[0])
-            rt = self.infer_type(node.children[1])
-            if lt!='i32' or rt!='i32':
+            if lt != 'i32' or rt != 'i32':
                 self.error("Relational operators require i32 operands", node)
             return 'bool'
 
-        # 4) anything else we don’t check here
         return None
-
-
 
 
     def check_UnaryOp(self, node: Node):
@@ -579,11 +617,22 @@ class SemanticAnalyzer:
             return f"[{elms[0]};{len(elms)}]"
 
         if expr.typ == 'ArrayRepeat':
-            # [e; n]
-            elm = self.infer_type(expr.children[0])
-            cnt = self.infer_type(expr.children[1])
-            if elm and cnt == 'i32':
-                return f"[{elm};?]"
+            # [element; count]
+            elm_t = self.infer_type(expr.children[0])
+            # now extract a literal integer from expr.children[1]:
+            cnt_node = expr.children[1]
+            lit = None
+            if cnt_node.typ == 'Number':
+                lit = int(cnt_node.value, 0)
+            elif cnt_node.typ == 'UnaryOp' and cnt_node.children:
+                # handle unary minus/plus around a Number
+                child = cnt_node.children[0]
+                if child.typ == 'Number':
+                    val = int(child.value, 0)
+                    lit = -val if cnt_node.value == '-' else val
+            if elm_t is not None and lit is not None and lit > 0:
+                return f"[{elm_t};{lit}]"
+            # otherwise fall back to unknown-length
             return None
 
         if expr.typ == 'ArrayIndex':

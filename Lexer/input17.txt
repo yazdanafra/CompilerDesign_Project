@@ -1,0 +1,79 @@
+// 1. Definition before use
+fn f() {
+    y = 10;         // ❌ use before declaration
+    let y = 5;
+}
+
+// 2. Scopes and shadowing
+fn g() {
+    let mut a = 1;
+    let a = 2;      // ❌ redeclaration in same scope
+}
+fn g() {}           // ❌ duplicate function name
+
+// 3. Logical vs. arithmetic operand types
+fn h() {
+    let b: bool = true + false;  // ❌ '+' on bools
+    let c: i32  = 1 && 0;        // ❌ '&&' on ints
+}
+
+// 4. Array indexing
+fn arr() {
+    let arr: [i32;3] = [1,2,3];
+    let v = arr[0];  // ❌ index 0 (must be >0)
+}
+
+// 5. If conditions
+fn iff() {
+    if 5 {          // ❌ non-bool condition
+        println!("oops");
+    }
+}
+
+// 6. Missing a valid main entry point
+//   (there is no `fn main()` at all)
+
+// 7. Function-call consistency
+fn sum(x: i32, y: i32) -> i32 {
+    return x + y;
+}
+fn calls() {
+    let s1 = sum(1);           // ❌ wrong arity
+    let s2 = sum(true, 2);     // ❌ wrong argument type
+}
+
+// 8. Type inference on first use
+fn ti() {
+    let mut z = 1;   // inferred as i32
+    z = false;       // ❌ attempt to change to bool
+}
+fn param() {
+    // no parameter declared
+}
+fn paramcall() {
+    param(1);        // first call → param’s type inferred as i32
+    param(true);     // ❌ second call mismatches inferred i32
+}
+
+// 9. Mutability
+fn mu() {
+    let w = 1;
+    w = 2;           // ❌ assigning to immutable
+}
+
+// 10. Assignment typing
+fn is_zero(n: i32) -> bool {
+    return n == 0;
+}
+fn at() {
+    let mut m: i32 = 5;
+    m = is_zero(5);  // ❌ assigning bool-returning call to an i32
+}
+
+// 11. Return typing
+fn ret1() -> i32 {
+    return true;     // ❌ returning bool from i32 function
+}
+fn ret2() {
+    return 1;        // ❌ returning a value from a void function
+}

@@ -1,86 +1,145 @@
-Token(T_Comment, '// Declared to return i32, but returns a bool → semantic error!
+Token(T_Comment, '// 1) Void function returning a value
 ', None, line=1, col=1)
 Token(T_Fn, 'fn', None, line=2, col=1)
 Token(T_Whitespace, ' ', None, line=2, col=3)
-Token(T_Id, 'get_flag', None, line=2, col=4)
-Token(T_LP, '(', None, line=2, col=12)
-Token(T_RP, ')', None, line=2, col=13)
-Token(T_Whitespace, ' ', None, line=2, col=14)
-Token(T_Arrow, '->', None, line=2, col=15)
-Token(T_Whitespace, ' ', None, line=2, col=17)
-Token(T_Int, 'i32', None, line=2, col=18)
-Token(T_Whitespace, ' ', None, line=2, col=21)
-Token(T_LC, '{', None, line=2, col=22)
+Token(T_Id, 'foo', None, line=2, col=4)
+Token(T_LP, '(', None, line=2, col=7)
+Token(T_RP, ')', None, line=2, col=8)
+Token(T_Whitespace, ' ', None, line=2, col=9)
+Token(T_LC, '{', None, line=2, col=10)
 Token(T_Whitespace, '
-    ', None, line=2, col=23)
+    ', None, line=2, col=11)
 Token(T_Return, 'return', None, line=3, col=5)
 Token(T_Whitespace, ' ', None, line=3, col=11)
-Token(T_False, 'false', None, line=3, col=12)
-Token(T_Semicolon, ';', None, line=3, col=17)
+Token(T_Decimal, '42', 42, line=3, col=12)
+Token(T_Semicolon, ';', None, line=3, col=14)
 Token(T_Whitespace, '
-', None, line=3, col=18)
+', None, line=3, col=15)
 Token(T_RC, '}', None, line=4, col=1)
 Token(T_Whitespace, '
 
 ', None, line=4, col=2)
-Token(T_Fn, 'fn', None, line=6, col=1)
-Token(T_Whitespace, ' ', None, line=6, col=3)
-Token(T_Id, 'main', None, line=6, col=4)
-Token(T_LP, '(', None, line=6, col=8)
-Token(T_RP, ')', None, line=6, col=9)
-Token(T_Whitespace, ' ', None, line=6, col=10)
-Token(T_LC, '{', None, line=6, col=11)
+Token(T_Comment, '// 2) Typed function with missing return on some path
+', None, line=6, col=1)
+Token(T_Fn, 'fn', None, line=7, col=1)
+Token(T_Whitespace, ' ', None, line=7, col=3)
+Token(T_Id, 'bar', None, line=7, col=4)
+Token(T_LP, '(', None, line=7, col=7)
+Token(T_RP, ')', None, line=7, col=8)
+Token(T_Whitespace, ' ', None, line=7, col=9)
+Token(T_Arrow, '->', None, line=7, col=10)
+Token(T_Whitespace, ' ', None, line=7, col=12)
+Token(T_Int, 'i32', None, line=7, col=13)
+Token(T_Whitespace, ' ', None, line=7, col=16)
+Token(T_LC, '{', None, line=7, col=17)
 Token(T_Whitespace, '
-    ', None, line=6, col=12)
-Token(T_Comment, '// Even if you ignore get_flag’s body, assigning its result to an i32
-', None, line=7, col=5)
-Token(T_Whitespace, '    ', None, line=8, col=1)
-Token(T_Comment, '// would also violate Rule 10—but the primary failure is the return in get_flag.
-', None, line=8, col=5)
-Token(T_Whitespace, '    ', None, line=9, col=1)
-Token(T_Let, 'let', None, line=9, col=5)
-Token(T_Whitespace, ' ', None, line=9, col=8)
-Token(T_Mut, 'mut', None, line=9, col=9)
-Token(T_Whitespace, ' ', None, line=9, col=12)
-Token(T_Id, 'x', None, line=9, col=13)
-Token(T_Colon, ':', None, line=9, col=14)
+    ', None, line=7, col=18)
+Token(T_If, 'if', None, line=8, col=5)
+Token(T_Whitespace, ' ', None, line=8, col=7)
+Token(T_False, 'false', None, line=8, col=8)
+Token(T_Whitespace, ' ', None, line=8, col=13)
+Token(T_LC, '{', None, line=8, col=14)
+Token(T_Whitespace, '
+        ', None, line=8, col=15)
+Token(T_Return, 'return', None, line=9, col=9)
 Token(T_Whitespace, ' ', None, line=9, col=15)
-Token(T_Int, 'i32', None, line=9, col=16)
-Token(T_Whitespace, ' ', None, line=9, col=19)
-Token(T_Assign, '=', None, line=9, col=20)
-Token(T_Whitespace, ' ', None, line=9, col=21)
-Token(T_Decimal, '42', 42, line=9, col=22)
-Token(T_Semicolon, ';', None, line=9, col=24)
+Token(T_Decimal, '1', 1, line=9, col=16)
+Token(T_Semicolon, ';', None, line=9, col=17)
 Token(T_Whitespace, '
-    ', None, line=9, col=25)
-Token(T_Id, 'x', None, line=10, col=5)
-Token(T_Whitespace, ' ', None, line=10, col=6)
-Token(T_Assign, '=', None, line=10, col=7)
-Token(T_Whitespace, ' ', None, line=10, col=8)
-Token(T_Id, 'get_flag', None, line=10, col=9)
-Token(T_LP, '(', None, line=10, col=17)
-Token(T_RP, ')', None, line=10, col=18)
-Token(T_Semicolon, ';', None, line=10, col=19)
+    ', None, line=9, col=18)
+Token(T_RC, '}', None, line=10, col=5)
 Token(T_Whitespace, '
-    ', None, line=10, col=20)
-Token(T_Print, 'println!', None, line=11, col=5)
-Token(T_LP, '(', None, line=11, col=13)
-Token(T_String, '"x = {x}"', None, line=11, col=14)
-Token(T_Comma, ',', None, line=11, col=23)
-Token(T_Whitespace, ' ', None, line=11, col=24)
-Token(T_Id, 'x', None, line=11, col=25)
-Token(T_Assign, '=', None, line=11, col=26)
-Token(T_Id, 'x', None, line=11, col=27)
-Token(T_RP, ')', None, line=11, col=28)
-Token(T_Semicolon, ';', None, line=11, col=29)
-Token(T_Whitespace, '
-', None, line=11, col=30)
+    ', None, line=10, col=6)
+Token(T_Comment, '// no return here on the `false` branch
+', None, line=11, col=5)
 Token(T_RC, '}', None, line=12, col=1)
 Token(T_Whitespace, '
+
 ', None, line=12, col=2)
-Token(T_EOF, '', None, line=13, col=1)
+Token(T_Comment, '// 3) Type mismatch in LetDecl
+', None, line=14, col=1)
+Token(T_Fn, 'fn', None, line=15, col=1)
+Token(T_Whitespace, ' ', None, line=15, col=3)
+Token(T_Id, 'baz', None, line=15, col=4)
+Token(T_LP, '(', None, line=15, col=7)
+Token(T_Id, 'arr', None, line=15, col=8)
+Token(T_Colon, ':', None, line=15, col=11)
+Token(T_Whitespace, ' ', None, line=15, col=12)
+Token(T_LB, '[', None, line=15, col=13)
+Token(T_Int, 'i32', None, line=15, col=14)
+Token(T_Semicolon, ';', None, line=15, col=17)
+Token(T_Decimal, '3', 3, line=15, col=18)
+Token(T_RB, ']', None, line=15, col=19)
+Token(T_RP, ')', None, line=15, col=20)
+Token(T_Whitespace, ' ', None, line=15, col=21)
+Token(T_LC, '{', None, line=15, col=22)
+Token(T_Whitespace, '
+    ', None, line=15, col=23)
+Token(T_Let, 'let', None, line=16, col=5)
+Token(T_Whitespace, ' ', None, line=16, col=8)
+Token(T_Id, 'x', None, line=16, col=9)
+Token(T_Colon, ':', None, line=16, col=10)
+Token(T_Whitespace, ' ', None, line=16, col=11)
+Token(T_Int, 'i32', None, line=16, col=12)
+Token(T_Whitespace, ' ', None, line=16, col=15)
+Token(T_Assign, '=', None, line=16, col=16)
+Token(T_Whitespace, ' ', None, line=16, col=17)
+Token(T_True, 'true', None, line=16, col=18)
+Token(T_Semicolon, ';', None, line=16, col=22)
+Token(T_Whitespace, '        ', None, line=16, col=23)
+Token(T_Comment, '// initializing i32 with a bool
+', None, line=16, col=31)
+Token(T_Whitespace, '
+    ', None, line=17, col=1)
+Token(T_Comment, '// 4) Array index must be of type i32
+', None, line=18, col=5)
+Token(T_Whitespace, '    ', None, line=19, col=1)
+Token(T_Let, 'let', None, line=19, col=5)
+Token(T_Whitespace, ' ', None, line=19, col=8)
+Token(T_Id, 'v', None, line=19, col=9)
+Token(T_Whitespace, ' ', None, line=19, col=10)
+Token(T_Assign, '=', None, line=19, col=11)
+Token(T_Whitespace, ' ', None, line=19, col=12)
+Token(T_Id, 'arr', None, line=19, col=13)
+Token(T_LB, '[', None, line=19, col=16)
+Token(T_String, '"1"', None, line=19, col=17)
+Token(T_RB, ']', None, line=19, col=20)
+Token(T_Semicolon, ';', None, line=19, col=21)
+Token(T_Whitespace, '         ', None, line=19, col=22)
+Token(T_Comment, '// indexing with a string, not i32
+', None, line=19, col=31)
+Token(T_RC, '}', None, line=20, col=1)
+Token(T_Whitespace, '
+
+', None, line=20, col=2)
+Token(T_Comment, '// 5) main must be defined as `fn main()` with no parameters
+', None, line=22, col=1)
+Token(T_Fn, 'fn', None, line=23, col=1)
+Token(T_Whitespace, ' ', None, line=23, col=3)
+Token(T_Id, 'main', None, line=23, col=4)
+Token(T_LP, '(', None, line=23, col=8)
+Token(T_Id, 'param', None, line=23, col=9)
+Token(T_Colon, ':', None, line=23, col=14)
+Token(T_Whitespace, ' ', None, line=23, col=15)
+Token(T_Int, 'i32', None, line=23, col=16)
+Token(T_RP, ')', None, line=23, col=19)
+Token(T_Whitespace, ' ', None, line=23, col=20)
+Token(T_LC, '{', None, line=23, col=21)
+Token(T_Whitespace, '
+    ', None, line=23, col=22)
+Token(T_Comment, '// (even though it’s void, having a parameter violates the special‐main rule)
+', None, line=24, col=5)
+Token(T_RC, '}', None, line=25, col=1)
+Token(T_Whitespace, '
+', None, line=25, col=2)
+Token(T_EOF, '', None, line=26, col=1)
 
 Symbol Table:
-get_flag: [(2, 4), (10, 9)]
-main: [(6, 4)]
-x: [(9, 13), (10, 5), (11, 25), (11, 27)]
+foo: [(2, 4)]
+bar: [(7, 4)]
+baz: [(15, 4)]
+arr: [(15, 8), (19, 13)]
+x: [(16, 9)]
+v: [(19, 9)]
+main: [(23, 4)]
+param: [(23, 9)]

@@ -1,0 +1,58 @@
+fn max(a: i32, b: i32) -> i32 {
+    if a > b {
+        return a
+    } else {
+        return b
+    }
+}
+
+fn scale(x, y) -> i32 {
+    // x and y are inferred as i32 on first call
+    return x * y
+}
+
+fn sum_array(arr: [i32;5]) -> i32 {
+    let mut sum: i32 = 0;
+    let mut idx: i32 = 1;
+    loop {
+        if idx > 5 {
+            break
+        }
+        sum = sum + arr[idx];
+        idx = idx + 1;
+    }
+    return sum
+}
+
+fn demo_repeat() -> i32 {
+    // [7;5] builds [7,7,7,7,7]
+    let five_sevens: [i32;5] = [7;5];
+    return sum_array(five_sevens)
+}
+
+fn demo_tuple() -> (i32,bool) {
+    let greeting: (i32,bool) = (42, true);
+    return greeting
+}
+
+fn main() {
+    // basic let/mut and assignment
+    let a: i32 = 10;
+    let b: i32 = 20;
+    let m: i32 = max(a, b);
+    println!("max({}, {}) = {}", a, b, m);
+
+    let s: i32 = scale(3, 4);
+    println!("scale(3,4) = {}", s);
+
+    let arr: [i32;5] = [1, 2, 3, 4, 5];
+    let total1: i32 = sum_array(arr);
+    println!("sum_array([1,2,3,4,5]) = {}", total1);
+
+    let total2: i32 = demo_repeat();
+    println!("sum_array([7;5]) = {}", total2);
+
+    // tuple destructuring
+    let (v, flag): (i32,bool) = demo_tuple();
+    println!("demo_tuple() = ({}, {})", v, flag);
+}

@@ -1,7 +1,15 @@
 └── Program
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'get_flag'
+    │   ├── Id: 'foo'
+    │   ├── Params
+    │   └── Body
+    │       └── Block
+    │           └── ReturnStmt: 'return'
+    │               └── Number: '42'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'bar'
     │   ├── Params
     │   ├── Arrow: '->'
     │   ├── ReturnType
@@ -9,35 +17,51 @@
     │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
-    │           └── ReturnStmt: 'return'
-    │               └── BoolLiteral: 'false'
+    │           └── IfStmt
+    │               ├── IfKw: 'if'
+    │               ├── Cond
+    │               │   └── BoolLiteral: 'false'
+    │               └── Then
+    │                   └── Block
+    │                       └── ReturnStmt: 'return'
+    │                           └── Number: '1'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'baz'
+    │   ├── Params
+    │   │   └── Param
+    │   │       ├── VarPattern: 'arr'
+    │   │       └── Type
+    │   │           └── ArrayType
+    │   │               ├── TypeI32: 'i32'
+    │   │               └── Size: '3'
+    │   └── Body
+    │       └── Block
+    │           ├── LetDecl
+    │           │   ├── LetKw: 'let'
+    │           │   ├── Pattern
+    │           │   │   └── VarPattern: 'x'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── TypeI32: 'i32'
+    │           │   ├── Assign: '='
+    │           │   └── Expr
+    │           │       └── BoolLiteral: 'true'
+    │           └── LetDecl
+    │               ├── LetKw: 'let'
+    │               ├── Pattern
+    │               │   └── VarPattern: 'v'
+    │               ├── Assign: '='
+    │               └── Expr
+    │                   └── ArrayIndex: 'arr'
+    │                       └── String: '"1"'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
         ├── Params
+        │   └── Param
+        │       ├── VarPattern: 'param'
+        │       └── Type
+        │           └── TypeI32: 'i32'
         └── Body
             └── Block
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── MutKw: 'mut'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'x'
-                │   ├── Colon: ':'
-                │   ├── Type
-                │   │   └── TypeI32: 'i32'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── Number: '42'
-                ├── AssignStmt
-                │   ├── LValue
-                │   │   └── Id: 'x'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── Call: 'get_flag'
-                └── PrintStmt
-                    ├── PrintKw: 'println!'
-                    ├── FormatStr: '"x = {x}"'
-                    └── NamedArg: 'x'
-                        └── Value
-                            └── Expr
-                                └── Id: 'x'

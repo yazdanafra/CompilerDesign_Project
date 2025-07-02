@@ -1,0 +1,64 @@
+// Compute factorial of n (with explicit return type)
+fn factorial(n: i32) -> i32 {
+    if n <= 1 {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+// Swap two i32s and return a tuple
+fn swap(a: i32, b: i32) -> (i32, i32) {
+    return (b, a);
+}
+
+// Void function: prints a greeting
+fn print_message() {
+    println!("Hello from Trust!");
+}
+
+// Sum the elements of a fixed-size i32 array (1-based indexing)
+fn sum_array(arr: [i32;5]) -> i32 {
+    // We index 1..5 because array indices must be > 0
+    return arr[1] + arr[2] + arr[3] + arr[4] + arr[5];
+}
+
+fn main() {
+    // --- Variables & mutability ---
+    let mut x: i32 = 5;
+    let f: i32 = factorial(x);
+    println!("factorial {} = {}", x, f);
+
+    // --- Tuple return & destructuring ---
+    let (a, b): (i32, i32) = swap(3, 4);
+    println!("swap(3,4) = ({}, {})", a, b);
+
+    // --- Void call ---
+    print_message();
+
+    // --- Array indexing & summing ---
+    let arr: [i32;5] = [10, 20, 30, 40, 50];
+    let total: i32 = sum_array(arr);
+    println!("sum of array = {}", total);
+
+    // --- If condition ---
+    if total > 100 {
+        println!("Total is large: {}", total);
+    } else {
+        println!("Total is modest: {}", total);
+    }
+
+    // --- Loop with break & continue ---
+    let mut idx: i32 = 1;
+    loop {
+        if idx > 3 {
+            break;
+        }
+        if idx == 2 {
+            idx = idx + 1;
+            continue;
+        }
+        println!("idx = {}", idx);
+        idx = idx + 1;
+    }
+}

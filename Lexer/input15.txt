@@ -1,16 +1,7 @@
-// Function returns a bool
-fn is_positive(n: i32) -> bool {
-    return n > 0;
+fn answer() -> i32 {
+    return true;      // ❌ returning bool from fn→i32
 }
 
 fn main() {
-    // x is declared as an i32
-    let mut x: i32;
-
-    // ❌ Semantic Rule 10 violated:
-    // The right-hand side is a bool (from is_positive),
-    // but x is of type i32
-    x = is_positive(5);
-
-    println!("x = {x}", x=x);
+    println!("{}", answer());
 }
