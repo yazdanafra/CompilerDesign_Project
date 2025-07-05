@@ -49,6 +49,9 @@ def gen_structs():
     for s in struct_defs:
         lines.append(f"typedef struct {{")
         for ctype, fname in s['fields']:
+            # Ensure we use 'int' instead of 'i32'
+            if ctype == 'i32':
+                ctype = 'int'
             lines.append(f"    {ctype} {fname};")
         lines.append(f"}} {s['name']};\n")
     return lines
@@ -62,7 +65,7 @@ def gen_program(prog):
         if fn['typ'] == 'FunctionDecl':
             struct_name = annotate(fn, 'struct_name')
             if struct_name:
-                elem_types = struct_name.split('_')[1:]  # Handle tuple structure
+                elem_types = [annotate(vp, 'ctype') for vp in get_children(fn, 'VarPattern')]
                 fields = [(t, f'f{i}') for i, t in enumerate(elem_types)]
                 struct_defs.append({'name': struct_name, 'fields': fields})
 
@@ -231,7 +234,7 @@ def gen_stmt(node):
         c_fmt = re.sub(r"\{[^\}]*\}", "%d", raw) + "\\n"
         # extract all names in {…} in left‑to‑right order
         idents = re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", raw)
-        args = ", ".join(idents)
+        args = ", ".join([gen_expr(c) for c in get_children(node, 'Expr')])
         return [f'printf("{c_fmt}", {args});']
     
     return []

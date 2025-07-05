@@ -2,8 +2,6 @@
 #include <stdbool.h>
 
 typedef struct {
-    i32 f0;
-    bool f1;
 } tuple_i32_bool;
 
 void no_return(int x);
@@ -12,7 +10,7 @@ int nested(int x, int y);
 void main();
 
 void no_return(int x) {
-    printf(""No return, x = %d"\n", x);
+    printf(""No return, x = %d"\n", );
 }
 
 tuple_i32_bool combine(int *tuple_i32_bool_f0, bool *tuple_i32_bool_f1, int a, int b) {
@@ -49,11 +47,11 @@ void main() {
     while (1) {
         if ((idx == mixed[1])) {
         }
-        printf(""idx: %d, beta: %d"\n", );
+        printf(""idx: %d, beta: %d"\n", , );
         idx = (idx + 1);
     }
     int data = combine();
-    printf(""combine: %d, %d"\n", );
+    printf(""combine: %d, %d"\n", , );
     int f = nested();
     printf(""nested result %d"\n", );
 }
