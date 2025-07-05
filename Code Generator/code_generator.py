@@ -1,6 +1,7 @@
 import json
-import sys
 import os
+import re
+import sys
 
 # Expanded mapping from Trust types to C types
 C_PRIMITIVES = {
@@ -35,7 +36,6 @@ def annotate(node: dict, key: str, default=None):
         return 'int*'  # Arrays are pointers in C (for dynamic arrays)
     return value
 
-
 def json_walk(node, parent=None):
     """Recursive generator to traverse the AST."""
     node['parent'] = parent
@@ -56,7 +56,7 @@ def gen_structs():
 def gen_program(prog):
     """Generate C program based on Trust language AST."""
     struct_defs.clear()
-    
+
     # Process function declarations and structs
     for fn in prog.get('children', []):
         if fn['typ'] == 'FunctionDecl':
@@ -77,7 +77,7 @@ def gen_program(prog):
                         else:
                             fields = [(annotate(node, 'ctype'), 'f0')]
                         struct_defs.append({'name': struct_name, 'fields': fields})
-    
+
     # Remove duplicate struct definitions
     seen = set()
     unique = []
@@ -96,6 +96,8 @@ def gen_program(prog):
             continue
         name = get_child(fn, 'Id')['value']
         params = []
+        extra_params = []  # Will hold the extra tuple-return params
+        # Handle input parameters first, then output tuple return params
         for p in get_child(fn, 'Params')['children']:
             vp = get_child(p, 'VarPattern')
             base = annotate(vp, 'ctype')
@@ -105,9 +107,19 @@ def gen_program(prog):
                 params.append(f"{vp['struct_name']} {vp['value']}")  # Tuple parameter as struct
             else:
                 params.append(f"{base} {vp['value']}")
-        
-        ret_ct = annotate(fn, 'return_ctype')
-        ret = 'void' if ret_ct is None else f"{ret_ct}*" if 'size' in fn else ret_ct
+
+        if 'struct_name' in fn:
+            # Tuple-return function
+            struct_name = annotate(fn, 'struct_name')
+            extra_params = [
+                f"int *{struct_name}_f0",
+                f"bool *{struct_name}_f1"
+            ]
+            params += extra_params
+            ret = 'void'
+        else:
+            ret_ct = annotate(fn, 'return_ctype')
+            ret = 'void' if ret_ct is None else f"{ret_ct}*" if 'size' in fn else ret_ct
         
         lines.append(f"{ret} {name}({', '.join(params)});")
     
@@ -126,6 +138,17 @@ def gen_function(fn):
     """Generate the C function definition from a function declaration."""
     name = get_child(fn, 'Id')['value']
     params = []
+    extra_params = []
+    if 'struct_name' in fn:
+        # Tuple-return function
+        struct_name = annotate(fn, 'struct_name')
+        extra_params = [
+            f"int *{struct_name}_f0",
+            f"bool *{struct_name}_f1"
+        ]
+        params += extra_params
+    
+    # Handle function parameters
     for p in get_child(fn, 'Params')['children']:
         vp = get_child(p, 'VarPattern')
         base = annotate(vp, 'ctype')
@@ -135,27 +158,23 @@ def gen_function(fn):
             params.append(f"{vp['struct_name']} {vp['value']}")  # Tuple parameter as struct
         else:
             params.append(f"{base} {vp['value']}")
-    
-    ret_ct = annotate(fn, 'return_ctype')
-    rt_sz = annotate(fn, 'size')
-    rt_st = annotate(fn, 'struct_name')
-    ret = 'void' if ret_ct is None else f"{ret_ct}*" if rt_sz else rt_st or ret_ct
 
+    ret_ct = annotate(fn, 'return_ctype')
+    ret = 'void' if ret_ct is None else ret_ct
     header = f"{ret} {name}({', '.join(params)}) {{"
+    
     stmts = []
-    
-    if rt_sz:
-        stmts.append(f"static {ret_ct} tmp[{rt_sz}];")
-    
+    if extra_params:
+        # Insert pointer write statements before the function body
+        stmts.append(f"*{extra_params[0].split()[-1]} = {gen_expr(get_child(fn, 'ReturnType'))};")
+        stmts.append(f"*{extra_params[1].split()[-1]} = {gen_expr(get_child(fn, 'ReturnType'))};")
+
     body = get_child(fn, 'Body')['children'][0]['children']
     for stmt in body:
         stmts += gen_stmt(stmt)
     
-    if rt_sz:
-        stmts = [s if not s.strip().startswith('return ') else 'return tmp;' for s in stmts]
-    
     footer = '}'
-    return [header] + [f"    {l}" for l in stmts] + [footer]
+    return [header] + ["    "+l for l in stmts] + [footer]
 
 def gen_stmt(node):
     """Generate C statements from the Trust AST nodes.""" 
@@ -209,12 +228,13 @@ def gen_stmt(node):
     
     if t == 'PrintStmt':
         raw = get_child(node, 'FormatStr')['value']
-        fmt = raw.replace("{}", "%d") + "\n"
-        args = ", ".join(gen_expr(c) for c in get_children(node, 'Expr'))
-        return [f"printf(\"{fmt}\", {args});"]
+        c_fmt = re.sub(r"\{[^\}]*\}", "%d", raw) + "\\n"
+        # extract all names in {…} in left‑to‑right order
+        idents = re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", raw)
+        args = ", ".join(idents)
+        return [f'printf("{c_fmt}", {args});']
     
     return []
-
 
 def gen_lvalue(node):
     """Generate left-hand side value expression for assignment.""" 
@@ -228,21 +248,22 @@ def gen_expr(node):
     if t == 'Id': 
         return node['value']
     if t == 'BinaryOp': 
-        return f"({gen_expr(node['children'][0])} {node['value']} {gen_expr(node['children'][1])})"
+        lhs = gen_expr(node['children'][0]) or "false"
+        rhs = gen_expr(node['children'][1]) or "false"
+        return f"({lhs} {node['value']} {rhs})"
     if t == 'ArrayIndex': 
         return f"{node['value']}[{gen_expr(node['children'][0])}]"
     if t == 'Call': 
         return f"{node['value']}({', '.join(gen_expr(c) for c in get_children(node, None))})"
     if t == 'ArrayLiteral': 
-        # Handle array literals: for arrays, C-style array initialization is used
         return '{' + ', '.join(gen_expr(c) for c in node.get('children', [])) + '}'
     if t == 'TupleLiteral':
-        # Convert tuple to struct-like initialization in C
         tpl = annotate(node, 'struct_name') or 'tuple'
         inits = [f".f{i} = {gen_expr(c)}" for i, c in enumerate(node.get('children', []))]
-        return f"({tpl}){{{', '.join(inits)}}}"  # For tuples, create a C struct initialization
+        return f"({tpl})" + "{" + ", ".join(inits) + "}"
+    if t == 'BoolLiteral':
+        return node['value']
     return ''
-
 
 if __name__ == '__main__':
     base = os.path.dirname(os.path.realpath(__file__))
