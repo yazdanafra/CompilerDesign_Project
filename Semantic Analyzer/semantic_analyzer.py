@@ -1,3 +1,4 @@
+import json
 import sys
 import os
 
@@ -251,7 +252,25 @@ class SemanticAnalyzer:
                 continue
             if declared and inferred and declared != inferred:
                 self.error(f"Type mismatch: declared '{declared}' vs initialized '{inferred}'", var)
+            # declare in symbol table
             self.declare(name, 'var', declared or inferred, mutable, var)
+            # annotate the VarPattern node so codegen can read it:
+            var.ctype      = declared or inferred     # e.g. "i32", "[i32;5]", "(i32,bool)"
+            var.carray_sz  = None
+            var.ctuple_name = None
+            # if it’s an array type, extract its size
+            if isinstance(var.ctype, str) and var.ctype.startswith('['):
+                # var.ctype is "[i32;5]"
+                inner, sz = var.ctype.strip('[]').split(';')
+                var.ctype = inner       # "i32"
+                var.carray_sz = int(sz)  # 5
+            # if it’s a tuple type, build a struct_name
+            elif isinstance(var.ctype, str) and var.ctype.startswith('('):
+                # var.ctype is "(i32,bool)"
+                types = var.ctype.strip('()').split(',')
+                name = 'tuple_' + '_'.join(types)
+                var.ctuple_name = name
+                var.ctype = name
         # **new**: descend into the Expr so ArrayIndex / other checks happen
         expr = next((c for c in node.children if c.typ=='Expr'), None)
         if expr:
@@ -401,65 +420,89 @@ class SemanticAnalyzer:
         param_types = []
         param_names = []
         for p in params_node.children:
-            # 1) name
+            # a) name
             vp    = next((c for c in p.children if c.typ == 'VarPattern'), None)
-            pname = vp.value if (vp and vp.value) else p.value
+            pname = vp.value if (vp and vp.value) else None
 
-            # 2) type: stringify whatever Type is there (primitive, array, tuple)
+            # b) type string e.g. "i32", "[i32;5]", "(i32,bool)"
             tnode = next((c for c in p.children if c.typ == 'Type'), None)
-            if tnode:
-                # _stringify_type_node expects a Node('Type', children=[…])
-                ptype = self._stringify_type_node(tnode)
-            else:
-                ptype = None
+            ptype = self._stringify_type_node(tnode) if (tnode and tnode.children) else None
 
             param_names.append(pname)
             param_types.append(ptype)
 
-
-        # 2) Compute return type (None means “void”)
+        # 2) Compute return type string (None means “void”)
         ret = None
         rnode = next((c for c in node.children if c.typ == 'ReturnType'), None)
         if rnode and rnode.children:
-            # rnode.children[0] is ASTNode('Type', …)
             ret = self._stringify_type_node(rnode.children[0])
 
         # 3) Declare the function in the enclosing scope
-        self.declare(
-            name_node.value,
-            'fn',
-            (param_types, ret),
-            False,
-            name_node
-        )
+        self.declare(name_node.value, 'fn', (param_types, ret), False, name_node)
+
+        # --- NEW: annotate function node with its return C‐type ---
+        # map Trust‑style ret ("i32","[i32;4]","(i32,bool)") → C‑type name
+        node.cret = ret
+        if isinstance(ret, str) and ret.startswith('['):
+            # array return; extract inner type/size
+            inner, sz = ret.strip('[]').split(';')
+            node.return_ctype = inner      # e.g. "i32"
+            node.return_size  = int(sz)    # e.g. 4
+        elif isinstance(ret, str) and ret.startswith('('):
+            # tuple return
+            types = ret.strip('()').split(',')
+            struct_name = 'tuple_' + '_'.join(types)
+            node.return_ctype   = struct_name
+            node.return_size    = None
+            node.return_struct  = struct_name
+        else:
+            # primitive or void
+            node.return_ctype = ret or None
+            node.return_size  = None
+            node.return_struct = None
 
         # 4) Enter the function’s own scope
         prev_fn = self.current_fn
         self.current_fn = (name_node.value, ret)
         self.enter_scope()
 
-        # 5) Declare parameters as immutable variables
-        for pname, ptype in zip(param_names, param_types):
-            if pname:
-                self.declare(pname, 'var', ptype, False)
+        # 5) Declare parameters as immutable vars and annotate each VarPattern
+        for i, (pname, ptype) in enumerate(zip(param_names, param_types)):
+            if not pname:
+                continue
+            # declare symbol
+            self.declare(pname, 'var', ptype, False)
+            # find the VarPattern node
+            vp = next(c for c in params_node.children[i].children if c.typ=='VarPattern')
+            # annotate ctype, array size or tuple struct
+            vp.ctype      = ptype
+            vp.carray_sz  = None
+            vp.ctuple_name = None
+            if isinstance(ptype, str) and ptype.startswith('['):
+                inner, sz = ptype.strip('[]').split(';')
+                vp.ctype     = inner
+                vp.carray_sz = int(sz)
+            elif isinstance(ptype, str) and ptype.startswith('('):
+                elems = ptype.strip('()').split(',')
+                struct_name = 'tuple_' + '_'.join(elems)
+                vp.ctype       = struct_name
+                vp.ctuple_name = struct_name
 
-        # 6) Type‐check every statement in the body block
+        # 6) Type‑check the body
         body_wrapper = next(c for c in node.children if c.typ == 'Body')
         block        = next(c for c in body_wrapper.children if c.typ == 'Block')
         for stmt in block.children:
             self.check(stmt)
 
-        # 7) Pop back to the outer scope
+        # 7) Pop back to outer scope
         self.exit_scope()
         self.current_fn = prev_fn
 
-        # 8) If non‐void, ensure every path returns
+        # 8) Ensure non‑void fns always return
         if ret is not None:
             if not self.body_always_returns(block.children):
-                self.error(
-                    f"Function '{name_node.value}' may not return on all paths",
-                    node
-                )
+                self.error(f"Function '{name_node.value}' may not return on all paths", node)
+
 
 
 
@@ -654,6 +697,32 @@ class SemanticAnalyzer:
         # anything else—pattern nodes, type nodes, print‐stmt wrappers, etc.—
         # is not a real expression to type‐check:
         return None
+    
+    def node_to_dict(self, node: Node) -> dict:
+        d = {
+            "typ": node.typ,
+            "value": node.value,
+            "children": [self.node_to_dict(c) for c in node.children]
+        }
+        # if this node was a variable binding, emit its C‐type info:
+        if hasattr(node, 'ctype') and node.ctype is not None:
+            d['ctype'] = node.ctype
+        if hasattr(node, 'carray_sz') and node.carray_sz is not None:
+            d['size'] = node.carray_sz
+        if hasattr(node, 'ctuple_name') and node.ctuple_name is not None:
+            d['struct_name'] = node.ctuple_name
+        # if this is a FunctionDecl, emit its return type
+        if node.typ == 'FunctionDecl' and hasattr(node, 'cret'):
+            # the canonical C return type (primitive, array base, or tuple struct)
+            d['return_ctype'] = node.return_ctype  
+            # if this was an array-return, emit its size
+            if getattr(node, 'return_size', None) is not None:
+                d['size'] = node.return_size
+            # if this was a tuple-return, emit its struct name
+            if getattr(node, 'return_struct', None) is not None:
+                d['struct_name'] = node.return_struct
+        return d
+
 
 
 def report_errors(errors, tree):
@@ -661,12 +730,33 @@ def report_errors(errors, tree):
         for e in errors:
             print(f"Semantic error: {e}")
         sys.exit(1)
+
     print("Program was compiled successfully")
-    # write out the full syntax tree for consumption by a later code generator
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    out_path = os.path.join(base_dir, 'syntax_tree.txt')
+
+    # write out the full syntax tree in JSON format into the Code Generator directory (sibling of this script)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+    codegen_dir = os.path.join(project_root, 'Code Generator')
+    os.makedirs(codegen_dir, exist_ok=True)
+    out_path = os.path.join(codegen_dir, 'syntax_tree.json')
+
+    # Convert the AST to a nested dict
+    analyzer = None
+    try:
+        analyzer = SemanticAnalyzer(tree)
+    except NameError:
+        pass
+
+    if analyzer:
+        tree_dict = analyzer.node_to_dict(tree)
+    else:
+        def to_dict(node):
+            return {"typ": node.typ, "value": node.value,
+                    "children": [to_dict(c) for c in node.children]}
+        tree_dict = to_dict(tree)
+
     with open(out_path, 'w', encoding='utf-8') as f:
-        f.write(repr(tree))
+        json.dump(tree_dict, f, indent=2)
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.abspath(__file__))

@@ -1,0 +1,2399 @@
+{
+  "typ": "Program",
+  "value": null,
+  "children": [
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "alpha",
+              "children": [],
+              "ctype": "bool"
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TypeBool",
+              "value": "bool",
+              "children": []
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "BoolLiteral",
+              "value": "true",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "MutKw",
+          "value": "mut",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "beta",
+              "children": [],
+              "ctype": "bool"
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "BoolLiteral",
+              "value": "false",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "gamma",
+              "children": [],
+              "ctype": "i32"
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TypeI32",
+              "value": "i32",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "AssignStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "LValue",
+          "value": null,
+          "children": [
+            {
+              "typ": "Id",
+              "value": "gamma",
+              "children": []
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "Number",
+              "value": "0x10",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "delta",
+              "children": [],
+              "ctype": "i32"
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "UnaryOp",
+              "value": "-",
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "15",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "epsilon",
+              "children": [],
+              "ctype": "i32"
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TypeI32",
+              "value": "i32",
+              "children": []
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "UnaryOp",
+              "value": "+",
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "15",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "t1",
+              "children": [],
+              "ctype": "tuple_i32_bool",
+              "struct_name": "tuple_i32_bool"
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "TupleLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "1",
+                  "children": []
+                },
+                {
+                  "typ": "BoolLiteral",
+                  "value": "false",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "MutKw",
+          "value": "mut",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "t2",
+              "children": [],
+              "ctype": "tuple_i32_i32",
+              "struct_name": "tuple_i32_i32"
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TupleType",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                },
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "TupleLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "2",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "3",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "TuplePattern",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "m1",
+                  "children": [],
+                  "ctype": "tuple_i32_i32",
+                  "struct_name": "tuple_i32_i32"
+                },
+                {
+                  "typ": "VarPattern",
+                  "value": "m2",
+                  "children": [],
+                  "ctype": "tuple_i32_i32",
+                  "struct_name": "tuple_i32_i32"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TupleType",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                },
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "TupleLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "4",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "5",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "unused",
+              "children": [],
+              "ctype": "i32"
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "TypeI32",
+              "value": "i32",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "AssignStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "LValue",
+          "value": null,
+          "children": [
+            {
+              "typ": "Id",
+              "value": "unused",
+              "children": []
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "Number",
+              "value": "3",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "mixed",
+              "children": [],
+              "ctype": "i32",
+              "size": 3
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayType",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                },
+                {
+                  "typ": "Size",
+                  "value": "3",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "5",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "10",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "15",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "flags",
+              "children": [],
+              "ctype": "bool",
+              "size": 2
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayType",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeBool",
+                  "value": "bool",
+                  "children": []
+                },
+                {
+                  "typ": "Size",
+                  "value": "2",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "BoolLiteral",
+                  "value": "true",
+                  "children": []
+                },
+                {
+                  "typ": "BoolLiteral",
+                  "value": "false",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "LetDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "LetKw",
+          "value": "let",
+          "children": []
+        },
+        {
+          "typ": "MutKw",
+          "value": "mut",
+          "children": []
+        },
+        {
+          "typ": "Pattern",
+          "value": null,
+          "children": [
+            {
+              "typ": "VarPattern",
+              "value": "nums",
+              "children": [],
+              "ctype": "i32",
+              "size": 3
+            }
+          ]
+        },
+        {
+          "typ": "Colon",
+          "value": ":",
+          "children": []
+        },
+        {
+          "typ": "Type",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayType",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                },
+                {
+                  "typ": "Size",
+                  "value": "3",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayLiteral",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Number",
+                  "value": "0x1",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "0x2",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "0x3",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "AssignStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "LValue",
+          "value": null,
+          "children": [
+            {
+              "typ": "ArrayIndex",
+              "value": "nums",
+              "children": [
+                {
+                  "typ": "Id",
+                  "value": "nums",
+                  "children": []
+                },
+                {
+                  "typ": "Number",
+                  "value": "2",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Assign",
+          "value": "=",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "BinaryOp",
+              "value": "+",
+              "children": [
+                {
+                  "typ": "ArrayIndex",
+                  "value": "nums",
+                  "children": [
+                    {
+                      "typ": "Number",
+                      "value": "1",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "typ": "BinaryOp",
+                  "value": "%",
+                  "children": [
+                    {
+                      "typ": "BinaryOp",
+                      "value": "*",
+                      "children": [
+                        {
+                          "typ": "ArrayIndex",
+                          "value": "nums",
+                          "children": [
+                            {
+                              "typ": "Number",
+                              "value": "0",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "typ": "Number",
+                          "value": "2",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Number",
+                      "value": "5",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "PrintStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "PrintKw",
+          "value": "println!",
+          "children": []
+        },
+        {
+          "typ": "FormatStr",
+          "value": "\"Start of test\"",
+          "children": []
+        }
+      ]
+    },
+    {
+      "typ": "PrintStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "PrintKw",
+          "value": "println!",
+          "children": []
+        },
+        {
+          "typ": "FormatStr",
+          "value": "\"Hex: {:X}, Dec: {}\"",
+          "children": []
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "Number",
+              "value": "0xAB",
+              "children": []
+            }
+          ]
+        },
+        {
+          "typ": "Expr",
+          "value": null,
+          "children": [
+            {
+              "typ": "Number",
+              "value": "171",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "PrintStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "PrintKw",
+          "value": "println!",
+          "children": []
+        },
+        {
+          "typ": "FormatStr",
+          "value": "\"Escapes:\\nLine1\\tTabbed\"",
+          "children": []
+        }
+      ]
+    },
+    {
+      "typ": "PrintStmt",
+      "value": null,
+      "children": [
+        {
+          "typ": "PrintKw",
+          "value": "println!",
+          "children": []
+        },
+        {
+          "typ": "FormatStr",
+          "value": "\"Named: a={a}, b={b}\"",
+          "children": []
+        },
+        {
+          "typ": "NamedArg",
+          "value": "a",
+          "children": [
+            {
+              "typ": "Value",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Expr",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "Id",
+                      "value": "alpha",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "NamedArg",
+          "value": "b",
+          "children": [
+            {
+              "typ": "Value",
+              "value": null,
+              "children": [
+                {
+                  "typ": "Expr",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "Id",
+                      "value": "beta",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typ": "FunctionDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "FnKw",
+          "value": "fn",
+          "children": []
+        },
+        {
+          "typ": "Id",
+          "value": "no_return",
+          "children": []
+        },
+        {
+          "typ": "Params",
+          "value": null,
+          "children": [
+            {
+              "typ": "Param",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "x",
+                  "children": [],
+                  "ctype": "i32"
+                },
+                {
+                  "typ": "Type",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Body",
+          "value": null,
+          "children": [
+            {
+              "typ": "Block",
+              "value": null,
+              "children": [
+                {
+                  "typ": "PrintStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "PrintKw",
+                      "value": "println!",
+                      "children": []
+                    },
+                    {
+                      "typ": "FormatStr",
+                      "value": "\"No return, x = {x}\"",
+                      "children": []
+                    },
+                    {
+                      "typ": "NamedArg",
+                      "value": "x",
+                      "children": [
+                        {
+                          "typ": "Value",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "Expr",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "Id",
+                                  "value": "x",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "return_ctype": null
+    },
+    {
+      "typ": "FunctionDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "FnKw",
+          "value": "fn",
+          "children": []
+        },
+        {
+          "typ": "Id",
+          "value": "combine",
+          "children": []
+        },
+        {
+          "typ": "Params",
+          "value": null,
+          "children": [
+            {
+              "typ": "Param",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "a",
+                  "children": [],
+                  "ctype": "i32"
+                },
+                {
+                  "typ": "Type",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "typ": "Param",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "b",
+                  "children": [],
+                  "ctype": "i32"
+                },
+                {
+                  "typ": "Type",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Arrow",
+          "value": "->",
+          "children": []
+        },
+        {
+          "typ": "ReturnType",
+          "value": null,
+          "children": [
+            {
+              "typ": "Type",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TupleType",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    },
+                    {
+                      "typ": "TypeBool",
+                      "value": "bool",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Body",
+          "value": null,
+          "children": [
+            {
+              "typ": "Block",
+              "value": null,
+              "children": [
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "sum",
+                          "children": [],
+                          "ctype": "i32"
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "BinaryOp",
+                          "value": "+",
+                          "children": [
+                            {
+                              "typ": "Id",
+                              "value": "a",
+                              "children": []
+                            },
+                            {
+                              "typ": "Id",
+                              "value": "b",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "flag",
+                          "children": [],
+                          "ctype": "bool"
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "BinaryOp",
+                          "value": "!=",
+                          "children": [
+                            {
+                              "typ": "Id",
+                              "value": "sum",
+                              "children": []
+                            },
+                            {
+                              "typ": "Number",
+                              "value": "0",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "ReturnStmt",
+                  "value": "return",
+                  "children": [
+                    {
+                      "typ": "TupleLiteral",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Id",
+                          "value": "sum",
+                          "children": []
+                        },
+                        {
+                          "typ": "Id",
+                          "value": "flag",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "return_ctype": "tuple_i32_bool",
+      "struct_name": "tuple_i32_bool"
+    },
+    {
+      "typ": "FunctionDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "FnKw",
+          "value": "fn",
+          "children": []
+        },
+        {
+          "typ": "Id",
+          "value": "nested",
+          "children": []
+        },
+        {
+          "typ": "Params",
+          "value": null,
+          "children": [
+            {
+              "typ": "Param",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "x",
+                  "children": [],
+                  "ctype": "i32"
+                },
+                {
+                  "typ": "Type",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "typ": "Param",
+              "value": null,
+              "children": [
+                {
+                  "typ": "VarPattern",
+                  "value": "y",
+                  "children": [],
+                  "ctype": "i32"
+                },
+                {
+                  "typ": "Type",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Arrow",
+          "value": "->",
+          "children": []
+        },
+        {
+          "typ": "ReturnType",
+          "value": null,
+          "children": [
+            {
+              "typ": "Type",
+              "value": null,
+              "children": [
+                {
+                  "typ": "TypeI32",
+                  "value": "i32",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "typ": "Body",
+          "value": null,
+          "children": [
+            {
+              "typ": "Block",
+              "value": null,
+              "children": [
+                {
+                  "typ": "IfStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "IfKw",
+                      "value": "if",
+                      "children": []
+                    },
+                    {
+                      "typ": "Cond",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "BinaryOp",
+                          "value": "&&",
+                          "children": [
+                            {
+                              "typ": "BinaryOp",
+                              "value": "<",
+                              "children": [
+                                {
+                                  "typ": "Id",
+                                  "value": "x",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Id",
+                                  "value": "y",
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "BinaryOp",
+                              "value": "||",
+                              "children": [
+                                {
+                                  "typ": "BinaryOp",
+                                  "value": ">",
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "y",
+                                      "children": []
+                                    },
+                                    {
+                                      "typ": "Id",
+                                      "value": "x",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "UnaryOp",
+                                  "value": "!",
+                                  "children": [
+                                    {
+                                      "typ": "BoolLiteral",
+                                      "value": "false",
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Then",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Block",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "LetDecl",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "LetKw",
+                                  "value": "let",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Pattern",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "VarPattern",
+                                      "value": "res",
+                                      "children": [],
+                                      "ctype": "i32"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Assign",
+                                  "value": "=",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Expr",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": "%",
+                                      "children": [
+                                        {
+                                          "typ": "BinaryOp",
+                                          "value": "*",
+                                          "children": [
+                                            {
+                                              "typ": "Id",
+                                              "value": "x",
+                                              "children": []
+                                            },
+                                            {
+                                              "typ": "Id",
+                                              "value": "y",
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "typ": "Number",
+                                          "value": "7",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "IfStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "IfKw",
+                                  "value": "if",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Cond",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": "<=",
+                                      "children": [
+                                        {
+                                          "typ": "Id",
+                                          "value": "res",
+                                          "children": []
+                                        },
+                                        {
+                                          "typ": "Number",
+                                          "value": "10",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Then",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Block",
+                                      "value": null,
+                                      "children": [
+                                        {
+                                          "typ": "ReturnStmt",
+                                          "value": "return",
+                                          "children": [
+                                            {
+                                              "typ": "Id",
+                                              "value": "res",
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "ElseKw",
+                                  "value": "else",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Else",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Block",
+                                      "value": null,
+                                      "children": [
+                                        {
+                                          "typ": "ReturnStmt",
+                                          "value": "return",
+                                          "children": [
+                                            {
+                                              "typ": "BinaryOp",
+                                              "value": "+",
+                                              "children": [
+                                                {
+                                                  "typ": "Id",
+                                                  "value": "res",
+                                                  "children": []
+                                                },
+                                                {
+                                                  "typ": "Number",
+                                                  "value": "1",
+                                                  "children": []
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "ElseKw",
+                      "value": "else",
+                      "children": []
+                    },
+                    {
+                      "typ": "Else",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Block",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "ReturnStmt",
+                              "value": "return",
+                              "children": [
+                                {
+                                  "typ": "BinaryOp",
+                                  "value": "-",
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "x",
+                                      "children": []
+                                    },
+                                    {
+                                      "typ": "Id",
+                                      "value": "y",
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "return_ctype": "i32"
+    },
+    {
+      "typ": "FunctionDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "FnKw",
+          "value": "fn",
+          "children": []
+        },
+        {
+          "typ": "Id",
+          "value": "main",
+          "children": []
+        },
+        {
+          "typ": "Params",
+          "value": null,
+          "children": []
+        },
+        {
+          "typ": "Body",
+          "value": null,
+          "children": [
+            {
+              "typ": "Block",
+              "value": null,
+              "children": [
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "MutKw",
+                      "value": "mut",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "count",
+                          "children": [],
+                          "ctype": "i32"
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Colon",
+                      "value": ":",
+                      "children": []
+                    },
+                    {
+                      "typ": "Type",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "TypeI32",
+                          "value": "i32",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Number",
+                          "value": "0",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LoopStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LoopKw",
+                      "value": "loop",
+                      "children": []
+                    },
+                    {
+                      "typ": "Block",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Block",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "IfStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "IfKw",
+                                  "value": "if",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Cond",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": ">=",
+                                      "children": [
+                                        {
+                                          "typ": "Id",
+                                          "value": "count",
+                                          "children": []
+                                        },
+                                        {
+                                          "typ": "Number",
+                                          "value": "3",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Then",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Block",
+                                      "value": null,
+                                      "children": [
+                                        {
+                                          "typ": "BreakStmt",
+                                          "value": "break",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "AssignStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "LValue",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "count",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Assign",
+                                  "value": "=",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Expr",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": "+",
+                                      "children": [
+                                        {
+                                          "typ": "Id",
+                                          "value": "count",
+                                          "children": []
+                                        },
+                                        {
+                                          "typ": "Number",
+                                          "value": "1",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "ContinueStmt",
+                              "value": "continue",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "MutKw",
+                      "value": "mut",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "idx",
+                          "children": [],
+                          "ctype": "i32"
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Colon",
+                      "value": ":",
+                      "children": []
+                    },
+                    {
+                      "typ": "Type",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "TypeI32",
+                          "value": "i32",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Number",
+                          "value": "0",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LoopStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LoopKw",
+                      "value": "loop",
+                      "children": []
+                    },
+                    {
+                      "typ": "Block",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Block",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "IfStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "IfKw",
+                                  "value": "if",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Cond",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": "==",
+                                      "children": [
+                                        {
+                                          "typ": "Id",
+                                          "value": "idx",
+                                          "children": []
+                                        },
+                                        {
+                                          "typ": "ArrayIndex",
+                                          "value": "mixed",
+                                          "children": [
+                                            {
+                                              "typ": "Number",
+                                              "value": "1",
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Then",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Block",
+                                      "value": null,
+                                      "children": [
+                                        {
+                                          "typ": "BreakStmt",
+                                          "value": "break",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "PrintStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "PrintKw",
+                                  "value": "println!",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "FormatStr",
+                                  "value": "\"idx: {0}, beta: {1}\"",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Expr",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "idx",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Expr",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "beta",
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "typ": "AssignStmt",
+                              "value": null,
+                              "children": [
+                                {
+                                  "typ": "LValue",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "Id",
+                                      "value": "idx",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "typ": "Assign",
+                                  "value": "=",
+                                  "children": []
+                                },
+                                {
+                                  "typ": "Expr",
+                                  "value": null,
+                                  "children": [
+                                    {
+                                      "typ": "BinaryOp",
+                                      "value": "+",
+                                      "children": [
+                                        {
+                                          "typ": "Id",
+                                          "value": "idx",
+                                          "children": []
+                                        },
+                                        {
+                                          "typ": "Number",
+                                          "value": "1",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "ExprStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "Call",
+                      "value": "no_return",
+                      "children": [
+                        {
+                          "typ": "Number",
+                          "value": "5",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "TuplePattern",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "VarPattern",
+                              "value": "res",
+                              "children": [],
+                              "ctype": "tuple_i32_bool",
+                              "struct_name": "tuple_i32_bool"
+                            },
+                            {
+                              "typ": "VarPattern",
+                              "value": "fl",
+                              "children": [],
+                              "ctype": "tuple_i32_bool",
+                              "struct_name": "tuple_i32_bool"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Call",
+                          "value": "combine",
+                          "children": [
+                            {
+                              "typ": "Number",
+                              "value": "2",
+                              "children": []
+                            },
+                            {
+                              "typ": "Number",
+                              "value": "3",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "PrintStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "PrintKw",
+                      "value": "println!",
+                      "children": []
+                    },
+                    {
+                      "typ": "FormatStr",
+                      "value": "\"combine: {0}, {1}\"",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Id",
+                          "value": "res",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Id",
+                          "value": "fl",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "f",
+                          "children": [],
+                          "ctype": "i32"
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Call",
+                          "value": "nested",
+                          "children": [
+                            {
+                              "typ": "Number",
+                              "value": "4",
+                              "children": []
+                            },
+                            {
+                              "typ": "Number",
+                              "value": "2",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "PrintStmt",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "PrintKw",
+                      "value": "println!",
+                      "children": []
+                    },
+                    {
+                      "typ": "FormatStr",
+                      "value": "\"nested result {}\"",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Id",
+                          "value": "f",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "return_ctype": null
+    }
+  ]
+}
