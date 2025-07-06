@@ -13,13 +13,46 @@
         },
         {
           "typ": "Id",
-          "value": "main",
+          "value": "make_seq",
           "children": []
         },
         {
           "typ": "Params",
           "value": null,
           "children": []
+        },
+        {
+          "typ": "Arrow",
+          "value": "->",
+          "children": []
+        },
+        {
+          "typ": "ReturnType",
+          "value": null,
+          "children": [
+            {
+              "typ": "Type",
+              "value": null,
+              "children": [
+                {
+                  "typ": "ArrayType",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "TypeI32",
+                      "value": "i32",
+                      "children": []
+                    },
+                    {
+                      "typ": "Size",
+                      "value": "4",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           "typ": "Body",
@@ -44,7 +77,7 @@
                       "children": [
                         {
                           "typ": "VarPattern",
-                          "value": "nums",
+                          "value": "arr",
                           "children": [],
                           "ctype": "i32",
                           "size": 4
@@ -93,25 +126,138 @@
                           "children": [
                             {
                               "typ": "Number",
-                              "value": "10",
+                              "value": "1",
                               "children": []
                             },
                             {
                               "typ": "Number",
-                              "value": "20",
+                              "value": "2",
                               "children": []
                             },
                             {
                               "typ": "Number",
-                              "value": "30",
+                              "value": "3",
                               "children": []
                             },
                             {
                               "typ": "Number",
-                              "value": "40",
+                              "value": "4",
                               "children": []
                             }
                           ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "typ": "ReturnStmt",
+                  "value": "return",
+                  "children": [
+                    {
+                      "typ": "Id",
+                      "value": "arr",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "return_ctype": "i32",
+      "size": 4
+    },
+    {
+      "typ": "FunctionDecl",
+      "value": null,
+      "children": [
+        {
+          "typ": "FnKw",
+          "value": "fn",
+          "children": []
+        },
+        {
+          "typ": "Id",
+          "value": "main",
+          "children": []
+        },
+        {
+          "typ": "Params",
+          "value": null,
+          "children": []
+        },
+        {
+          "typ": "Body",
+          "value": null,
+          "children": [
+            {
+              "typ": "Block",
+              "value": null,
+              "children": [
+                {
+                  "typ": "LetDecl",
+                  "value": null,
+                  "children": [
+                    {
+                      "typ": "LetKw",
+                      "value": "let",
+                      "children": []
+                    },
+                    {
+                      "typ": "Pattern",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "VarPattern",
+                          "value": "seq",
+                          "children": [],
+                          "ctype": "i32",
+                          "size": 4
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Colon",
+                      "value": ":",
+                      "children": []
+                    },
+                    {
+                      "typ": "Type",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "ArrayType",
+                          "value": null,
+                          "children": [
+                            {
+                              "typ": "TypeI32",
+                              "value": "i32",
+                              "children": []
+                            },
+                            {
+                              "typ": "Size",
+                              "value": "3",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "typ": "Assign",
+                      "value": "=",
+                      "children": []
+                    },
+                    {
+                      "typ": "Expr",
+                      "value": null,
+                      "children": [
+                        {
+                          "typ": "Call",
+                          "value": "make_seq",
+                          "children": []
                         }
                       ]
                     }
@@ -132,7 +278,7 @@
                       "children": [
                         {
                           "typ": "VarPattern",
-                          "value": "first",
+                          "value": "a",
                           "children": [],
                           "ctype": "i32"
                         }
@@ -149,7 +295,7 @@
                       "children": [
                         {
                           "typ": "ArrayIndex",
-                          "value": "nums",
+                          "value": "seq",
                           "children": [
                             {
                               "typ": "Number",
@@ -177,7 +323,7 @@
                       "children": [
                         {
                           "typ": "VarPattern",
-                          "value": "middle",
+                          "value": "b",
                           "children": [],
                           "ctype": "i32"
                         }
@@ -194,7 +340,7 @@
                       "children": [
                         {
                           "typ": "ArrayIndex",
-                          "value": "nums",
+                          "value": "seq",
                           "children": [
                             {
                               "typ": "Number",
@@ -222,7 +368,7 @@
                       "children": [
                         {
                           "typ": "VarPattern",
-                          "value": "last",
+                          "value": "c",
                           "children": [],
                           "ctype": "i32"
                         }
@@ -239,7 +385,7 @@
                       "children": [
                         {
                           "typ": "ArrayIndex",
-                          "value": "nums",
+                          "value": "seq",
                           "children": [
                             {
                               "typ": "Number",
@@ -263,7 +409,7 @@
                     },
                     {
                       "typ": "FormatStr",
-                      "value": "\"first = {}, middle = {}, last = {}\"",
+                      "value": "\"seq = {}, {}, {}\"",
                       "children": []
                     },
                     {
@@ -272,7 +418,7 @@
                       "children": [
                         {
                           "typ": "Id",
-                          "value": "first",
+                          "value": "a",
                           "children": []
                         }
                       ]
@@ -283,7 +429,7 @@
                       "children": [
                         {
                           "typ": "Id",
-                          "value": "middle",
+                          "value": "b",
                           "children": []
                         }
                       ]
@@ -294,7 +440,7 @@
                       "children": [
                         {
                           "typ": "Id",
-                          "value": "last",
+                          "value": "c",
                           "children": []
                         }
                       ]

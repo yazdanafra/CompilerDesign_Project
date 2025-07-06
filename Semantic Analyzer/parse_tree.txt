@@ -1,4 +1,34 @@
 └── Program
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'make_seq'
+    │   ├── Params
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── ArrayType
+    │   │           ├── TypeI32: 'i32'
+    │   │           └── Size: '4'
+    │   └── Body
+    │       └── Block
+    │           ├── LetDecl
+    │           │   ├── LetKw: 'let'
+    │           │   ├── Pattern
+    │           │   │   └── VarPattern: 'arr'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── ArrayType
+    │           │   │       ├── TypeI32: 'i32'
+    │           │   │       └── Size: '4'
+    │           │   ├── Assign: '='
+    │           │   └── Expr
+    │           │       └── ArrayLiteral
+    │           │           ├── Number: '1'
+    │           │           ├── Number: '2'
+    │           │           ├── Number: '3'
+    │           │           └── Number: '4'
+    │           └── ReturnStmt: 'return'
+    │               └── Id: 'arr'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
@@ -8,49 +38,45 @@
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'nums'
+                │   │   └── VarPattern: 'seq'
                 │   ├── Colon: ':'
                 │   ├── Type
                 │   │   └── ArrayType
                 │   │       ├── TypeI32: 'i32'
-                │   │       └── Size: '4'
+                │   │       └── Size: '3'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayLiteral
-                │           ├── Number: '10'
-                │           ├── Number: '20'
-                │           ├── Number: '30'
-                │           └── Number: '40'
+                │       └── Call: 'make_seq'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'first'
+                │   │   └── VarPattern: 'a'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayIndex: 'nums'
+                │       └── ArrayIndex: 'seq'
                 │           └── Number: '1'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'middle'
+                │   │   └── VarPattern: 'b'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayIndex: 'nums'
+                │       └── ArrayIndex: 'seq'
                 │           └── Number: '2'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'last'
+                │   │   └── VarPattern: 'c'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── ArrayIndex: 'nums'
+                │       └── ArrayIndex: 'seq'
                 │           └── Number: '3'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
-                    ├── FormatStr: '"first = {}, middle = {}, last = {}"'
+                    ├── FormatStr: '"seq = {}, {}, {}"'
                     ├── Expr
-                    │   └── Id: 'first'
+                    │   └── Id: 'a'
                     ├── Expr
-                    │   └── Id: 'middle'
+                    │   └── Id: 'b'
                     └── Expr
-                        └── Id: 'last'
+                        └── Id: 'c'

@@ -1,4 +1,51 @@
-println!("Trust is good")
-println!("x is {} and twelve is {}", x, 12);
-println!("x is {1} and twelve is {0}", 3*4, x);
-println!("x is {x} and twelve is {twelve} and i am {w}.", w="happy", x=x, twelve=12);
+// Test program covering functions, function calls, loops, and break
+
+// A simple add function
+fn add(x: i32, y: i32) -> i32 {
+    x + y
+}
+
+// Compute factorial using a while loop
+fn factorial(n: i32) -> i32 {
+    let result: i32 = 1;
+    let i: i32 = 1;
+    while true {
+        // multiply result by i
+        result = result * i;
+        // when i reaches n, break out
+        if i == n {
+            break;
+        }
+        i = i + 1;
+    }
+    result
+}
+
+// Find the first even number in an array, or return -1 if none
+fn first_even(arr: i32[], size: i32) -> i32 {
+    let idx: i32 = 0;
+    while idx < size {
+        if arr[idx] % 2 == 0 {
+            // exit loop immediately, returning the even value
+            return arr[idx];
+        }
+        idx = idx + 1;
+    }
+    // no even found
+    -1
+}
+
+fn main() {
+    // Test add
+    let sum: i32 = add(10, 25);
+    println!("add(10, 25) = {}", sum);
+
+    // Test factorial
+    let f5: i32 = factorial(5);
+    println!("factorial(5) = {}", f5);
+
+    // Test first_even
+    let data: i32[6] = {3, 7, 8, 11, 14, 17};
+    let fe: i32 = first_even(data, 6);
+    println!("first even in {{3,7,8,11,14,17}} = {}", fe);
+}

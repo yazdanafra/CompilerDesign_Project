@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+int* make_seq();
 void main();
 
+int* make_seq() {
+    int arr[4] = {1, 2, 3, 4};
+    return arr;
+}
+
 void main() {
-    int nums[4] = {10, 20, 30, 40};
-    int first = nums[1];
-    int middle = nums[2];
-    int last = nums[3];
-    printf("first = %d, middle = %d, last = %d\n", first, middle, last);
+    int* seq = make_seq();
+    int a = seq[0];
+    int b = seq[2];
+    int c = seq[3];
+    printf("seq = %d, %d, %d\n", a, b, c);
 }

@@ -141,9 +141,14 @@ def gen_program(prog):
             ret = 'void'
         else:
             ret_ct = annotate(fn, 'return_ctype')
-            ret = 'void' if ret_ct is None else f"{ret_ct}*" if 'size' in fn else ret_ct
-        
+            if 'size' in fn:
+                # array‐return → pointer type
+                ret = f"{ret_ct}*"                     # ← EDIT
+            else:
+                ret = 'void' if ret_ct is None else ret_ct
+
         lines.append(f"{ret} {name}({', '.join(params)});")
+
     
     lines.append("")
 
@@ -179,21 +184,54 @@ def gen_function(fn):
         else:
             params.append(f"{base} {vp['value']}")
 
+    # Determine C return type (pointer if 'size' present)
     ret_ct = annotate(fn, 'return_ctype')
-    ret = 'void' if ret_ct is None else ret_ct
+    if 'size' in fn:
+        ret = f"{ret_ct}*"
+    else:
+        ret = 'void' if ret_ct is None else ret_ct
     header = f"{ret} {name}({', '.join(params)}) {{"
+    footer = "}"                     # ← DEFINE footer _before_ any early returns
     
     stmts = []
     if extra_params:
         stmts.append(f"*{extra_params[0].split()[-1]} = a + b;")
         stmts.append(f"*{extra_params[1].split()[-1]} = (*{extra_params[0].split()[-1]} != 0);")
 
+
+    # Look for a ReturnType → ArrayType (if any)
+    rtype      = get_child(fn, 'ReturnType')
+    array_type = rtype and get_child(rtype, 'ArrayType')
+    if array_type and 'size' in array_type:
+        # we have a fixed‐size array return
+        size      = array_type['size']
+        ret_ct    = annotate(fn, 'return_ctype')
+        body      = get_child(fn, 'Body')['children'][0]['children']
+        ret_stmt  = next(s for s in body if s['typ']=='ReturnStmt')
+
+        # unwrap Expr wrapper if present
+        first_child = ret_stmt['children'][0]
+        if first_child.get('typ') == 'Expr':
+            arr_node = first_child['children'][0]
+        else:
+            arr_node = first_child
+
+        init_code = gen_expr(arr_node) if arr_node else "{}"
+
+        return [
+            header,
+            f"    static {ret_ct} tmp[{size}] = {init_code};",
+            "    return tmp;",
+            footer
+        ]
+
+
+    # Otherwise emit all inner statements normally
     body = get_child(fn, 'Body')['children'][0]['children']
     for stmt in body:
         stmts += gen_stmt(stmt)
     
-    footer = '}'
-    return [header] + ["    "+l for l in stmts] + [footer]
+    return [header] + [f"    {l}" for l in stmts] + [footer]
 
 def gen_stmt(node):
     """Generate C statements from the Trust AST nodes.""" 
@@ -210,7 +248,11 @@ def gen_stmt(node):
         init = gen_expr(init_child) if init_child else ''
         
         if sz is not None:
-            decl = f"{base} {name}[{sz}] = {init};"  
+            # **edit**: if init is a function call returning a pointer, declare as pointer
+            if init.startswith(f"{name}(") or '(' in init and init.endswith(')'):
+                decl = f"{base}* {name} = {init};"         # ← EDIT
+            else:
+                decl = f"{base} {name}[{sz}] = {init};"
         elif st:
             decl = f"{st} {name} = {init};"  
         else:
