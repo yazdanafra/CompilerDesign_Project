@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-int add(int x, int y);
 void main();
 
-int add(int x, int y) {
-    return (x + y);
-}
-
 void main() {
-    int z = add(2, 3);
-    printf("z = %d\n", z);
+    int nums[4] = {10, 20, 30, 40};
+    int first = nums[1];
+    int middle = nums[2];
+    int last = nums[3];
+    printf("first = %d, middle = %d, last = %d\n", first, middle, last);
 }

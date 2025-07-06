@@ -1,41 +1,16 @@
-// === Multi‑purpose Trust test ===
-
-// 1) Variable declarations with mutability
-let count: i32 = 42;
-let _hex: i32 = 0x1F4;     // 0x1F4 == 500 decimal
-mut flag: bool = true;
-
-// 2) Simple function, nested control, comments
-fn fib(n: i32) -> i32 {
-    // iterative Fibonacci
-    let mut a: i32 = 0;
-    let mut b: i32 = 1;
-    let mut i: i32 = 0;
-    loop {
-        if i >= n {
-            break;
-        }
-        let tmp: i32 = a + b;
-        a = b;
-        b = tmp;
-        i = i + 1;
-    }
-    return a;
+fn sum_array(a: [i32; 5]) -> i32 {
+  let mut total: i32 = 0;
+  let mut i:     i32 = 0;
+  loop {
+    if (i >= 5) { break; }
+    total = total + a[i];
+    i = i + 1;
+  }
+  return total;
 }
 
-// 3) String literals and escape sequences
-let msg: [i32] = [1, 2, 3];
-println!("Result for {}\n", fib(10));
-println!("Hex value: \"0x{:X}\"", _hex);
-
-// 4) Logical & relational operators in complex expression
-if (count > 0 && flag) || !(count == 42) {
-    // Do nothing
+fn main() {
+  let nums: [i32; 5] = [1, 2, 3, 4, 5];
+  let s:   i32       = sum_array(nums);
+  println!("Sum of nums = {}", s);
 }
-
-// 5) Array access, indexing, parentheses, and semicolons
-let element: i32 = msg[1];
-println!("Second element is {}", element);
-
-// 6) Edge‑case: standalone operators and whitespace
-//   + - * / % < > <= >= == != && || ! : -> , ; ( ) { } [ ]

@@ -223,21 +223,45 @@ def gen_stmt(node):
         return [f"{l} = {r};"]
     
     if t == 'IfStmt':
-        cond_expr = gen_expr(get_child(node, 'Cond')['children'][0])
-        then_blk = get_child(node, 'Then')['children'][0]['children']
-        lines = [f"if ({cond_expr}) {{"]
-        lines += [f"    {l}" for s in then_blk for l in gen_stmt(s)]
+        # 1) Unwrap the Cond wrapper to get the actual expression node
+        cond_wrapper = get_child(node, 'Cond')
+        cond_expr    = cond_wrapper['children'][0]
+        cond         = gen_expr(cond_expr)
+
+        # 2) Unwrap the Then wrapper to find its Block
+        then_wrapper = get_child(node, 'Then')
+        then_block   = get_child(then_wrapper, 'Block') or then_wrapper
+        then_stmts   = then_block.get('children', [])
+
+        # 3) Emit the 'if' and its body
+        lines = [f"if ({cond}) {{"]
+        for stmt in then_stmts:
+            sublines = gen_stmt(stmt)
+            if sublines:
+                lines.extend([f"    {line}" for line in sublines])
+
         lines.append("}")
-        
-        els = get_children(node, 'Else')
-        if els:
-            else_blk = els[0]['children'][0]['children']
-            lines += ["else {"] + [f"    {l}" for s in else_blk for l in gen_stmt(s)] + ["}"]
+
+        # 4) Handle optional else
+        else_wrapper = get_child(node, 'Else')
+        if else_wrapper:
+            else_block = get_child(else_wrapper, 'Block') or else_wrapper
+            else_stmts = else_block.get('children', [])
+            lines.append("else {")
+            for stmt in else_stmts:
+                for line in gen_stmt(stmt):
+                    lines.append(f"    {line}")
+            lines.append("}")
+
         return lines
+
 
     if t == 'LoopStmt':
         loop_body = get_child(get_child(node, 'Block'), 'Block').get('children', [])
         return ["while (1) {"] + [f"    {l}" for s in loop_body for l in gen_stmt(s)] + ["}"]
+    
+    if t == 'BreakStmt':
+        return ['break;']
     
     if t == 'ReturnStmt':
         ret_expr = node['children'][0]

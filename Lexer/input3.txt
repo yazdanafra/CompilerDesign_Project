@@ -1,11 +1,12 @@
+fn main() {
+    // Declare a 4‑element i32 array literal
+    let nums: [i32; 4] = [10, 20, 30, 40];
 
+    // Index into it
+    let first  = nums[1];
+    let middle = nums[2];
+    let last   = nums[3];
 
-@foo
-
-#bar!
-
-"knfjvsdfjnk
-
-(lldpvpld
-
-ndcdkmvkd
+    // Print each element
+    println!("first = {}, middle = {}, last = {}", first, middle, last);
+}

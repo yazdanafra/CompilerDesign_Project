@@ -1,26 +1,4 @@
 └── Program
-    ├── FunctionDecl
-    │   ├── FnKw: 'fn'
-    │   ├── Id: 'add'
-    │   ├── Params
-    │   │   ├── Param
-    │   │   │   ├── VarPattern: 'x'
-    │   │   │   └── Type
-    │   │   │       └── TypeI32: 'i32'
-    │   │   └── Param
-    │   │       ├── VarPattern: 'y'
-    │   │       └── Type
-    │   │           └── TypeI32: 'i32'
-    │   ├── Arrow: '->'
-    │   ├── ReturnType
-    │   │   └── Type
-    │   │       └── TypeI32: 'i32'
-    │   └── Body
-    │       └── Block
-    │           └── ReturnStmt: 'return'
-    │               └── BinaryOp: '+'
-    │                   ├── Id: 'x'
-    │                   └── Id: 'y'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
@@ -30,17 +8,49 @@
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'z'
+                │   │   └── VarPattern: 'nums'
                 │   ├── Colon: ':'
                 │   ├── Type
-                │   │   └── TypeI32: 'i32'
+                │   │   └── ArrayType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── Size: '4'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Call: 'add'
-                │           ├── Number: '2'
+                │       └── ArrayLiteral
+                │           ├── Number: '10'
+                │           ├── Number: '20'
+                │           ├── Number: '30'
+                │           └── Number: '40'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'first'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── ArrayIndex: 'nums'
+                │           └── Number: '1'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'middle'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── ArrayIndex: 'nums'
+                │           └── Number: '2'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'last'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── ArrayIndex: 'nums'
                 │           └── Number: '3'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
-                    ├── FormatStr: '"z = {}"'
+                    ├── FormatStr: '"first = {}, middle = {}, last = {}"'
+                    ├── Expr
+                    │   └── Id: 'first'
+                    ├── Expr
+                    │   └── Id: 'middle'
                     └── Expr
-                        └── Id: 'z'
+                        └── Id: 'last'
