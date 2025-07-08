@@ -339,6 +339,7 @@ def gen_program(prog):
     # 2) Emit headers + typedefs first
     lines = [
     "#include <stdio.h>",
+    "#include <stdlib.h>",
     "#include <stdbool.h>",
     ""
     ]

@@ -1,81 +1,88 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct {
-    int f0;
-    int f1;
-} tuple_i32_i32;
-
-typedef struct {
-    int f0;
-    bool f1;
-    int f2;
-} tuple_i32_bool_i32;
 
 
-int counter = 0;
-int limit = 5;
-bool flags[3] = {true, false, true};
-int message[4] = {10, 20, 30, 40};
-
-int factorial(int n);
-int sum_and_diff(int a, int b);
-tuple_i32_i32 swap(int x, int y);
+bool is_even(int x);
+int sum_array(int* a);
+int find_first_even(int* a);
+int count_pairs(int n, int target);
 void main();
 
-int factorial(int n) {
-    if ((n <= 1)) {
-        return 1;
-    }
-    else {
-        return (n * factorial((n - 1)));
-    }
+bool is_even(int x) {
+    return ((x % 2) == 0);
 }
 
-int sum_and_diff(int a, int b) {
-    int sum = (a + b);
-    int diff;
-    if ((a >= b)) {
-        diff = (a - b);
+int sum_array(int* a) {
+    int total = 0;
+    int i = 0;
+    while (1) {
+        if ((i == 5)) {
+            break;
+        }
+        total = (total + a[i]);
+        i = (i + 1);
     }
-    else {
-        diff = (b - a);
-    }
-    return (sum + diff);
+    return total;
 }
 
-tuple_i32_i32 swap(int x, int y) {
-    tuple_i32_i32 tmp = {y, x};
-    return tmp;
+int find_first_even(int* a) {
+    int i = 0;
+    while (1) {
+        if ((i == 5)) {
+            break;
+        }
+        if (is_even(a[i])) {
+            return i;
+        }
+        i = (i + 1);
+    }
+    return -1;
+}
+
+int count_pairs(int n, int target) {
+    int count = 0;
+    int i = 0;
+    while (1) {
+        if ((i == n)) {
+            break;
+        }
+        int j = 0;
+        while (1) {
+            if ((j == n)) {
+                break;
+            }
+            if (((i + j) == target)) {
+                count = (count + 1);
+            }
+            j = (j + 1);
+        }
+        i = (i + 1);
+    }
+    return count;
 }
 
 void main() {
-    printf("Initial counter = %d\n", counter);
-    printf("limit = %d\n", limit);
-    printf("flags = %d, %d, %d\n", flags[1], flags[1], flags[2]);
-    printf("message = %d, %d, %d, %d\n", message[1], message[1], message[2], message[3]);
+    int nums[5] = {3, 4, 7, 8, 10};
+    printf("Array is_even flags:\n");
+    int k = 0;
     while (1) {
-        if ((counter >= limit)) {
+        if ((k == 5)) {
             break;
         }
-        counter = (counter + 1);
-        printf("Counter now = %d\n", counter);
+        printf("  %d → %d\n", nums[k], is_even(nums[k]));
+        k = (k + 1);
     }
-    int fact5 = factorial(5);
-    printf("5! = %d\n", fact5);
-    int s = sum_and_diff(7, 3);
-    printf("sum+diff of (7,3) = %d\n", s);
-    int new_a = swap(8, 42).f0;
-    int new_b = swap(8, 42).f1;
-    printf("after swap: a = %d, b = %d\n", new_a, new_b);
-    tuple_i32_i32 pair = {100,200};
-    int p = pair.f0;
-    int q = pair.f1;
-    printf("pair p = %d, q = %d\n", p, q);
-    tuple_i32_bool_i32 triple = {5,false,6};
-    int t1 = triple.f0;
-    bool t_flag = triple.f1;
-    int t2 = triple.f2;
-    printf("triple: t1 = %d, flag = %d, t2 = %d\n", t1, t_flag, t2);
-    printf("All tests passed.\n");
+    int total = sum_array(nums);
+    printf("Sum of array = %d\n", total);
+    int idx = find_first_even(nums);
+    if ((idx >= 0)) {
+        printf("First even at index %d (value %d)\n", idx, nums[idx]);
+    }
+    else {
+        printf("No even numbers found\n");
+    }
+    int pairs = count_pairs(5, 7);
+    printf("Number of (i,j) in [0..5)² summing to 7 = %d\n", pairs);
 }
