@@ -1,122 +1,25 @@
 └── Program
     ├── LetDecl
     │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'alpha'
-    │   ├── Colon: ':'
-    │   ├── Type
-    │   │   └── TypeBool: 'bool'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── BoolLiteral: 'true'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
     │   ├── MutKw: 'mut'
     │   ├── Pattern
-    │   │   └── VarPattern: 'beta'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── BoolLiteral: 'false'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'gamma'
-    │   ├── Colon: ':'
-    │   └── Type
-    │       └── TypeI32: 'i32'
-    ├── AssignStmt
-    │   ├── LValue
-    │   │   └── Id: 'gamma'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── Number: '0x10'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'delta'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── UnaryOp: '-'
-    │           └── Number: '15'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'epsilon'
+    │   │   └── VarPattern: 'counter'
     │   ├── Colon: ':'
     │   ├── Type
     │   │   └── TypeI32: 'i32'
     │   ├── Assign: '='
     │   └── Expr
-    │       └── UnaryOp: '+'
-    │           └── Number: '15'
+    │       └── Number: '0'
     ├── LetDecl
     │   ├── LetKw: 'let'
     │   ├── Pattern
-    │   │   └── VarPattern: 't1'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── TupleLiteral
-    │           ├── Number: '1'
-    │           └── BoolLiteral: 'false'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── MutKw: 'mut'
-    │   ├── Pattern
-    │   │   └── VarPattern: 't2'
+    │   │   └── VarPattern: 'limit'
     │   ├── Colon: ':'
     │   ├── Type
-    │   │   └── TupleType
-    │   │       ├── TypeI32: 'i32'
-    │   │       └── TypeI32: 'i32'
+    │   │   └── TypeI32: 'i32'
     │   ├── Assign: '='
     │   └── Expr
-    │       └── TupleLiteral
-    │           ├── Number: '2'
-    │           └── Number: '3'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── TuplePattern
-    │   │       ├── VarPattern: 'm1'
-    │   │       └── VarPattern: 'm2'
-    │   ├── Colon: ':'
-    │   ├── Type
-    │   │   └── TupleType
-    │   │       ├── TypeI32: 'i32'
-    │   │       └── TypeI32: 'i32'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── TupleLiteral
-    │           ├── Number: '4'
-    │           └── Number: '5'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'unused'
-    │   ├── Colon: ':'
-    │   └── Type
-    │       └── TypeI32: 'i32'
-    ├── AssignStmt
-    │   ├── LValue
-    │   │   └── Id: 'unused'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── Number: '3'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'mixed'
-    │   ├── Colon: ':'
-    │   ├── Type
-    │   │   └── ArrayType
-    │   │       ├── TypeI32: 'i32'
-    │   │       └── Size: '3'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── ArrayLiteral
-    │           ├── Number: '5'
-    │           ├── Number: '10'
-    │           └── Number: '15'
+    │       └── Number: '5'
     ├── LetDecl
     │   ├── LetKw: 'let'
     │   ├── Pattern
@@ -125,88 +28,66 @@
     │   ├── Type
     │   │   └── ArrayType
     │   │       ├── TypeBool: 'bool'
-    │   │       └── Size: '2'
-    │   ├── Assign: '='
-    │   └── Expr
-    │       └── ArrayLiteral
-    │           ├── BoolLiteral: 'true'
-    │           └── BoolLiteral: 'false'
-    ├── LetDecl
-    │   ├── LetKw: 'let'
-    │   ├── MutKw: 'mut'
-    │   ├── Pattern
-    │   │   └── VarPattern: 'nums'
-    │   ├── Colon: ':'
-    │   ├── Type
-    │   │   └── ArrayType
-    │   │       ├── TypeI32: 'i32'
     │   │       └── Size: '3'
     │   ├── Assign: '='
     │   └── Expr
     │       └── ArrayLiteral
-    │           ├── Number: '0x1'
-    │           ├── Number: '0x2'
-    │           └── Number: '0x3'
-    ├── AssignStmt
-    │   ├── LValue
-    │   │   └── ArrayIndex: 'nums'
-    │   │       ├── Id: 'nums'
-    │   │       └── Number: '2'
+    │           ├── BoolLiteral: 'true'
+    │           ├── BoolLiteral: 'false'
+    │           └── BoolLiteral: 'true'
+    ├── LetDecl
+    │   ├── LetKw: 'let'
+    │   ├── Pattern
+    │   │   └── VarPattern: 'message'
+    │   ├── Colon: ':'
+    │   ├── Type
+    │   │   └── ArrayType
+    │   │       ├── TypeI32: 'i32'
+    │   │       └── Size: '4'
     │   ├── Assign: '='
     │   └── Expr
-    │       └── BinaryOp: '+'
-    │           ├── ArrayIndex: 'nums'
-    │           │   └── Number: '1'
-    │           └── BinaryOp: '%'
-    │               ├── BinaryOp: '*'
-    │               │   ├── ArrayIndex: 'nums'
-    │               │   │   └── Number: '0'
-    │               │   └── Number: '2'
-    │               └── Number: '5'
-    ├── PrintStmt
-    │   ├── PrintKw: 'println!'
-    │   └── FormatStr: '"Start of test"'
-    ├── PrintStmt
-    │   ├── PrintKw: 'println!'
-    │   ├── FormatStr: '"Hex: {:X}, Dec: {}"'
-    │   ├── Expr
-    │   │   └── Number: '0xAB'
-    │   └── Expr
-    │       └── Number: '171'
-    ├── PrintStmt
-    │   ├── PrintKw: 'println!'
-    │   └── FormatStr: '"Escapes:\nLine1\tTabbed"'
-    ├── PrintStmt
-    │   ├── PrintKw: 'println!'
-    │   ├── FormatStr: '"Named: a={a}, b={b}"'
-    │   ├── NamedArg: 'a'
-    │   │   └── Value
-    │   │       └── Expr
-    │   │           └── Id: 'alpha'
-    │   └── NamedArg: 'b'
-    │       └── Value
-    │           └── Expr
-    │               └── Id: 'beta'
+    │       └── ArrayLiteral
+    │           ├── Number: '10'
+    │           ├── Number: '20'
+    │           ├── Number: '30'
+    │           └── Number: '40'
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'no_return'
+    │   ├── Id: 'factorial'
     │   ├── Params
     │   │   └── Param
-    │   │       ├── VarPattern: 'x'
+    │   │       ├── VarPattern: 'n'
     │   │       └── Type
     │   │           └── TypeI32: 'i32'
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
-    │           └── PrintStmt
-    │               ├── PrintKw: 'println!'
-    │               ├── FormatStr: '"No return, x = {x}"'
-    │               └── NamedArg: 'x'
-    │                   └── Value
-    │                       └── Expr
-    │                           └── Id: 'x'
+    │           └── IfStmt
+    │               ├── IfKw: 'if'
+    │               ├── Cond
+    │               │   └── BinaryOp: '<='
+    │               │       ├── Id: 'n'
+    │               │       └── Number: '1'
+    │               ├── Then
+    │               │   └── Block
+    │               │       └── ReturnStmt: 'return'
+    │               │           └── Number: '1'
+    │               ├── ElseKw: 'else'
+    │               └── Else
+    │                   └── Block
+    │                       └── ReturnStmt: 'return'
+    │                           └── BinaryOp: '*'
+    │                               ├── Id: 'n'
+    │                               └── Call: 'factorial'
+    │                                   └── BinaryOp: '-'
+    │                                       ├── Id: 'n'
+    │                                       └── Number: '1'
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'combine'
+    │   ├── Id: 'sum_and_diff'
     │   ├── Params
     │   │   ├── Param
     │   │   │   ├── VarPattern: 'a'
@@ -219,15 +100,16 @@
     │   ├── Arrow: '->'
     │   ├── ReturnType
     │   │   └── Type
-    │   │       └── TupleType
-    │   │           ├── TypeI32: 'i32'
-    │   │           └── TypeBool: 'bool'
+    │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
     │           ├── LetDecl
     │           │   ├── LetKw: 'let'
     │           │   ├── Pattern
     │           │   │   └── VarPattern: 'sum'
+    │           │   ├── Colon: ':'
+    │           │   ├── Type
+    │           │   │   └── TypeI32: 'i32'
     │           │   ├── Assign: '='
     │           │   └── Expr
     │           │       └── BinaryOp: '+'
@@ -235,20 +117,46 @@
     │           │           └── Id: 'b'
     │           ├── LetDecl
     │           │   ├── LetKw: 'let'
+    │           │   ├── MutKw: 'mut'
     │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'flag'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── BinaryOp: '!='
-    │           │           ├── Id: 'sum'
-    │           │           └── Number: '0'
+    │           │   │   └── VarPattern: 'diff'
+    │           │   ├── Colon: ':'
+    │           │   └── Type
+    │           │       └── TypeI32: 'i32'
+    │           ├── IfStmt
+    │           │   ├── IfKw: 'if'
+    │           │   ├── Cond
+    │           │   │   └── BinaryOp: '>='
+    │           │   │       ├── Id: 'a'
+    │           │   │       └── Id: 'b'
+    │           │   ├── Then
+    │           │   │   └── Block
+    │           │   │       └── AssignStmt
+    │           │   │           ├── LValue
+    │           │   │           │   └── Id: 'diff'
+    │           │   │           ├── Assign: '='
+    │           │   │           └── Expr
+    │           │   │               └── BinaryOp: '-'
+    │           │   │                   ├── Id: 'a'
+    │           │   │                   └── Id: 'b'
+    │           │   ├── ElseKw: 'else'
+    │           │   └── Else
+    │           │       └── Block
+    │           │           └── AssignStmt
+    │           │               ├── LValue
+    │           │               │   └── Id: 'diff'
+    │           │               ├── Assign: '='
+    │           │               └── Expr
+    │           │                   └── BinaryOp: '-'
+    │           │                       ├── Id: 'b'
+    │           │                       └── Id: 'a'
     │           └── ReturnStmt: 'return'
-    │               └── TupleLiteral
+    │               └── BinaryOp: '+'
     │                   ├── Id: 'sum'
-    │                   └── Id: 'flag'
+    │                   └── Id: 'diff'
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'nested'
+    │   ├── Id: 'swap'
     │   ├── Params
     │   │   ├── Param
     │   │   │   ├── VarPattern: 'x'
@@ -261,76 +169,58 @@
     │   ├── Arrow: '->'
     │   ├── ReturnType
     │   │   └── Type
-    │   │       └── TypeI32: 'i32'
+    │   │       └── TupleType
+    │   │           ├── TypeI32: 'i32'
+    │   │           └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
-    │           └── IfStmt
-    │               ├── IfKw: 'if'
-    │               ├── Cond
-    │               │   └── BinaryOp: '&&'
-    │               │       ├── BinaryOp: '<'
-    │               │       │   ├── Id: 'x'
-    │               │       │   └── Id: 'y'
-    │               │       └── BinaryOp: '||'
-    │               │           ├── BinaryOp: '>'
-    │               │           │   ├── Id: 'y'
-    │               │           │   └── Id: 'x'
-    │               │           └── UnaryOp: '!'
-    │               │               └── BoolLiteral: 'false'
-    │               ├── Then
-    │               │   └── Block
-    │               │       ├── LetDecl
-    │               │       │   ├── LetKw: 'let'
-    │               │       │   ├── Pattern
-    │               │       │   │   └── VarPattern: 'res'
-    │               │       │   ├── Assign: '='
-    │               │       │   └── Expr
-    │               │       │       └── BinaryOp: '%'
-    │               │       │           ├── BinaryOp: '*'
-    │               │       │           │   ├── Id: 'x'
-    │               │       │           │   └── Id: 'y'
-    │               │       │           └── Number: '7'
-    │               │       └── IfStmt
-    │               │           ├── IfKw: 'if'
-    │               │           ├── Cond
-    │               │           │   └── BinaryOp: '<='
-    │               │           │       ├── Id: 'res'
-    │               │           │       └── Number: '10'
-    │               │           ├── Then
-    │               │           │   └── Block
-    │               │           │       └── ReturnStmt: 'return'
-    │               │           │           └── Id: 'res'
-    │               │           ├── ElseKw: 'else'
-    │               │           └── Else
-    │               │               └── Block
-    │               │                   └── ReturnStmt: 'return'
-    │               │                       └── BinaryOp: '+'
-    │               │                           ├── Id: 'res'
-    │               │                           └── Number: '1'
-    │               ├── ElseKw: 'else'
-    │               └── Else
-    │                   └── Block
-    │                       └── ReturnStmt: 'return'
-    │                           └── BinaryOp: '-'
-    │                               ├── Id: 'x'
-    │                               └── Id: 'y'
+    │           └── ReturnStmt: 'return'
+    │               └── TupleLiteral
+    │                   ├── Id: 'y'
+    │                   └── Id: 'x'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
         ├── Params
         └── Body
             └── Block
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── MutKw: 'mut'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'count'
-                │   ├── Colon: ':'
-                │   ├── Type
-                │   │   └── TypeI32: 'i32'
-                │   ├── Assign: '='
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"Initial counter = {}"'
                 │   └── Expr
-                │       └── Number: '0'
+                │       └── Id: 'counter'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"limit = {}"'
+                │   └── Expr
+                │       └── Id: 'limit'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"flags = {}, {}, {}"'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'flags'
+                │   │       └── Number: '1'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'flags'
+                │   │       └── Number: '1'
+                │   └── Expr
+                │       └── ArrayIndex: 'flags'
+                │           └── Number: '2'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"message = {}, {}, {}, {}"'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'message'
+                │   │       └── Number: '1'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'message'
+                │   │       └── Number: '1'
+                │   ├── Expr
+                │   │   └── ArrayIndex: 'message'
+                │   │       └── Number: '2'
+                │   └── Expr
+                │       └── ArrayIndex: 'message'
+                │           └── Number: '3'
                 ├── LoopStmt
                 │   ├── LoopKw: 'loop'
                 │   └── Block
@@ -339,92 +229,145 @@
                 │           │   ├── IfKw: 'if'
                 │           │   ├── Cond
                 │           │   │   └── BinaryOp: '>='
-                │           │   │       ├── Id: 'count'
-                │           │   │       └── Number: '3'
+                │           │   │       ├── Id: 'counter'
+                │           │   │       └── Id: 'limit'
                 │           │   └── Then
                 │           │       └── Block
                 │           │           └── BreakStmt: 'break'
                 │           ├── AssignStmt
                 │           │   ├── LValue
-                │           │   │   └── Id: 'count'
+                │           │   │   └── Id: 'counter'
                 │           │   ├── Assign: '='
                 │           │   └── Expr
                 │           │       └── BinaryOp: '+'
-                │           │           ├── Id: 'count'
+                │           │           ├── Id: 'counter'
                 │           │           └── Number: '1'
-                │           └── ContinueStmt: 'continue'
+                │           └── PrintStmt
+                │               ├── PrintKw: 'println!'
+                │               ├── FormatStr: '"Counter now = {}"'
+                │               └── Expr
+                │                   └── Id: 'counter'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
-                │   ├── MutKw: 'mut'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'idx'
+                │   │   └── VarPattern: 'fact5'
                 │   ├── Colon: ':'
                 │   ├── Type
                 │   │   └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Number: '0'
-                ├── LoopStmt
-                │   ├── LoopKw: 'loop'
-                │   └── Block
-                │       └── Block
-                │           ├── IfStmt
-                │           │   ├── IfKw: 'if'
-                │           │   ├── Cond
-                │           │   │   └── BinaryOp: '=='
-                │           │   │       ├── Id: 'idx'
-                │           │   │       └── ArrayIndex: 'mixed'
-                │           │   │           └── Number: '1'
-                │           │   └── Then
-                │           │       └── Block
-                │           │           └── BreakStmt: 'break'
-                │           ├── PrintStmt
-                │           │   ├── PrintKw: 'println!'
-                │           │   ├── FormatStr: '"idx: {0}, beta: {1}"'
-                │           │   ├── Expr
-                │           │   │   └── Id: 'idx'
-                │           │   └── Expr
-                │           │       └── Id: 'beta'
-                │           └── AssignStmt
-                │               ├── LValue
-                │               │   └── Id: 'idx'
-                │               ├── Assign: '='
-                │               └── Expr
-                │                   └── BinaryOp: '+'
-                │                       ├── Id: 'idx'
-                │                       └── Number: '1'
-                ├── ExprStmt
-                │   └── Call: 'no_return'
-                │       └── Number: '5'
+                │       └── Call: 'factorial'
+                │           └── Number: '5'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"5! = {}"'
+                │   └── Expr
+                │       └── Id: 'fact5'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 's'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'sum_and_diff'
+                │           ├── Number: '7'
+                │           └── Number: '3'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"sum+diff of (7,3) = {}"'
+                │   └── Expr
+                │       └── Id: 's'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
                 │   │   └── TuplePattern
-                │   │       ├── VarPattern: 'res'
-                │   │       └── VarPattern: 'fl'
+                │   │       ├── VarPattern: 'new_a'
+                │   │       └── VarPattern: 'new_b'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TupleType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Call: 'combine'
-                │           ├── Number: '2'
-                │           └── Number: '3'
+                │       └── Call: 'swap'
+                │           ├── Number: '8'
+                │           └── Number: '42'
                 ├── PrintStmt
                 │   ├── PrintKw: 'println!'
-                │   ├── FormatStr: '"combine: {0}, {1}"'
+                │   ├── FormatStr: '"after swap: a = {}, b = {}"'
                 │   ├── Expr
-                │   │   └── Id: 'res'
+                │   │   └── Id: 'new_a'
                 │   └── Expr
-                │       └── Id: 'fl'
+                │       └── Id: 'new_b'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'f'
+                │   │   └── VarPattern: 'pair'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TupleType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Call: 'nested'
-                │           ├── Number: '4'
-                │           └── Number: '2'
+                │       └── TupleLiteral
+                │           ├── Number: '100'
+                │           └── Number: '200'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── TuplePattern
+                │   │       ├── VarPattern: 'p'
+                │   │       └── VarPattern: 'q'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Id: 'pair'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"pair p = {}, q = {}"'
+                │   ├── Expr
+                │   │   └── Id: 'p'
+                │   └── Expr
+                │       └── Id: 'q'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'triple'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TupleType
+                │   │       ├── TypeI32: 'i32'
+                │   │       ├── TypeBool: 'bool'
+                │   │       └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── TupleLiteral
+                │           ├── Number: '5'
+                │           ├── BoolLiteral: 'false'
+                │           └── Number: '6'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── TuplePattern
+                │   │       ├── VarPattern: 't1'
+                │   │       ├── VarPattern: 't_flag'
+                │   │       └── VarPattern: 't2'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Id: 'triple'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"triple: t1 = {}, flag = {}, t2 = {}"'
+                │   ├── Expr
+                │   │   └── Id: 't1'
+                │   ├── Expr
+                │   │   └── Id: 't_flag'
+                │   └── Expr
+                │       └── Id: 't2'
                 └── PrintStmt
                     ├── PrintKw: 'println!'
-                    ├── FormatStr: '"nested result {}"'
-                    └── Expr
-                        └── Id: 'f'
+                    └── FormatStr: '"All tests passed."'

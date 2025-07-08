@@ -44,36 +44,63 @@ def json_walk(node, parent=None):
 
 def translate_format(raw: str) -> str:
     """
-    Given a Rust style format string literal (including the surrounding quotes),
-    return a C format string with %d in place of any {...} placeholder,
-    preserving escapes, and still as a quoted C string.
+    Given a Rust‐style format string literal (with surrounding quotes),
+    produce a C format string: replace {…} with %d, then append newline.
     """
-    # strip leading & trailing quote
-    inner = raw[1:-1]
+    inner = raw[1:-1]     # strip the Rust quotes
 
     out = ""
     i = 0
-    n = len(inner)
-    while i < n:
-        ch = inner[i]
-        if ch == '{':
-            # skip until matching '}', drop the contents
-            while i < n and inner[i] != '}':
+    while i < len(inner):
+        if inner[i] == '{':
+            # skip until the matching '}'
+            while i < len(inner) and inner[i] != '}':
                 i += 1
-            # now inner[i] == '}', or i == n
+            # consume the '}'
+            if i < len(inner) and inner[i] == '}':
+                i += 1
             out += "%d"
-            i += 1
         else:
-            # normal char (including possible % or backslashes)
-            out += ch
+            out += inner[i]
             i += 1
 
-    # escape any literal "%" (Rust uses "{}" only, so % wouldn't appear normally,
-    # but just in case): double up.
-    out = out.replace("%", "%%")
+    # now append the newline escape
+    out += "\\n"
 
-    # return with C quotes
+    # wrap back in C quotes
     return f"\"{out}\""
+
+
+def gen_printf(node: dict) -> str:
+    raw_fmt = get_child(node, 'FormatStr')['value']
+    c_fmt   = translate_format(raw_fmt)
+
+    # 1) gather *all* nested Expr wrappers under this PrintStmt
+    expr_nodes = []
+    def walk(n):
+        if n.get('typ') == 'Expr':
+            expr_nodes.append(n)
+        for c in n.get('children', []):
+            walk(c)
+    walk(node)
+
+    # 2) from each Expr wrapper, dig down to the real expression
+    args = []
+    for expr_wrap in expr_nodes:
+        # unwrap one or more Expr layers:
+        real = expr_wrap
+        while real.get('typ') == 'Expr' and real.get('children'):
+            real = real['children'][0]
+        args.append(gen_expr(real))
+
+    # 3) produce the printf
+    if args:
+        return f"printf({c_fmt}, {', '.join(args)});"
+    else:
+        return f"printf({c_fmt});"
+
+
+
 
 
 def map_type(node):
@@ -464,7 +491,6 @@ def gen_stmt(node):
             return code
 
         # C) Simple single‐var let:  let x = ...;  or arrays
-        #    Find lone VarPattern
         vp = next((c for c in pat_wrap['children']
                 if c['typ'] == 'VarPattern'), None)
         if not vp:
@@ -472,16 +498,24 @@ def gen_stmt(node):
 
         base     = annotate(vp, 'ctype') or 'int'
         var_name = vp['value']
-        size     = vp.get('size')    # for arrays, e.g. [i32; N]
-        init_code = gen_expr(init_node) if init_node else ""
+        size     = vp.get('size')    # for arrays
+        # If there's an initializer, compute it; otherwise None
+        if init_node:
+            init_code = gen_expr(init_node)
+        else:
+            init_code = None
 
         if size is not None:
-            # array declaration
+            # array declaration must always have an initializer
             return [f"{base} {var_name}[{size}] = {init_code};"]
         else:
             # plain scalar
-            return [f"{base} {var_name} = {init_code};"]
-
+            if init_code is None:
+                # no initializer
+                return [f"{base} {var_name};"]
+            else:
+                # with initializer
+                return [f"{base} {var_name} = {init_code};"]
 
     # ---- 2) assignment ----
     if t == 'AssignStmt':
@@ -550,37 +584,7 @@ def gen_stmt(node):
         expr  = child['children'][0] if child['typ']=='Expr' else child
         return [f"return {gen_expr(expr)};"]
     if node['typ'] == 'PrintStmt':
-        raw = get_child(node, 'FormatStr')['value']   # e.g. "\"No return, x = {x}\""
-        inner = raw[1:-1]                             # strip the outer quotes
-
-        out = ""
-        i = 0
-        n = len(inner)
-        while i < n:
-            if inner[i] == '{':
-                # skip until the matching '}'
-                while i < n and inner[i] != '}':
-                    i += 1
-                # consume the '}'
-                if i < n and inner[i] == '}':
-                    i += 1
-                # emit a C %d placeholder
-                out += "%d"
-            else:
-                out += inner[i]
-                i += 1
-
-        # add newline and re‑quote
-        c_fmt = f"\"{out}\\n\""
-
-        # collect all Expr arguments
-        args = [gen_expr(wrap['children'][0])
-                for wrap in get_children(node, 'Expr')]
-
-        if args:
-            return [f"printf({c_fmt}, {', '.join(args)});"]
-        else:
-            return [f"printf({c_fmt});"]
+        return [gen_printf(node)]
 
 
     # default: nothing

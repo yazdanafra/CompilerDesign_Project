@@ -3,77 +3,79 @@
 
 typedef struct {
     int f0;
-    bool f1;
-} tuple_i32_bool;
-
-typedef struct {
-    int f0;
     int f1;
 } tuple_i32_i32;
 
+typedef struct {
+    int f0;
+    bool f1;
+    int f2;
+} tuple_i32_bool_i32;
 
-bool alpha = true;
-bool beta = false;
-int gamma = 0;
-int delta = -15;
-int epsilon = +15;
-tuple_i32_bool t1 = {1,false};
-tuple_i32_i32 t2 = {2,3};
-int unused = 0;
-int mixed[3] = {5, 10, 15};
-bool flags[2] = {true, false};
-int nums[3] = {0x1, 0x2, 0x3};
 
-void no_return(int x);
-tuple_i32_bool combine(int a, int b);
-int nested(int x, int y);
+int counter = 0;
+int limit = 5;
+bool flags[3] = {true, false, true};
+int message[4] = {10, 20, 30, 40};
+
+int factorial(int n);
+int sum_and_diff(int a, int b);
+tuple_i32_i32 swap(int x, int y);
 void main();
 
-void no_return(int x) {
-    printf("No return, x = %d\n");
+int factorial(int n) {
+    if ((n <= 1)) {
+        return 1;
+    }
+    else {
+        return (n * factorial((n - 1)));
+    }
 }
 
-tuple_i32_bool combine(int a, int b) {
+int sum_and_diff(int a, int b) {
     int sum = (a + b);
-    bool flag = (sum != 0);
-    tuple_i32_bool tmp = {sum, flag};
+    int diff;
+    if ((a >= b)) {
+        diff = (a - b);
+    }
+    else {
+        diff = (b - a);
+    }
+    return (sum + diff);
+}
+
+tuple_i32_i32 swap(int x, int y) {
+    tuple_i32_i32 tmp = {y, x};
     return tmp;
 }
 
-int nested(int x, int y) {
-    if (((x < y) && ((y > x) || false))) {
-        int res = ((x * y) % 7);
-        if ((res <= 10)) {
-            return res;
-        }
-        else {
-            return (res + 1);
-        }
-    }
-    else {
-        return (x - y);
-    }
-}
-
 void main() {
-    int count = 0;
+    printf("Initial counter = %d\n", counter);
+    printf("limit = %d\n", limit);
+    printf("flags = %d, %d, %d\n", flags[1], flags[1], flags[2]);
+    printf("message = %d, %d, %d, %d\n", message[1], message[1], message[2], message[3]);
     while (1) {
-        if ((count >= 3)) {
+        if ((counter >= limit)) {
             break;
         }
-        count = (count + 1);
+        counter = (counter + 1);
+        printf("Counter now = %d\n", counter);
     }
-    int idx = 0;
-    while (1) {
-        if ((idx == mixed[1])) {
-            break;
-        }
-        printf("idx: %d, beta: %d\n", idx, beta);
-        idx = (idx + 1);
-    }
-    int res = combine(2, 3).f0;
-    bool fl = combine(2, 3).f1;
-    printf("combine: %d, %d\n", res, fl);
-    int f = nested(4, 2);
-    printf("nested result %d\n", f);
+    int fact5 = factorial(5);
+    printf("5! = %d\n", fact5);
+    int s = sum_and_diff(7, 3);
+    printf("sum+diff of (7,3) = %d\n", s);
+    int new_a = swap(8, 42).f0;
+    int new_b = swap(8, 42).f1;
+    printf("after swap: a = %d, b = %d\n", new_a, new_b);
+    tuple_i32_i32 pair = {100,200};
+    int p = pair.f0;
+    int q = pair.f1;
+    printf("pair p = %d, q = %d\n", p, q);
+    tuple_i32_bool_i32 triple = {5,false,6};
+    int t1 = triple.f0;
+    bool t_flag = triple.f1;
+    int t2 = triple.f2;
+    printf("triple: t1 = %d, flag = %d, t2 = %d\n", t1, t_flag, t2);
+    printf("All tests passed.\n");
 }

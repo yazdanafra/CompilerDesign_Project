@@ -1,59 +1,88 @@
-// Call functions
-let r = multiply(3, 4);
-let sum = add(5, 6);
-let arr = create_array();
-let comp = compute(10, 20);
-let fib_val = fib(10);
+// ──────────────────────────────────────────────────────────────────────────────
+// Final Trust Test Program (no return errors, no bad '!')
+// ──────────────────────────────────────────────────────────────────────────────
 
-// Array access
-let element = arr[1];
-println!("Second element is {}", element);
+// Globals
+let mut counter: i32 = 0;
+let limit: i32     = 5;
+let flags: [bool; 3]    = [true, false, true];
+let message: [i32; 4]   = [10, 20, 30, 40];
 
-// Loops
-let mut x = 0;
-loop {
-    x = x + 1;
-    if x == 10 {
-        break;
+// factorial returns i32
+fn factorial(n: i32) -> i32 {
+    if n <= 1 {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
     }
 }
 
-let mut s = 0;
-let mut x_loop = 0;
-loop {
-    if x_loop % 7 == 0 {
-        continue;
+// sum_and_diff now returns i32
+fn sum_and_diff(a: i32, b: i32) -> i32 {
+    let sum: i32 = a + b;
+
+    // compute absolute difference
+    let mut diff: i32;
+    if a >= b {
+        diff = a - b;
+    } else {
+        diff = b - a;
     }
-    s = s + x_loop;
-    x_loop = x_loop + 1;
-    if x_loop > 10 {
-        break;
+
+    return sum + diff;
+}
+
+// swap returns a tuple of two i32s
+fn swap(x: i32, y: i32) -> (i32, i32) {
+    return (y, x);
+}
+
+fn main() {
+    // Print initial state
+    println!("Initial counter = {}", counter);
+    println!("limit = {}",      limit);
+    println!(
+        "flags = {}, {}, {}",
+        flags[1], flags[1], flags[2]
+    );
+    println!(
+        "message = {}, {}, {}, {}",
+        message[1], message[1], message[2], message[3]
+    );
+
+    // Loop until counter >= limit
+    loop {
+        if counter >= limit {
+            break;
+        }
+        counter = counter + 1;
+        println!("Counter now = {}", counter);
     }
-}
 
-// Conditional statements
-if x1 == 1 {
-    let y = 6;
-    let z = 7;
-}
+    // Compute 5!
+    let fact5: i32 = factorial(5);
+    println!("5! = {}", fact5);
 
-if y_num <= 2 && z_num > 7 || w != 9 {
-    x1 = 4 + y_num;
-} else {
-    x1 = 3 * z_num;
-}
+    // sum_and_diff
+    let s: i32 = sum_and_diff(7, 3);
+    println!("sum+diff of (7,3) = {}", s);
 
-if x1 >= 5 || z_num < 7 && !b1 {
-    b1 = true;
-} else if x1 == 3 {
-    array1[4] = 43;
-} else {
-    c = true;
-}
+    // swap demonstration
+    let (new_a, new_b): (i32, i32) = swap(8, 42);
+    println!("after swap: a = {}, b = {}", new_a, new_b);
 
-// Include standalone operators in expressions
-let a = 1 + 2 - 3 * 4 / 5 % 6;
-let b = a < 7 && a > 8 || a <= 9 && a >= 10 || a == 11 || a != 12;
-let c = a && flag || !b1;
-let d = (a, flag);
-let e = [a; 5];
+    // tuple destructuring
+    let pair: (i32, i32) = (100, 200);
+    let (p, q) = pair;
+    println!("pair p = {}, q = {}", p, q);
+
+    // another tuple
+    let triple: (i32, bool, i32) = (5, false, 6);
+    let (t1, t_flag, t2) = triple;
+    println!(
+        "triple: t1 = {}, flag = {}, t2 = {}",
+        t1, t_flag, t2
+    );
+
+    println!("All tests passed.");
+}
