@@ -1,17 +1,67 @@
-if x == 1 {
-y = 6;
-z = 7;
-}
-if y <= 2 && z > 7 || w != 9 {
-x = 4 + y;
-} else {
+// مثالِ برنامهٔ Trust
 
-x = 3 * z;
+// تابعی که یک آرایه از اعداد را می‌گیرد و مجموعشان را برمی‌گرداند
+fn sum_array(arr: [i32; 5]) -> i32 {
+    let mut total: i32 = 0;
+    let mut i: i32 = 0;
+    // حلقه تا پایان آرایه
+    loop {
+        if i >= 5 {
+            break;
+        }
+        // به کل اضافه کن
+        total = total + arr[i];
+        i = i + 1;
+    }
+    return total;
 }
-if x >= 5 || z < 7 && !b {
-b = true;
-} else if x == 3 {
-array[4] = 43;
-} else {
-c = true;
+
+// تابعی که یک عدد می‌گیرد و تشخیص می‌دهد زوج است یا خیر
+fn is_even(x: i32) -> bool {
+    return (x % 2) == 0;
+}
+
+// تابع اصلی
+fn main() {
+    // تعریف آرایه با نوع صریح
+    let nums: [i32; 5] = [10, 15, 20, 25, 30];
+
+    // فراخوانی تابع جمع آرایه
+    let sum = sum_array(nums);
+
+    // چاپ نتیجه
+    println!("Sum of array = {}", sum);
+
+    // شرط‌های پیچیده با && و ||
+    if is_even(sum) {
+        println!("Sum is even");
+    } else if sum < 100 {
+        println!("Sum is odd and less than 100");
+    } else {
+        println!("Sum is odd and >= 100");
+    }
+
+    // تولید یک تپل دوبعدی و کار با آن
+    let pair: (i32, bool) = (42, true);
+    // تپل‌سازی (destructuring)
+    let (a, flag) = pair;
+    println!("a = {}, flag = {}", a, flag);
+
+    // بررسی داخل حلقه با continue و break
+    let mut count: i32 = 0;
+    loop {
+        count = count + 1;
+        if count % 2 == 0 {
+            // اگر زوج است، از ادامهٔ بقیهٔ بدنه بگذرد
+            continue;
+        }
+        // اگر به 7 رسیدیم، حلقه را بشکن
+        if count == 7 {
+            break;
+        }
+        println!("Odd count = {}", count);
+    }
+
+    // پایان تابع main
+    return;
 }

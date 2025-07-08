@@ -1,2 +1,82 @@
-if x > 5
-    println("Hi");
+// Does an integer x divide evenly by 2?
+fn is_even(x: i32) -> bool {
+    return (x % 2) == 0;
+}
+
+// Sum all elements of a fixed‑size array of length 5.
+fn sum_array(a: [i32; 5]) -> i32 {
+    let mut total: i32 = 0;
+    let mut i: i32 = 0;
+    loop {
+        if i == 5 {
+            break;
+        }
+        total = total + a[i];
+        i = i + 1;
+    }
+    return total;
+}
+
+// Find the first even element’s index in an array, or -1 if none.
+fn find_first_even(a: [i32; 5]) -> i32 {
+    let mut i: i32 = 0;
+    loop {
+        if i == 5 {
+            // no more elements—stop searching
+            break;
+        }
+        if is_even(a[i]) {
+            return i;       // early return on first match
+        }
+        i = i + 1;
+    }
+    return -1;              // not found
+}
+
+// Count how many pairs (i,j) in [0..n)×[0..n) sum to a target, demonstrate nested loops.
+fn count_pairs(n: i32, target: i32) -> i32 {
+    let mut count: i32 = 0;
+    let mut i: i32 = 0;
+    loop {
+        if i == n {
+            break;
+        }
+        let mut j: i32 = 0;
+        loop {
+            if j == n {
+                break;
+            }
+            if i + j == target {
+                count = count + 1;
+            }
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+    return count;
+}
+
+// Main entry: builds some arrays, calls the above, and prints results.
+fn main() {
+    let nums: [i32; 5] = [3, 4, 7, 8, 10];
+    println!("Array is_even flags:");
+    let mut k: i32 = 0;
+    loop {
+        if k == 5 { break; }
+        println!("  {} → {}", nums[k], is_even(nums[k]));
+        k = k + 1;
+    }
+
+    let total = sum_array(nums);
+    println!("Sum of array = {}", total);
+
+    let idx = find_first_even(nums);
+    if idx >= 0 {
+        println!("First even at index {} (value {})", idx, nums[idx]);
+    } else {
+        println!("No even numbers found");
+    }
+
+    let pairs = count_pairs(5, 7);
+    println!("Number of (i,j) in [0..5)² summing to 7 = {}", pairs);
+}

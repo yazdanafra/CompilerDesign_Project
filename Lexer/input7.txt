@@ -1,13 +1,18 @@
-loop {
-x = x + 1;
-if x == 10 {
-break;
+fn make_pair(x: i32, y: i32) -> (i32, i32) {
+    // return a 2‑element tuple
+    return (x, y)
 }
-}
-loop {
-if x % 7 == 0 {
-continue;
-}
-s = s + x;
-x = x + 1;
+
+fn main() {
+    // create a tuple literal directly
+    let t: (i32, bool) = (42, true);
+    // destructure it
+    let (n, flag) = t;
+    println!("n = {}, flag = {}", n, flag);
+
+    // call the tuple‑returning function
+    let p = make_pair(3, 5);
+    // destructure its result in one go
+    let (a, b) = p;
+    println!("a = {}, b = {}", a, b);
 }
