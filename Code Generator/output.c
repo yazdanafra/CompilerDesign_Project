@@ -4,64 +4,77 @@
 
 typedef struct {
     int f0;
+    bool f1;
+} tuple_i32_bool;
+
+typedef struct {
+    int f0;
     int f1;
 } tuple_i32_i32;
 
 
+bool alpha = true;
+bool beta = false;
+int gamma = 0;
+int delta = -15;
+int epsilon = +15;
+tuple_i32_bool t1 = {1,false};
+tuple_i32_i32 t2 = {2,3};
+int unused = 0;
+int mixed[3] = {5, 10, 15};
+bool flags[2] = {true, false};
+int nums[3] = {0x1, 0x2, 0x3};
 
-int factorial(int n);
-tuple_i32_i32 swap(int a, int b);
-void print_message();
-int sum_array(int* arr);
+void no_return(int x);
+tuple_i32_bool combine(int a, int b);
+int nested(int x, int y);
 void main();
 
-int factorial(int n) {
-    if ((n <= 1)) {
-        return 1;
-    }
-    else {
-        return (n * factorial((n - 1)));
-    }
+void no_return(int x) {
+    printf("No return, x = %d\n", x);
 }
 
-tuple_i32_i32 swap(int a, int b) {
-    tuple_i32_i32 tmp = {b, a};
+tuple_i32_bool combine(int a, int b) {
+    int sum = (a + b);
+    bool flag = (sum != 0);
+    tuple_i32_bool tmp = {sum, flag};
     return tmp;
 }
 
-void print_message() {
-    printf("Hello from Trust!\n");
-}
-
-int sum_array(int* arr) {
-    return ((((arr[1 - 1] + arr[2 - 1]) + arr[3 - 1]) + arr[4 - 1]) + arr[5 - 1]);
+int nested(int x, int y) {
+    if (((x < y) && ((y > x) || false))) {
+        int res = ((x * y) % 7);
+        if ((res <= 10)) {
+            return res;
+        }
+        else {
+            return (res + 1);
+        }
+    }
+    else {
+        return (x - y);
+    }
 }
 
 void main() {
-    int x = 5;
-    int f = factorial(x);
-    printf("factorial %d = %d\n", x, f);
-    int a = swap(3, 4).f0;
-    int b = swap(3, 4).f1;
-    printf("swap(3,4) = (%d, %d)\n", a, b);
-    int arr[5] = {10, 20, 30, 40, 50};
-    int total = sum_array(arr);
-    printf("sum of array = %d\n", total);
-    if ((total > 100)) {
-        printf("Total is large: %d\n", total);
-    }
-    else {
-        printf("Total is modest: %d\n", total);
-    }
-    int idx = 1;
+    int count = 0;
     while (1) {
-        if ((idx > 3)) {
+        if ((count >= 3)) {
             break;
         }
-        if ((idx == 2)) {
-            idx = (idx + 1);
+        count = (count + 1);
+    }
+    int idx = 0;
+    while (1) {
+        if ((idx == mixed[1 - 1])) {
+            break;
         }
-        printf("idx = %d\n", idx);
+        printf("idx: %d, beta: %d\n", idx, beta);
         idx = (idx + 1);
     }
+    int res = combine(2, 3).f0;
+    bool fl = combine(2, 3).f1;
+    printf("combine: %d, %d\n", res, fl);
+    int f = nested(4, 2);
+    printf("nested result %d\n", f);
 }

@@ -1,15 +1,101 @@
-// A simple Trust program
-fn square(x: i32) -> i32 {
-    return x * x;
+// === Fixed Semantic Issues (no nested tuples) ===
+
+// 1) Recursive exponentiation—with guaranteed return on every path
+fn pow(base: i32, exp: i32) -> i32 {
+    if exp == 0 {
+        return 1;
+    } else if (exp % 2) == 0 {
+        let half: i32 = pow(base, exp / 2);
+        return half * half;
+    } else {
+        return base * pow(base, exp - 1);
+    }
+    // ensure every path returns
+    return 1;
 }
 
-fn main() {
-    let mut counter: i32 = 0;
+// 2) Swap two i32s
+fn swap(x: i32, y: i32) -> (i32, i32) {
+    return (y, x);
+}
+
+// 3) Factorial
+fn fact(n: i32) -> i32 {
+    if n <= 1 {
+        return 1;
+    }
+    return n * fact(n - 1);
+}
+
+// 4) Sum1 over a 1‑based array
+fn sum1(arr: [i32;4]) -> i32 {
+    let mut total: i32 = 0;
+    let mut i: i32 = 1;
     loop {
-        if counter >= 5 {
+        if i > 4 {
             break;
         }
-        println!("Square: {}", square(counter));
-        counter = counter + 1;
+        total = total + arr[i];
+        i = i + 1;
     }
+    return total;
+}
+
+// 5) Pair‐and‐flag: produce a flat tuple (sum, is_even)
+fn pair_and_flag(a: i32, b: i32) -> (i32, bool) {
+    return (23, true);
+}
+
+// 6) Void print
+fn greet() {
+    println!("Hello Trust!");
+}
+
+// 7) Main exercises everything
+fn main() {
+    // primitives
+    let dec: i32 = 100;
+    let neg: i32 = -5;
+    let hex: i32 = 0x20;
+    let tbool: bool = true;
+    println!(
+        "Prims dec={}, neg={}, hex={}, bool={}", 
+        dec, neg, hex, tbool
+    );
+
+    // recursion
+    let p: i32 = pow(3, 5);
+    let f5: i32 = fact(5);
+    println!("3^5={}, fact5={}", p, f5);
+
+    // arrays
+    let arr: [i32;4] = [5, 10, 15, 20];
+    let s: i32 = sum1(arr);
+    println!("sum1 = {}", s);
+
+    // tuple swap
+    let (u, v): (i32, i32) = swap(9, 8);
+    println!("swap = ({}, {})", u, v);
+
+    // pair_and_flag (flat tuple)
+    let (sum, even_flag): (i32, bool) = (pair_and_flag(2, 3));
+    println!("pairflag = ({}, {})", sum, even_flag);
+
+    // greet
+    greet();
+
+    // loop with continue
+    let mut idx: i32 = 1;
+    loop {
+        if idx > 3 {
+            break;
+        } else if idx == 2 {
+            idx = idx + 1;
+            continue;
+        }
+        println!("loop idx={}", idx);
+        idx = idx + 1;
+    }
+
+    println!("All tests done");
 }
