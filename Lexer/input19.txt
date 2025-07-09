@@ -1,4 +1,4 @@
-fn max(a: i32, b: i32) -> i32 {
+fn maxx(a: i32, b: i32) -> i32 {
     if a > b {
         return a
     } else {
@@ -39,8 +39,8 @@ fn main() {
     // basic let/mut and assignment
     let a: i32 = 10;
     let b: i32 = 20;
-    let m: i32 = max(a, b);
-    println!("max({}, {}) = {}", a, b, m);
+    let m: i32 = maxx(a, b);
+    println!("maxx({}, {}) = {}", a, b, m);
 
     let s: i32 = scale(3, 4);
     println!("scale(3,4) = {}", s);

@@ -12,12 +12,6 @@ fn sum_positive_indices(arr: [i32;5]) -> i32 {
     return total;
 }
 
-fn make_fives() -> [i32;4] {
-    // array‑repeat with a literal > 0
-    let fives: [i32;4] = [5;4];
-    return fives;
-}
-
 fn demo_tuple() -> (i32,bool) {
     let pair: (i32,bool) = (42, true);
     return pair;
@@ -28,10 +22,6 @@ fn main() {
     let data: [i32;5] = [10,20,30,40,50];
     let s: i32 = sum_positive_indices(data);
     println!("sum_positive_indices = {}", s);
-
-    // 2) array‑repeat demo
-    let rep: [i32;4] = make_fives();
-    println!("make_fives = [{}, {}, {}, {}]", rep[1], rep[2], rep[3], rep[4]);
 
     // 3) tuple demo
     let (n, flag): (i32,bool) = demo_tuple();

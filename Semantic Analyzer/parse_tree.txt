@@ -1,30 +1,77 @@
 └── Program
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
-    │   ├── Id: 'is_even'
+    │   ├── Id: 'factorial'
     │   ├── Params
     │   │   └── Param
-    │   │       ├── VarPattern: 'x'
+    │   │       ├── VarPattern: 'n'
     │   │       └── Type
     │   │           └── TypeI32: 'i32'
     │   ├── Arrow: '->'
     │   ├── ReturnType
     │   │   └── Type
-    │   │       └── TypeBool: 'bool'
+    │   │       └── TypeI32: 'i32'
+    │   └── Body
+    │       └── Block
+    │           └── IfStmt
+    │               ├── IfKw: 'if'
+    │               ├── Cond
+    │               │   └── BinaryOp: '<='
+    │               │       ├── Id: 'n'
+    │               │       └── Number: '1'
+    │               ├── Then
+    │               │   └── Block
+    │               │       └── ReturnStmt: 'return'
+    │               │           └── Number: '1'
+    │               ├── ElseKw: 'else'
+    │               └── Else
+    │                   └── Block
+    │                       └── ReturnStmt: 'return'
+    │                           └── BinaryOp: '*'
+    │                               ├── Id: 'n'
+    │                               └── Call: 'factorial'
+    │                                   └── BinaryOp: '-'
+    │                                       ├── Id: 'n'
+    │                                       └── Number: '1'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'swap'
+    │   ├── Params
+    │   │   ├── Param
+    │   │   │   ├── VarPattern: 'a'
+    │   │   │   └── Type
+    │   │   │       └── TypeI32: 'i32'
+    │   │   └── Param
+    │   │       ├── VarPattern: 'b'
+    │   │       └── Type
+    │   │           └── TypeI32: 'i32'
+    │   ├── Arrow: '->'
+    │   ├── ReturnType
+    │   │   └── Type
+    │   │       └── TupleType
+    │   │           ├── TypeI32: 'i32'
+    │   │           └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
     │           └── ReturnStmt: 'return'
-    │               └── BinaryOp: '=='
-    │                   ├── BinaryOp: '%'
-    │                   │   ├── Id: 'x'
-    │                   │   └── Number: '2'
-    │                   └── Number: '0'
+    │               └── TupleLiteral
+    │                   ├── Id: 'b'
+    │                   └── Id: 'a'
+    ├── FunctionDecl
+    │   ├── FnKw: 'fn'
+    │   ├── Id: 'print_message'
+    │   ├── Params
+    │   └── Body
+    │       └── Block
+    │           └── PrintStmt
+    │               ├── PrintKw: 'println!'
+    │               └── FormatStr: '"Hello from Trust!"'
     ├── FunctionDecl
     │   ├── FnKw: 'fn'
     │   ├── Id: 'sum_array'
     │   ├── Params
     │   │   └── Param
-    │   │       ├── VarPattern: 'a'
+    │   │       ├── VarPattern: 'arr'
     │   │       └── Type
     │   │           └── ArrayType
     │   │               ├── TypeI32: 'i32'
@@ -35,234 +82,21 @@
     │   │       └── TypeI32: 'i32'
     │   └── Body
     │       └── Block
-    │           ├── LetDecl
-    │           │   ├── LetKw: 'let'
-    │           │   ├── MutKw: 'mut'
-    │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'total'
-    │           │   ├── Colon: ':'
-    │           │   ├── Type
-    │           │   │   └── TypeI32: 'i32'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── Number: '0'
-    │           ├── LetDecl
-    │           │   ├── LetKw: 'let'
-    │           │   ├── MutKw: 'mut'
-    │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'i'
-    │           │   ├── Colon: ':'
-    │           │   ├── Type
-    │           │   │   └── TypeI32: 'i32'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── Number: '0'
-    │           ├── LoopStmt
-    │           │   ├── LoopKw: 'loop'
-    │           │   └── Block
-    │           │       └── Block
-    │           │           ├── IfStmt
-    │           │           │   ├── IfKw: 'if'
-    │           │           │   ├── Cond
-    │           │           │   │   └── BinaryOp: '=='
-    │           │           │   │       ├── Id: 'i'
-    │           │           │   │       └── Number: '5'
-    │           │           │   └── Then
-    │           │           │       └── Block
-    │           │           │           └── BreakStmt: 'break'
-    │           │           ├── AssignStmt
-    │           │           │   ├── LValue
-    │           │           │   │   └── Id: 'total'
-    │           │           │   ├── Assign: '='
-    │           │           │   └── Expr
-    │           │           │       └── BinaryOp: '+'
-    │           │           │           ├── Id: 'total'
-    │           │           │           └── ArrayIndex: 'a'
-    │           │           │               └── Id: 'i'
-    │           │           └── AssignStmt
-    │           │               ├── LValue
-    │           │               │   └── Id: 'i'
-    │           │               ├── Assign: '='
-    │           │               └── Expr
-    │           │                   └── BinaryOp: '+'
-    │           │                       ├── Id: 'i'
-    │           │                       └── Number: '1'
     │           └── ReturnStmt: 'return'
-    │               └── Id: 'total'
-    ├── FunctionDecl
-    │   ├── FnKw: 'fn'
-    │   ├── Id: 'find_first_even'
-    │   ├── Params
-    │   │   └── Param
-    │   │       ├── VarPattern: 'a'
-    │   │       └── Type
-    │   │           └── ArrayType
-    │   │               ├── TypeI32: 'i32'
-    │   │               └── Size: '5'
-    │   ├── Arrow: '->'
-    │   ├── ReturnType
-    │   │   └── Type
-    │   │       └── TypeI32: 'i32'
-    │   └── Body
-    │       └── Block
-    │           ├── LetDecl
-    │           │   ├── LetKw: 'let'
-    │           │   ├── MutKw: 'mut'
-    │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'i'
-    │           │   ├── Colon: ':'
-    │           │   ├── Type
-    │           │   │   └── TypeI32: 'i32'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── Number: '0'
-    │           ├── LoopStmt
-    │           │   ├── LoopKw: 'loop'
-    │           │   └── Block
-    │           │       └── Block
-    │           │           ├── IfStmt
-    │           │           │   ├── IfKw: 'if'
-    │           │           │   ├── Cond
-    │           │           │   │   └── BinaryOp: '=='
-    │           │           │   │       ├── Id: 'i'
-    │           │           │   │       └── Number: '5'
-    │           │           │   └── Then
-    │           │           │       └── Block
-    │           │           │           └── BreakStmt: 'break'
-    │           │           ├── IfStmt
-    │           │           │   ├── IfKw: 'if'
-    │           │           │   ├── Cond
-    │           │           │   │   └── Call: 'is_even'
-    │           │           │   │       └── ArrayIndex: 'a'
-    │           │           │   │           └── Id: 'i'
-    │           │           │   └── Then
-    │           │           │       └── Block
-    │           │           │           └── ReturnStmt: 'return'
-    │           │           │               └── Id: 'i'
-    │           │           └── AssignStmt
-    │           │               ├── LValue
-    │           │               │   └── Id: 'i'
-    │           │               ├── Assign: '='
-    │           │               └── Expr
-    │           │                   └── BinaryOp: '+'
-    │           │                       ├── Id: 'i'
-    │           │                       └── Number: '1'
-    │           └── ReturnStmt: 'return'
-    │               └── UnaryOp: '-'
-    │                   └── Number: '1'
-    ├── FunctionDecl
-    │   ├── FnKw: 'fn'
-    │   ├── Id: 'count_pairs'
-    │   ├── Params
-    │   │   ├── Param
-    │   │   │   ├── VarPattern: 'n'
-    │   │   │   └── Type
-    │   │   │       └── TypeI32: 'i32'
-    │   │   └── Param
-    │   │       ├── VarPattern: 'target'
-    │   │       └── Type
-    │   │           └── TypeI32: 'i32'
-    │   ├── Arrow: '->'
-    │   ├── ReturnType
-    │   │   └── Type
-    │   │       └── TypeI32: 'i32'
-    │   └── Body
-    │       └── Block
-    │           ├── LetDecl
-    │           │   ├── LetKw: 'let'
-    │           │   ├── MutKw: 'mut'
-    │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'count'
-    │           │   ├── Colon: ':'
-    │           │   ├── Type
-    │           │   │   └── TypeI32: 'i32'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── Number: '0'
-    │           ├── LetDecl
-    │           │   ├── LetKw: 'let'
-    │           │   ├── MutKw: 'mut'
-    │           │   ├── Pattern
-    │           │   │   └── VarPattern: 'i'
-    │           │   ├── Colon: ':'
-    │           │   ├── Type
-    │           │   │   └── TypeI32: 'i32'
-    │           │   ├── Assign: '='
-    │           │   └── Expr
-    │           │       └── Number: '0'
-    │           ├── LoopStmt
-    │           │   ├── LoopKw: 'loop'
-    │           │   └── Block
-    │           │       └── Block
-    │           │           ├── IfStmt
-    │           │           │   ├── IfKw: 'if'
-    │           │           │   ├── Cond
-    │           │           │   │   └── BinaryOp: '=='
-    │           │           │   │       ├── Id: 'i'
-    │           │           │   │       └── Id: 'n'
-    │           │           │   └── Then
-    │           │           │       └── Block
-    │           │           │           └── BreakStmt: 'break'
-    │           │           ├── LetDecl
-    │           │           │   ├── LetKw: 'let'
-    │           │           │   ├── MutKw: 'mut'
-    │           │           │   ├── Pattern
-    │           │           │   │   └── VarPattern: 'j'
-    │           │           │   ├── Colon: ':'
-    │           │           │   ├── Type
-    │           │           │   │   └── TypeI32: 'i32'
-    │           │           │   ├── Assign: '='
-    │           │           │   └── Expr
-    │           │           │       └── Number: '0'
-    │           │           ├── LoopStmt
-    │           │           │   ├── LoopKw: 'loop'
-    │           │           │   └── Block
-    │           │           │       └── Block
-    │           │           │           ├── IfStmt
-    │           │           │           │   ├── IfKw: 'if'
-    │           │           │           │   ├── Cond
-    │           │           │           │   │   └── BinaryOp: '=='
-    │           │           │           │   │       ├── Id: 'j'
-    │           │           │           │   │       └── Id: 'n'
-    │           │           │           │   └── Then
-    │           │           │           │       └── Block
-    │           │           │           │           └── BreakStmt: 'break'
-    │           │           │           ├── IfStmt
-    │           │           │           │   ├── IfKw: 'if'
-    │           │           │           │   ├── Cond
-    │           │           │           │   │   └── BinaryOp: '=='
-    │           │           │           │   │       ├── BinaryOp: '+'
-    │           │           │           │   │       │   ├── Id: 'i'
-    │           │           │           │   │       │   └── Id: 'j'
-    │           │           │           │   │       └── Id: 'target'
-    │           │           │           │   └── Then
-    │           │           │           │       └── Block
-    │           │           │           │           └── AssignStmt
-    │           │           │           │               ├── LValue
-    │           │           │           │               │   └── Id: 'count'
-    │           │           │           │               ├── Assign: '='
-    │           │           │           │               └── Expr
-    │           │           │           │                   └── BinaryOp: '+'
-    │           │           │           │                       ├── Id: 'count'
-    │           │           │           │                       └── Number: '1'
-    │           │           │           └── AssignStmt
-    │           │           │               ├── LValue
-    │           │           │               │   └── Id: 'j'
-    │           │           │               ├── Assign: '='
-    │           │           │               └── Expr
-    │           │           │                   └── BinaryOp: '+'
-    │           │           │                       ├── Id: 'j'
-    │           │           │                       └── Number: '1'
-    │           │           └── AssignStmt
-    │           │               ├── LValue
-    │           │               │   └── Id: 'i'
-    │           │               ├── Assign: '='
-    │           │               └── Expr
-    │           │                   └── BinaryOp: '+'
-    │           │                       ├── Id: 'i'
-    │           │                       └── Number: '1'
-    │           └── ReturnStmt: 'return'
-    │               └── Id: 'count'
+    │               └── BinaryOp: '+'
+    │                   ├── BinaryOp: '+'
+    │                   │   ├── BinaryOp: '+'
+    │                   │   │   ├── BinaryOp: '+'
+    │                   │   │   │   ├── ArrayIndex: 'arr'
+    │                   │   │   │   │   └── Number: '1'
+    │                   │   │   │   └── ArrayIndex: 'arr'
+    │                   │   │   │       └── Number: '2'
+    │                   │   │   └── ArrayIndex: 'arr'
+    │                   │   │       └── Number: '3'
+    │                   │   └── ArrayIndex: 'arr'
+    │                   │       └── Number: '4'
+    │                   └── ArrayIndex: 'arr'
+    │                       └── Number: '5'
     └── FunctionDecl
         ├── FnKw: 'fn'
         ├── Id: 'main'
@@ -271,8 +105,62 @@
             └── Block
                 ├── LetDecl
                 │   ├── LetKw: 'let'
+                │   ├── MutKw: 'mut'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'nums'
+                │   │   └── VarPattern: 'x'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Number: '5'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'f'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'factorial'
+                │           └── Id: 'x'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"factorial {} = {}"'
+                │   ├── Expr
+                │   │   └── Id: 'x'
+                │   └── Expr
+                │       └── Id: 'f'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── TuplePattern
+                │   │       ├── VarPattern: 'a'
+                │   │       └── VarPattern: 'b'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TupleType
+                │   │       ├── TypeI32: 'i32'
+                │   │       └── TypeI32: 'i32'
+                │   ├── Assign: '='
+                │   └── Expr
+                │       └── Call: 'swap'
+                │           ├── Number: '3'
+                │           └── Number: '4'
+                ├── PrintStmt
+                │   ├── PrintKw: 'println!'
+                │   ├── FormatStr: '"swap(3,4) = ({}, {})"'
+                │   ├── Expr
+                │   │   └── Id: 'a'
+                │   └── Expr
+                │       └── Id: 'b'
+                ├── ExprStmt
+                │   └── Call: 'print_message'
+                ├── LetDecl
+                │   ├── LetKw: 'let'
+                │   ├── Pattern
+                │   │   └── VarPattern: 'arr'
                 │   ├── Colon: ':'
                 │   ├── Type
                 │   │   └── ArrayType
@@ -281,110 +169,99 @@
                 │   ├── Assign: '='
                 │   └── Expr
                 │       └── ArrayLiteral
-                │           ├── Number: '3'
-                │           ├── Number: '4'
-                │           ├── Number: '7'
-                │           ├── Number: '8'
-                │           └── Number: '10'
-                ├── PrintStmt
-                │   ├── PrintKw: 'println!'
-                │   └── FormatStr: '"Array is_even flags:"'
+                │           ├── Number: '10'
+                │           ├── Number: '20'
+                │           ├── Number: '30'
+                │           ├── Number: '40'
+                │           └── Number: '50'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
-                │   ├── MutKw: 'mut'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'k'
+                │   │   └── VarPattern: 'total'
                 │   ├── Colon: ':'
                 │   ├── Type
                 │   │   └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Number: '0'
-                ├── LoopStmt
-                │   ├── LoopKw: 'loop'
-                │   └── Block
-                │       └── Block
-                │           ├── IfStmt
-                │           │   ├── IfKw: 'if'
-                │           │   ├── Cond
-                │           │   │   └── BinaryOp: '=='
-                │           │   │       ├── Id: 'k'
-                │           │   │       └── Number: '5'
-                │           │   └── Then
-                │           │       └── Block
-                │           │           └── BreakStmt: 'break'
-                │           ├── PrintStmt
-                │           │   ├── PrintKw: 'println!'
-                │           │   ├── FormatStr: '"  {} → {}"'
-                │           │   ├── Expr
-                │           │   │   └── ArrayIndex: 'nums'
-                │           │   │       └── Id: 'k'
-                │           │   └── Expr
-                │           │       └── Call: 'is_even'
-                │           │           └── ArrayIndex: 'nums'
-                │           │               └── Id: 'k'
-                │           └── AssignStmt
-                │               ├── LValue
-                │               │   └── Id: 'k'
-                │               ├── Assign: '='
-                │               └── Expr
-                │                   └── BinaryOp: '+'
-                │                       ├── Id: 'k'
-                │                       └── Number: '1'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'total'
-                │   ├── Assign: '='
-                │   └── Expr
                 │       └── Call: 'sum_array'
-                │           └── Id: 'nums'
+                │           └── Id: 'arr'
                 ├── PrintStmt
                 │   ├── PrintKw: 'println!'
-                │   ├── FormatStr: '"Sum of array = {}"'
+                │   ├── FormatStr: '"sum of array = {}"'
                 │   └── Expr
                 │       └── Id: 'total'
-                ├── LetDecl
-                │   ├── LetKw: 'let'
-                │   ├── Pattern
-                │   │   └── VarPattern: 'idx'
-                │   ├── Assign: '='
-                │   └── Expr
-                │       └── Call: 'find_first_even'
-                │           └── Id: 'nums'
                 ├── IfStmt
                 │   ├── IfKw: 'if'
                 │   ├── Cond
-                │   │   └── BinaryOp: '>='
-                │   │       ├── Id: 'idx'
-                │   │       └── Number: '0'
+                │   │   └── BinaryOp: '>'
+                │   │       ├── Id: 'total'
+                │   │       └── Number: '100'
                 │   ├── Then
                 │   │   └── Block
                 │   │       └── PrintStmt
                 │   │           ├── PrintKw: 'println!'
-                │   │           ├── FormatStr: '"First even at index {} (value {})"'
-                │   │           ├── Expr
-                │   │           │   └── Id: 'idx'
+                │   │           ├── FormatStr: '"Total is large: {}"'
                 │   │           └── Expr
-                │   │               └── ArrayIndex: 'nums'
-                │   │                   └── Id: 'idx'
+                │   │               └── Id: 'total'
                 │   ├── ElseKw: 'else'
                 │   └── Else
                 │       └── Block
                 │           └── PrintStmt
                 │               ├── PrintKw: 'println!'
-                │               └── FormatStr: '"No even numbers found"'
+                │               ├── FormatStr: '"Total is modest: {}"'
+                │               └── Expr
+                │                   └── Id: 'total'
                 ├── LetDecl
                 │   ├── LetKw: 'let'
+                │   ├── MutKw: 'mut'
                 │   ├── Pattern
-                │   │   └── VarPattern: 'pairs'
+                │   │   └── VarPattern: 'idx'
+                │   ├── Colon: ':'
+                │   ├── Type
+                │   │   └── TypeI32: 'i32'
                 │   ├── Assign: '='
                 │   └── Expr
-                │       └── Call: 'count_pairs'
-                │           ├── Number: '5'
-                │           └── Number: '7'
-                └── PrintStmt
-                    ├── PrintKw: 'println!'
-                    ├── FormatStr: '"Number of (i,j) in [0..5)² summing to 7 = {}"'
-                    └── Expr
-                        └── Id: 'pairs'
+                │       └── Number: '1'
+                └── LoopStmt
+                    ├── LoopKw: 'loop'
+                    └── Block
+                        └── Block
+                            ├── IfStmt
+                            │   ├── IfKw: 'if'
+                            │   ├── Cond
+                            │   │   └── BinaryOp: '>'
+                            │   │       ├── Id: 'idx'
+                            │   │       └── Number: '3'
+                            │   └── Then
+                            │       └── Block
+                            │           └── BreakStmt: 'break'
+                            ├── IfStmt
+                            │   ├── IfKw: 'if'
+                            │   ├── Cond
+                            │   │   └── BinaryOp: '=='
+                            │   │       ├── Id: 'idx'
+                            │   │       └── Number: '2'
+                            │   └── Then
+                            │       └── Block
+                            │           ├── AssignStmt
+                            │           │   ├── LValue
+                            │           │   │   └── Id: 'idx'
+                            │           │   ├── Assign: '='
+                            │           │   └── Expr
+                            │           │       └── BinaryOp: '+'
+                            │           │           ├── Id: 'idx'
+                            │           │           └── Number: '1'
+                            │           └── ContinueStmt: 'continue'
+                            ├── PrintStmt
+                            │   ├── PrintKw: 'println!'
+                            │   ├── FormatStr: '"idx = {}"'
+                            │   └── Expr
+                            │       └── Id: 'idx'
+                            └── AssignStmt
+                                ├── LValue
+                                │   └── Id: 'idx'
+                                ├── Assign: '='
+                                └── Expr
+                                    └── BinaryOp: '+'
+                                        ├── Id: 'idx'
+                                        └── Number: '1'

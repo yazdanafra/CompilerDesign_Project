@@ -364,7 +364,7 @@ def gen_program(prog):
             elif 'struct_name' in vp:
                 params.append(f"{annotate(vp,'struct_name')} {vp['value']}")
             else:
-                params.append(f"{annotate(vp,'ctype')} {vp['value']}")
+                params.append(f"{annotate(vp,'ctype') or 'int'} {vp['value']}")
 
         if 'struct_name' in fn:
             ret = annotate(fn, 'struct_name')
@@ -396,7 +396,7 @@ def gen_function(fn):
         elif 'struct_name' in vp:
             params.append(f"{annotate(vp,'struct_name')} {vp['value']}")
         else:
-            params.append(f"{annotate(vp,'ctype')} {vp['value']}")
+            params.append(f"{(annotate(vp,'ctype') or 'int')} {vp['value']}")
 
     # choose return type
     if 'struct_name' in fn:
@@ -420,13 +420,22 @@ def gen_function(fn):
                 # your existing let‐stmt code will generate "int sum = a + b;"
                 stmts += gen_stmt(stmt)
         # --- now the return ---
-        # find the ReturnStmt as before
+        # now the return
         ret_stmt = next(s for s in body if s['typ'] == 'ReturnStmt')
         child    = ret_stmt['children'][0]
-        tpl      = child['children'][0] if child.get('typ') == 'Expr' else child
-        vals     = [gen_expr(c) for c in tpl['children']]
-        init     = "{" + ", ".join(vals) + "}"
-        stmts.append(f"{struct_name} tmp = {init};")
+        expr     = (child['children'][0]
+                    if child.get('typ') == 'Expr'
+                    else child)
+
+        if expr.get('typ') == 'TupleLiteral':
+            # inline init from literal fields
+            vals = [gen_expr(c) for c in expr['children']]
+            init = "{" + ", ".join(vals) + "}"
+            stmts.append(f"{struct_name} tmp = {init};")
+        else:
+            # indirect init from a tuple variable (e.g. `pair`)
+            varname = gen_expr(expr)  # ex: "pair"
+            stmts.append(f"{struct_name} tmp = {varname};")
         stmts.append("return tmp;")
         return [header] + ["    " + l for l in stmts] + [footer]
     
@@ -434,7 +443,7 @@ def gen_function(fn):
     # otherwise normal body
     body = get_child(fn, 'Body')['children'][0]['children']
     for stmt in body:
-        stmts += gen_stmt(stmt)
+        stmts += gen_stmt(stmt)   
 
     return [header] + ["    " + l for l in stmts] + [footer]
 
@@ -611,8 +620,9 @@ def gen_expr(node):
         lhs = gen_expr(node['children'][0]) or "false"
         rhs = gen_expr(node['children'][1]) or "false"
         return f"({lhs} {node['value']} {rhs})"
-    if t == 'ArrayIndex': 
-        return f"{node['value']}[{gen_expr(node['children'][0])}]"
+    if t == 'ArrayIndex':
+        i_code = gen_expr(node['children'][0]) 
+        return f"{node['value']}[{i_code} - 1]"
     if t=='Call':
         # Call children are the actual argument AST nodes
         args = ", ".join(gen_expr(c) for c in node.get('children', []))
